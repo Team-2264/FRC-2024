@@ -74,19 +74,15 @@ public class Swerve extends SubsystemBase {
 
         swerveOdometry = new SwerveDriveOdometry(Constants.Swerve.swerveKinematics, getGyroAngle(), getModulePositions());
         fieldRelative = true;
-        
     }
 
     /**
      * Resets the swerve module encoders to the position of the absolute encoders.
-
      */
     public void resetEncoders() {
         for (SwerveModule mod : swerveModules) {
             swerveModules[mod.moduleNumber].resetToAbsolute();
-
         }
-
     }
 
     /**

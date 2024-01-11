@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-import frc.robot.commands.AprilTagFollow;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.subsystems.Leds;
 import frc.robot.subsystems.Limelight;
@@ -43,7 +42,6 @@ public class RobotContainer {
     private void configureBindings() {
         swerve.setDefaultCommand(new TeleopSwerve(swerve, controller));
 
-        controller.circle().onTrue(new AprilTagFollow());
         controller.cross().onTrue(new TeleopSwerve(swerve, controller));
 
         controller.options().onTrue( new InstantCommand(() -> swerve.zeroGyro()));
