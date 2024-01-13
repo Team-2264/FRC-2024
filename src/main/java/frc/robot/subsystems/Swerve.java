@@ -8,7 +8,8 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 
-import com.ctre.phoenix.sensors.Pigeon2;
+import com.ctre.phoenix6.hardware.Pigeon2;
+import com.ctre.phoenix6.configs.Pigeon2Configuration;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -34,7 +35,7 @@ public class Swerve extends SubsystemBase {
      */
     public Swerve() {
         pidgey = new Pigeon2(Constants.Swerve.pigeonID);
-        pidgey.configFactoryDefault();
+        pidgey.getConfigurator().apply(new Pigeon2Configuration());
         zeroGyro();
 
         swerveModules = new SwerveModule[] {
@@ -196,8 +197,9 @@ public class Swerve extends SubsystemBase {
      * @return The current gyro angle.
      */
     public Rotation2d getGyroAngle() {
-        return (Constants.Swerve.invertGyro) ? Rotation2d.fromDegrees(360 - pidgey.getYaw())
-                : Rotation2d.fromDegrees(pidgey.getYaw());
+        double yaw = pidgey.getYaw().refresh().getValue();
+        return (Constants.Swerve.invertGyro) ? Rotation2d.fromDegrees(360 - yaw)
+                : Rotation2d.fromDegrees(yaw);
 
     }
 

@@ -1,14 +1,15 @@
 package frc.robot;
 
+
+
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.DemandType;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import com.ctre.phoenix.sensors.CANCoder;
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.hardware.CANcoder;
+
 
 /**
  * Represents an individual swerve module that consists of an angle motor, a drive motor, and an angle encoder.
@@ -16,9 +17,9 @@ import com.ctre.phoenix.sensors.CANCoder;
 public class SwerveModule {
     public int moduleNumber;
 
-    private WPI_TalonFX angleMotor;
-    private WPI_TalonFX driveMotor;
-    private CANCoder angleEncoder;
+    private TalonFX angleMotor;
+    private TalonFX driveMotor;
+    private CANcoder angleEncoder;
 
     private Rotation2d angleOffset;
     private Rotation2d lastAngle;
@@ -42,15 +43,15 @@ public class SwerveModule {
         this.angleOffset = Rotation2d.fromDegrees(angleOffsetDouble);
 
         // Angle Encoder Config - must be init before angle motor
-        angleEncoder = new CANCoder(angleEncoderID);
+        angleEncoder = new CANcoder(angleEncoderID);
         configAngleEncoder();
 
         // Drive Motor Config
-        driveMotor = new WPI_TalonFX(driveMotorID);
+        driveMotor = new TalonFX(driveMotorID);
         configDriveMotor(driveMotorInverted);
 
         // Angle Motor Config
-        angleMotor = new WPI_TalonFX(angleMotorID);
+        angleMotor = new TalonFX(angleMotorID);
         configAngleMotor(angleMotorInverted);
 
         lastAngle = getState().angle;
@@ -123,6 +124,7 @@ public class SwerveModule {
         angleMotor.setSelectedSensorPosition(absolutePosition);
         // Set the motor's target position to match the encoder position that we just set
         angleMotor.set(ControlMode.Position, absolutePosition);
+        
     }
 
     /**
