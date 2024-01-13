@@ -6,7 +6,7 @@ package frc.robot.commands;
 
 import frc.robot.Constants;
 import frc.robot.subsystems.Swerve;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  * A command for teleoperated control of a swerve drive subsystem using a PS4 controller.
  */
-public class TeleopSwerve extends CommandBase {
+public class TeleopSwerve extends Command {
     private final Swerve swerve;
 
     private final CommandPS4Controller controller;
