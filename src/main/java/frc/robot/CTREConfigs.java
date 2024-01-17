@@ -55,7 +55,8 @@ public final class CTREConfigs {
         swerveDriveFXConfig.Slot0.kV = Constants.Swerve.driveKF;        
         swerveDriveFXConfig.CurrentLimits = currentConfig;
         //swerveDriveFXConfig.initializationStrategy = SensorInitializationStrategy.BootToZero;
-        swerveDriveFXConfig.OpenLoopRamps = Constants.Swerve.openLoopRamp;
+        swerveDriveFXConfig.OpenLoopRamps = new OpenLoopRampsConfigs();
+        Constants.Swerve.openLoopRamp;
         swerveDriveFXConfig.ClosedLoopRamps = new ClosedLoopRampsConfigs().withDutyCycleClosedLoopRampPeriod(Constants.Swerve.closedLoopRamp);
 
         
