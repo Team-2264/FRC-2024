@@ -4,9 +4,11 @@
 
 package frc.robot;
 
+import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.ctre.phoenix6.signals.SensorDirectionValue;
+
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.math.util.Units;
 
 /**
@@ -96,15 +98,15 @@ public final class Constants {
         public static final double maxAngularVelocity = Math.PI * 1.5; // radians per second (rad/s)
 
         // Neutral Modes
-        public static final NeutralMode angleNeutralMode = NeutralMode.Coast;
-        public static final NeutralMode driveNeutralMode = NeutralMode.Brake;
+        public static final NeutralModeValue angleNeutralMode = NeutralModeValue.Coast;
+        public static final NeutralModeValue driveNeutralMode = NeutralModeValue.Brake;
 
         // Global Motor Inverts
         public static final boolean driveMotorInvert = false;
         public static final boolean angleMotorInvert = false;
 
         // Angle Encoder Invert
-        public static final boolean canCoderInvert = false;
+        public static final SensorDirectionValue canCoderInvert = SensorDirectionValue.Clockwise_Positive;
 
         // Module Specific Constants
         // Front Left Module - Module 0
