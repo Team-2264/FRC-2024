@@ -78,13 +78,13 @@ public final class Constants {
         public static final double angleKP = 0.6;
         public static final double angleKI = 0.0;
         public static final double angleKD = 12.0;
-        public static final double angleKF = 0.0;
+        public static final double angleKF = 0.0; // Kf is Kv in CTRE v6 API
 
         // Drive Motor PID Values
         public static final double driveKP = 0.10;
         public static final double driveKI = 0.0;
         public static final double driveKD = 0.0;
-        public static final double driveKF = 0.0;
+        public static final double driveKF = 0.0; // Kf is Kv in CTRE v6 API
 
         // Drive Motor Characterization Values
         public static final double driveKS = (0.667 / 12); // divide by 12 to convert from volts to percent
@@ -105,7 +105,7 @@ public final class Constants {
         public static final boolean driveMotorInvert = false;
         public static final boolean angleMotorInvert = false;
 
-        // Angle Encoder Invert
+        // Global Angle Encoder Inverts
         public static final SensorDirectionValue canCoderInvert = SensorDirectionValue.Clockwise_Positive;
 
         // Module Specific Constants

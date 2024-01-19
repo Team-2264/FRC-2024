@@ -42,8 +42,6 @@ public class RobotContainer {
     private void configureBindings() {
         swerve.setDefaultCommand(new TeleopSwerve(swerve, controller));
 
-        controller.cross().onTrue(new TeleopSwerve(swerve, controller));
-
         controller.options().onTrue( new InstantCommand(() -> swerve.zeroGyro()));
 
     }
