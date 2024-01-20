@@ -1,9 +1,13 @@
 package frc.robot.subsystems;
 
 import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonPoseEstimator;
+import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Transform3d;
@@ -18,6 +22,12 @@ import frc.robot.Constants;
 public class Vision extends SubsystemBase {
     private PhotonCamera camera;
     private PhotonPipelineResult latestResult;
+
+    PhotonPoseEstimator estimator = new PhotonPoseEstimator(
+        AprilTagFields.k2024Crescendo.loadAprilTagLayoutField(), 
+        PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
+        camera, Constants.Vision.cameraToRobot.inverse()
+    );
 
     public Vision() {  
         camera = new PhotonCamera("apriltag");
@@ -50,20 +60,27 @@ public class Vision extends SubsystemBase {
         }
         SmartDashboard.putString("Vision - Tracked Targets", targetIds.toString());
 
-        // Best target data
-        if (latestResult.hasTargets()) {
-            PhotonTrackedTarget bestTarget = latestResult.getBestTarget();
+        var robot_pose = estimator.update();
+
+        SmartDashboard.putString("Estimated robot pose", robot_pose.toString());
+
+        
+
+        // // Best target data
+        // if (latestResult.hasTargets()) {
+        //     PhotonTrackedTarget bestTarget = latestResult.getBestTarget();
             
-            SmartDashboard.putNumber("Vision - Best Target - ID", bestTarget.getFiducialId());
-            Transform3d targetToCamera = bestTarget.getBestCameraToTarget().inverse();
-            SmartDashboard.putString("Vision - Best Target - CTT", new Pose3d().plus(targetToCamera).toString());
+        //     SmartDashboard.putNumber("Vision - Best Target - ID", bestTarget.getFiducialId());
+        //     Transform3d targetToCamera = bestTarget.getBestCameraToTarget().inverse();
+        //     SmartDashboard.putString("Vision - Best Target - CTT", new Pose3d().plus(targetToCamera).toString());
 
-            Pose3d targetToRobot = new Pose3d().plus(targetToCamera).plus(Constants.Vision.cameraToRobot);
+        //     Pose3d targetToRobot = new Pose3d().plus(targetToCamera).plus(Constants.Vision.cameraToRobot);
+        //     AprilTagFieldLayout layout = ;
 
-            SmartDashboard.putString("Vision - Best Target - RTT", targetToRobot.toString());
+        //     SmartDashboard.putString("Vision - Best Target - RTT", targetToRobot.toString());
 
 
-        }
+        // }
         
     }
     
