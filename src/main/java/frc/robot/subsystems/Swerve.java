@@ -210,7 +210,6 @@ public class Swerve extends SubsystemBase {
 
         for (SwerveModule mod : swerveModules) {
             SmartDashboard.putString("Mod " + mod.moduleNumber, mod.getState().toString());
-            
 
         }
 

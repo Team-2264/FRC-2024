@@ -100,4 +100,28 @@ public class Conversions {
 
     }
 
+
+
+    // NEW CONVERSIONS
+    public static double revsToMeters(double revs, double circumference, double gearRatio) {
+        return (revs * circumference) / gearRatio;
+
+    }
+
+    public static double metersToRevs(double meters, double circumference, double gearRatio) {
+        return (meters / circumference) * gearRatio;
+
+    }
+
+    public static double revsToDegrees(double revs, double gearRatio) {
+        return (revs * 360) / gearRatio;
+
+    }
+
+    public static double degreesToRevs(double degrees, double gearRatio) {
+        return (degrees / 360) * gearRatio;
+
+    }
+
+
 }
