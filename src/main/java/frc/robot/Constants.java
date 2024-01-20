@@ -33,6 +33,7 @@ public final class Constants {
         public static final int controllerPort = 0;
         public static final double stickDeadband = 0.1;
 
+
     }
 
     public static final class LedStrip {
@@ -143,6 +144,8 @@ public final class Constants {
             public static final int driveMotorID = 46;
             public static final int angleMotorID = 47;
             public static final int angleEncoderID = 50;
+            // NeoMotorID might have to be moved
+            public static final int NeoMotorID = 1;
 
             public static final double angleOffset = 330.645;
 
@@ -165,5 +168,6 @@ public final class Constants {
         }
 
     }
+
 
 }

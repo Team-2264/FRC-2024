@@ -4,9 +4,12 @@
 
 package frc.robot;
 
+import frc.robot.commands.RunNeoMotor;
+import frc.robot.commands.StopNeoMotor;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.subsystems.Leds;
 import frc.robot.subsystems.Limelight;
+import frc.robot.subsystems.Neo;
 import frc.robot.subsystems.Swerve;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -24,6 +27,7 @@ public class RobotContainer {
     private final Swerve swerve = new Swerve();
     private final Limelight limelight = new Limelight();
     private final Leds leds = new Leds(Constants.LedStrip.pwmPort, Constants.LedStrip.numLeds, Constants.LedStrip.scaleFactor);
+    private final Neo neoMotor = new Neo();
 
     // Controllers
     private final CommandPS4Controller controller = new CommandPS4Controller(Constants.Operator.controllerPort);
@@ -45,6 +49,13 @@ public class RobotContainer {
         controller.cross().onTrue(new TeleopSwerve(swerve, controller));
 
         controller.options().onTrue( new InstantCommand(() -> swerve.zeroGyro()));
+
+        /**
+         * square button press results in the clockwise movement of the neo motor
+         * while triangle makes it stop.
+         */
+        controller.square().onTrue(new RunNeoMotor(neoMotor));
+        controller.triangle().onTrue(new StopNeoMotor(neoMotor));
 
     }
 

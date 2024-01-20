@@ -3,20 +3,17 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.commands;
-
-import com.revrobotics.CANSparkLowLevel.MotorType;
-import com.revrobotics.CANSparkMax;
 import frc.robot.subsystems.Neo;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An example command that uses an example subsystem. */
-public class RunMotor extends Command {
+public class RunNeoMotor extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private Neo NeoMotor;
 
 //    @param subsystem
-  public RunMotor(Neo motor) {
-    NeoMotor
+  public RunNeoMotor(Neo motor) {
+    NeoMotor = motor;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(motor);
   }
