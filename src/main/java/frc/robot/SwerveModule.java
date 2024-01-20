@@ -176,8 +176,10 @@ public class SwerveModule {
      */
     public SwerveModuleState getState() {
         double velocity = Conversions.falconToMPS(driveMotor.getVelocity().refresh().getValue(), Constants.Swerve.wheelCircumference, Constants.Swerve.driveGearRatio);
+     
         Rotation2d angle = Rotation2d.fromDegrees(Conversions.falconToDegrees(angleMotor.getPosition().refresh().getValue(), Constants.Swerve.angleGearRatio));
         return new SwerveModuleState(velocity, angle);
+        
     }
 
     /**
@@ -190,6 +192,7 @@ public class SwerveModule {
         double distance = Conversions.falconToMeters(position, Constants.Swerve.wheelCircumference, Constants.Swerve.driveGearRatio);
 
         return new SwerveModulePosition(distance, getAngle());
+     
     }
 
 }
