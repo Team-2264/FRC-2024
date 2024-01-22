@@ -7,7 +7,11 @@ package frc.robot;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 
@@ -27,6 +31,24 @@ public final class Constants {
     public static class Operator {
         public static final int controllerPort = 0;
         public static final double stickDeadband = 0.1;
+
+    }
+
+    public static class Vision {
+        public static final String cameraName = "limelight";
+        
+        // Camera Pose in robot space - need to set
+        public static final Pose3d cameraPose = new Pose3d(
+            new Translation3d(Units.inchesToMeters(0), Units.inchesToMeters(0), Units.inchesToMeters(0)),
+            new Rotation3d(0, 0, 0)
+        );
+
+        // Maps camera to robot space
+        public static final Transform3d cameraToRobot = new Transform3d(
+            new Pose3d(),
+            cameraPose    
+
+        );
 
     }
 
