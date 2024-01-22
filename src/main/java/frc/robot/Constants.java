@@ -4,17 +4,12 @@
 
 package frc.robot;
 
+import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.ctre.phoenix6.signals.SensorDirectionValue;
+
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.math.util.Units;
-
-import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
-import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
-import com.ctre.phoenix.sensors.AbsoluteSensorRange;
-import com.ctre.phoenix.sensors.CANCoderConfiguration;
-import com.ctre.phoenix.sensors.SensorInitializationStrategy;
-import com.ctre.phoenix.sensors.SensorTimeBase;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -80,16 +75,16 @@ public final class Constants {
         public static final boolean driveEnableCurrentLimit = true;
 
         // Angle Motor PID Values
-        public static final double angleKP = 0.6;
+        public static final double angleKP = 1.201173; // 0.6
         public static final double angleKI = 0.0;
-        public static final double angleKD = 12.0;
-        public static final double angleKF = 0.0;
+        public static final double angleKD = 0.024023; // 12.0
+        public static final double angleKF = 0.0; // Kf is Kv in CTRE v6 API
 
         // Drive Motor PID Values
-        public static final double driveKP = 0.10;
+        public static final double driveKP = 0.20019; //0.1
         public static final double driveKI = 0.0;
         public static final double driveKD = 0.0;
-        public static final double driveKF = 0.0;
+        public static final double driveKF = 0.0; // Kf is Kv in CTRE v6 API
 
         // Drive Motor Characterization Values
         public static final double driveKS = (0.667 / 12); // divide by 12 to convert from volts to percent
@@ -103,15 +98,15 @@ public final class Constants {
         public static final double maxAngularVelocity = Math.PI * 1.5; // radians per second (rad/s)
 
         // Neutral Modes
-        public static final NeutralMode angleNeutralMode = NeutralMode.Coast;
-        public static final NeutralMode driveNeutralMode = NeutralMode.Brake;
+        public static final NeutralModeValue angleNeutralMode = NeutralModeValue.Coast;
+        public static final NeutralModeValue driveNeutralMode = NeutralModeValue.Brake;
 
         // Global Motor Inverts
         public static final boolean driveMotorInvert = false;
         public static final boolean angleMotorInvert = false;
 
-        // Angle Encoder Invert
-        public static final boolean canCoderInvert = false;
+        // Global Angle Encoder Inverts
+        public static final SensorDirectionValue canCoderInvert = SensorDirectionValue.CounterClockwise_Positive;
 
         // Module Specific Constants
         // Front Left Module - Module 0
