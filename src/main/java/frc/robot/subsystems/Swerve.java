@@ -209,7 +209,7 @@ public class Swerve extends SubsystemBase {
         swerveOdometry.update(getGyroAngle(), getModulePositions());
 
         for (SwerveModule mod : swerveModules) {
-            SmartDashboard.putString("Mod " + mod.moduleNumber, mod.getState().toString());
+            SmartDashboard.putNumber("Mod " + mod.moduleNumber, mod.getState().angle.getDegrees());
 
         }
 

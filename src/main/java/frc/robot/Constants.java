@@ -75,13 +75,13 @@ public final class Constants {
         public static final boolean driveEnableCurrentLimit = true;
 
         // Angle Motor PID Values
-        public static final double angleKP = 0.6;
+        public static final double angleKP = 1.201173; // 0.6
         public static final double angleKI = 0.0;
-        public static final double angleKD = 12.0;
+        public static final double angleKD = 0.024023; // 12.0
         public static final double angleKF = 0.0; // Kf is Kv in CTRE v6 API
 
         // Drive Motor PID Values
-        public static final double driveKP = 0.10;
+        public static final double driveKP = 0.20019; //0.1
         public static final double driveKI = 0.0;
         public static final double driveKD = 0.0;
         public static final double driveKF = 0.0; // Kf is Kv in CTRE v6 API
@@ -106,7 +106,7 @@ public final class Constants {
         public static final boolean angleMotorInvert = false;
 
         // Global Angle Encoder Inverts
-        public static final SensorDirectionValue canCoderInvert = SensorDirectionValue.Clockwise_Positive;
+        public static final SensorDirectionValue canCoderInvert = SensorDirectionValue.CounterClockwise_Positive;
 
         // Module Specific Constants
         // Front Left Module - Module 0
