@@ -1,16 +1,13 @@
 package frc.robot.subsystems;
 
+import java.util.Arrays;
+
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.targeting.PhotonPipelineResult;
-import org.photonvision.targeting.PhotonTrackedTarget;
 
-import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -22,16 +19,17 @@ import frc.robot.Constants;
 public class Vision extends SubsystemBase {
     private PhotonCamera camera;
     private PhotonPipelineResult latestResult;
-
-    PhotonPoseEstimator estimator = new PhotonPoseEstimator(
-        AprilTagFields.k2024Crescendo.loadAprilTagLayoutField(), 
-        PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
-        camera, Constants.Vision.cameraToRobot.inverse()
-    );
+    
+    private final PhotonPoseEstimator estimator;
 
     public Vision() {  
         camera = new PhotonCamera("apriltag");
 
+        estimator = new PhotonPoseEstimator(
+             AprilTagFields.k2024Crescendo.loadAprilTagLayoutField(), 
+             PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
+             camera, Constants.Vision.cameraToRobot.inverse()
+         );
     }
 
     /**
@@ -58,11 +56,15 @@ public class Vision extends SubsystemBase {
         for (int i = 0; i < latestResult.targets.size(); i++) {
             targetIds[i] = latestResult.targets.get(i).getFiducialId();
         }
-        SmartDashboard.putString("Vision - Tracked Targets", targetIds.toString());
+        SmartDashboard.putString("Vision - Tracked Targets", Arrays.toString(targetIds));
 
         var robot_pose = estimator.update();
-
-        SmartDashboard.putString("Estimated robot pose", robot_pose.toString());
+        
+        if(robot_pose.isPresent()) {
+            SmartDashboard.putString("Estimated robot pose", robot_pose.get().estimatedPose.toString());
+        } else {
+            SmartDashboard.putString("Estimated robot pose", "None");
+        }
 
         
 
