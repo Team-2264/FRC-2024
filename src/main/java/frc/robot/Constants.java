@@ -86,11 +86,17 @@ public final class Constants {
         public static final double angleKD = 12.0;
         public static final double angleKF = 0.0;
 
-        // Drive Motor PID Values
+        // Drive Motor 2 Values
         public static final double driveKP = 0.10;
         public static final double driveKI = 0.0;
         public static final double driveKD = 0.0;
         public static final double driveKF = 0.0;
+
+        // Neo Values
+        public static final double neoKP = 1.0;
+        public static final double neoKI = 0.0;
+        public static final double neoKD = 0.0;
+        public static final double encoderCountsPerDegree = 1;
 
         // Drive Motor Characterization Values
         public static final double driveKS = (0.667 / 12); // divide by 12 to convert from volts to percent
@@ -145,7 +151,7 @@ public final class Constants {
             public static final int angleMotorID = 47;
             public static final int angleEncoderID = 50;
             // NeoMotorID might have to be moved
-            public static final int NeoMotorID = 1;
+            public static final int NeoMotorID = 15;
 
             public static final double angleOffset = 330.645;
 

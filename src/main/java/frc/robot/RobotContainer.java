@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import frc.robot.commands.RotateNeoMotor;
 import frc.robot.commands.RunNeoMotor;
 import frc.robot.commands.StopNeoMotor;
 import frc.robot.commands.TeleopSwerve;
@@ -56,6 +57,7 @@ public class RobotContainer {
          */
         controller.square().onTrue(new RunNeoMotor(neoMotor));
         controller.triangle().onTrue(new StopNeoMotor(neoMotor));
+        controller.circle().onTrue( new RotateNeoMotor(neoMotor));
 
     }
 

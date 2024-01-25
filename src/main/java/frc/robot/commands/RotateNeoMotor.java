@@ -5,14 +5,15 @@
 package frc.robot.commands;
 import frc.robot.subsystems.Neo;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 
 /** An example command that uses an example subsystem. */
-public class RunNeoMotor extends Command {
+public class RotateNeoMotor extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private Neo NeoMotor;
 
 //    @param subsystem
-  public RunNeoMotor(Neo motor) {
+  public RotateNeoMotor(Neo motor) {
     NeoMotor = motor;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(motor);
@@ -20,7 +21,8 @@ public class RunNeoMotor extends Command {
 
   @Override
     public void initialize() {
-        NeoMotor.setNeoSpeed(0.5);
+      // angle TBD
+        NeoMotor.rotateNeoMotor(90);
     }
 
   @Override
