@@ -6,10 +6,10 @@ package frc.robot.subsystems;
 
 import frc.robot.Constants;
 
-import com.revrobotics.CANSparkBase;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
+import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -47,9 +47,10 @@ public class Neo extends SubsystemBase {
 
 
   // rotate the motor until it reachese the desired position
+  // says it is going to be deprecated - just ignore it!!!!
   public void rotateNeoMotor(double degToRotate){
     double targetPosition = encoder.getPosition() + degToRotate * Constants.Swerve.encoderCountsPerDegree;
-    pidNeo.setReference(targetPosition, com.revrobotics.CANSparkBase.ControlType.kPosition);
+    pidNeo.setReference(targetPosition, ControlType.kPosition);
   }
 
 
