@@ -6,15 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.math.util.Units;
-
-import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
-import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
-import com.ctre.phoenix.sensors.AbsoluteSensorRange;
-import com.ctre.phoenix.sensors.CANCoderConfiguration;
-import com.ctre.phoenix.sensors.SensorInitializationStrategy;
-import com.ctre.phoenix.sensors.SensorTimeBase;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -96,7 +88,7 @@ public final class Constants {
         public static final double neoKP = 1.0;
         public static final double neoKI = 0.0;
         public static final double neoKD = 0.0;
-        public static final double encoderCountsPerDegree = 1;
+        public static final double encoderCountsPerDegree = 48/360;
 
         // Drive Motor Characterization Values
         public static final double driveKS = (0.667 / 12); // divide by 12 to convert from volts to percent
@@ -110,8 +102,6 @@ public final class Constants {
         public static final double maxAngularVelocity = Math.PI * 1.5; // radians per second (rad/s)
 
         // Neutral Modes
-        public static final NeutralMode angleNeutralMode = NeutralMode.Coast;
-        public static final NeutralMode driveNeutralMode = NeutralMode.Brake;
 
         // Global Motor Inverts
         public static final boolean driveMotorInvert = false;
@@ -151,7 +141,7 @@ public final class Constants {
             public static final int angleMotorID = 47;
             public static final int angleEncoderID = 50;
             // NeoMotorID might have to be moved
-            public static final int NeoMotorID = 15;
+            public static final int NeoMotorID = 8;
 
             public static final double angleOffset = 330.645;
 
