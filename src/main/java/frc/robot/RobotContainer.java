@@ -42,7 +42,7 @@ public class RobotContainer {
      * Configures all button bindings.
      */
     private void configureBindings() {
-        // swerve.setDefaultCommand(new TeleopSwerve(swerve, controller));
+        swerve.setDefaultCommand(new TeleopSwerve(swerve, controller));
 
         controller.options().onTrue( new InstantCommand(() -> swerve.zeroGyro()));
 

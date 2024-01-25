@@ -2,12 +2,15 @@ package frc.robot.subsystems;
 
 import java.util.Arrays;
 
+import javax.xml.crypto.dsig.Transform;
+
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.targeting.PhotonPipelineResult;
 
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -20,16 +23,16 @@ public class Vision extends SubsystemBase {
     private PhotonCamera camera;
     private PhotonPipelineResult latestResult;
     
-    private final PhotonPoseEstimator estimator;
+    // private final PhotonPoseEstimator estimator;
 
     public Vision() {  
         camera = new PhotonCamera("apriltag");
 
-        estimator = new PhotonPoseEstimator(
-             AprilTagFields.k2024Crescendo.loadAprilTagLayoutField(), 
-             PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
-             camera, Constants.Vision.cameraToRobot.inverse()
-         );
+        // estimator = new PhotonPoseEstimator(
+        //      AprilTagFields.k2024Crescendo.loadAprilTagLayoutField(), 
+        //      PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
+        //      camera, Constants.Vision.cameraToRobot
+        //  );
     }
 
     /**
@@ -58,13 +61,18 @@ public class Vision extends SubsystemBase {
         }
         SmartDashboard.putString("Vision - Tracked Targets", Arrays.toString(targetIds));
 
-        var robot_pose = estimator.update();
-        
-        if(robot_pose.isPresent()) {
-            SmartDashboard.putString("Estimated robot pose", robot_pose.get().estimatedPose.toString());
-        } else {
-            SmartDashboard.putString("Estimated robot pose", "None");
+        // var robot_pose = estimator.update();
+
+        if (latestResult.hasTargets()) {
+            Transform3d test = camera.getLatestResult().getMultiTagResult().estimatedPose.best;
+
+            SmartDashboard.putString("Vision - Estimated Pose", test.toString());
+
         }
+        
+        // if(robot_pose.isPresent()) {
+        //     SmartDashboard.putString("Estimated robot pose", robot_pose.get().estimatedPose.toString());
+        // }
 
         
 
