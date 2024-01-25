@@ -1,8 +1,7 @@
 package frc.robot.subsystems;
 
 import java.util.Arrays;
-
-import javax.xml.crypto.dsig.Transform;
+import java.util.Optional;
 
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
@@ -10,7 +9,7 @@ import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.targeting.PhotonPipelineResult;
 
 import edu.wpi.first.apriltag.AprilTagFields;
-import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -21,18 +20,22 @@ import frc.robot.Constants;
  */
 public class Vision extends SubsystemBase {
     private PhotonCamera camera;
+    private PhotonPoseEstimator estimator;
+
     private PhotonPipelineResult latestResult;
-    
-    // private final PhotonPoseEstimator estimator;
 
     public Vision() {  
-        camera = new PhotonCamera("apriltag");
+        camera = new PhotonCamera(Constants.Vision.cameraName);
+        
+        estimator = new PhotonPoseEstimator(
+            AprilTagFields.k2024Crescendo.loadAprilTagLayoutField(), 
+            PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
+            camera, Constants.Vision.robotToCamera
+            
+        );
+        estimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
+        estimator.setRobotToCameraTransform(Constants.Vision.robotToCamera);
 
-        // estimator = new PhotonPoseEstimator(
-        //      AprilTagFields.k2024Crescendo.loadAprilTagLayoutField(), 
-        //      PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
-        //      camera, Constants.Vision.cameraToRobot
-        //  );
     }
 
     /**
@@ -43,9 +46,30 @@ public class Vision extends SubsystemBase {
         latestResult = camera.getLatestResult();
 
     }
+
+    /**
+     * Estimate the pose of the robot.
+     * 
+     */
+    public Optional<Pose3d> getEstimatedPose() {
+        // Method 1 - pose estimator
+        var robot_pose = estimator.update();
+        if(robot_pose.isPresent()) {
+            Pose3d pose = robot_pose.get().estimatedPose;
+
+            return Optional.of(pose);
+
+        }
+
+        // Method 2 - getMultiTagResult
+        // Transform3d fieldToCamera = camera.getLatestResult().getMultiTagResult().estimatedPose.best;
+
+        return Optional.empty();        
+
+    }
     
     /**
-     * Periodicly update the dashboard with the latest result.
+     * Periodicly update SmartDashboard.
      */
     @Override
     public void periodic() {
@@ -61,36 +85,12 @@ public class Vision extends SubsystemBase {
         }
         SmartDashboard.putString("Vision - Tracked Targets", Arrays.toString(targetIds));
 
-        // var robot_pose = estimator.update();
-
-        if (latestResult.hasTargets()) {
-            Transform3d test = camera.getLatestResult().getMultiTagResult().estimatedPose.best;
-
-            SmartDashboard.putString("Vision - Estimated Pose", test.toString());
+        // Estimated pose
+        Optional<Pose3d> estimated = getEstimatedPose();
+        if (estimated.isPresent()) {
+            SmartDashboard.putString("Vision - Estimated Pose", estimated.get().toString());
 
         }
-        
-        // if(robot_pose.isPresent()) {
-        //     SmartDashboard.putString("Estimated robot pose", robot_pose.get().estimatedPose.toString());
-        // }
-
-        
-
-        // // Best target data
-        // if (latestResult.hasTargets()) {
-        //     PhotonTrackedTarget bestTarget = latestResult.getBestTarget();
-            
-        //     SmartDashboard.putNumber("Vision - Best Target - ID", bestTarget.getFiducialId());
-        //     Transform3d targetToCamera = bestTarget.getBestCameraToTarget().inverse();
-        //     SmartDashboard.putString("Vision - Best Target - CTT", new Pose3d().plus(targetToCamera).toString());
-
-        //     Pose3d targetToRobot = new Pose3d().plus(targetToCamera).plus(Constants.Vision.cameraToRobot);
-        //     AprilTagFieldLayout layout = ;
-
-        //     SmartDashboard.putString("Vision - Best Target - RTT", targetToRobot.toString());
-
-
-        // }
         
     }
     

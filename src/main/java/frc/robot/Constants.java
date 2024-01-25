@@ -35,18 +35,12 @@ public final class Constants {
     }
 
     public static class Vision {
-        public static final String cameraName = "limelight";
+        public static final String cameraName = "apriltag";
         
-        // Camera Pose in robot space - need to set
-        public static final Pose3d cameraPose = new Pose3d(
+        // Robot to Camera Transform
+        public static final Transform3d robotToCamera = new Transform3d(
             new Translation3d(Units.inchesToMeters(0), Units.inchesToMeters(0), Units.inchesToMeters(0)),
             new Rotation3d(0, 0, 0)
-        );
-
-        // Maps camera to robot space
-        public static final Transform3d cameraToRobot = new Transform3d(
-            new Pose3d(),
-            cameraPose    
 
         );
 
