@@ -5,12 +5,12 @@ import frc.robot.Constants;
 
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.configs.Pigeon2Configuration;
 
-import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -23,7 +23,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
  * This class handles swerve modules, odometry, and gyro integration.
  */
 public class Swerve extends SubsystemBase {
-    public SwerveDrivePoseEstimator poseEstimator;
+    public SwerveDriveOdometry swerveOdometry;
     public Pigeon2 pidgey;
 
     public SwerveModule[] swerveModules;
@@ -73,10 +73,8 @@ public class Swerve extends SubsystemBase {
 
         };
 
-        poseEstimator = new SwerveDrivePoseEstimator(Constants.Swerve.swerveKinematics, getGyroAngle(), getModulePositions(), getPose());
-        
+        swerveOdometry = new SwerveDriveOdometry(Constants.Swerve.swerveKinematics, getGyroAngle(), getModulePositions());
         fieldRelative = true;
-
     }
 
     /**
@@ -119,13 +117,13 @@ public class Swerve extends SubsystemBase {
 
     }
 
-    /**
+     /**
      * Gets the current pose (position and orientation) of the robot.
      *
      * @return The current robot pose.
      */
     public Pose2d getPose() {
-        return poseEstimator.getEstimatedPosition();
+        return swerveOdometry.getPoseMeters();
 
     }
 
@@ -152,7 +150,7 @@ public class Swerve extends SubsystemBase {
      * @param pose The desired pose for the robot.
      */
     public void setPose(Pose2d pose) {
-        poseEstimator.resetPosition(getGyroAngle(), getModulePositions(), pose);
+        swerveOdometry.resetPosition(getGyroAngle(), getModulePositions(), pose);
 
     }
 
@@ -208,7 +206,7 @@ public class Swerve extends SubsystemBase {
 
     @Override
     public void periodic() {
-        poseEstimator.update(getGyroAngle(), getModulePositions());
+        swerveOdometry.update(getGyroAngle(), getModulePositions());
 
         for (SwerveModule mod : swerveModules) {
             SmartDashboard.putNumber("Mod " + mod.moduleNumber, mod.getState().angle.getDegrees());
