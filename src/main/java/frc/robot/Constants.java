@@ -34,6 +34,12 @@ public final class Constants {
         public static final float scaleFactor = 0.5f;
     }
 
+    public static final class NeoMotor {
+        public static final double KP = 1.0;
+        public static final double KI = 0.0001;
+        public static final double KD = 0;
+    }
+
     /**
      * Swerve class holds constants related to the swerve drive system.
      */
@@ -83,12 +89,6 @@ public final class Constants {
         public static final double driveKI = 0.0;
         public static final double driveKD = 0.0;
         public static final double driveKF = 0.0;
-
-        // Neo Values
-        public static final double neoKP = 1.0;
-        public static final double neoKI = 0.0;
-        public static final double neoKD = 0.0;
-        public static final double encoderCountsPerDegree = 48/360;
 
         // Drive Motor Characterization Values
         public static final double driveKS = (0.667 / 12); // divide by 12 to convert from volts to percent

@@ -11,6 +11,9 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -31,6 +34,11 @@ public class Neo extends SubsystemBase {
     motor = new CANSparkMax(Constants.Swerve.Mod2.NeoMotorID, MotorType.kBrushless);
     encoder = motor.getEncoder();
     pidNeo = motor.getPIDController();
+    resetPID();
+    
+    SmartDashboard.putNumber("Neo kP", Constants.NeoMotor.KP);
+    SmartDashboard.putNumber("Neo kI", Constants.NeoMotor.KI);
+    SmartDashboard.putNumber("Neo kD", Constants.NeoMotor.KD);
   }
 
   // Sets velocity in terms of -1.0 to 1.0
@@ -49,24 +57,28 @@ public class Neo extends SubsystemBase {
   // rotate the motor until it reachese the desired position
   // says it is going to be deprecated - just ignore it!!!!
   public void rotateNeoMotor(double degToRotate){
-    double targetPosition = encoder.getPosition() + degToRotate * Constants.Swerve.encoderCountsPerDegree;
+    double targetPosition =  encoder.getPosition() + degToRotate / 360.0;
     pidNeo.setReference(targetPosition, ControlType.kPosition);
   }
 
 
-  // still figuring out appropriate PID values
-  public void controlPIDNeo(double kP, double kI, double kD) {
-    pidNeo.setP(kP);
-    pidNeo.setI(kI);
-    pidNeo.setD(kD);
+  // Sets the PID Values
+  private void resetPID() {
+    pidNeo.setP(SmartDashboard.getNumber("Neo kP", 0));
+    pidNeo.setI(SmartDashboard.getNumber("Neo kI", 0));
+    pidNeo.setD(SmartDashboard.getNumber("Neo kD", 0));
+    pidNeo.setFF(0.0);
+    pidNeo.setOutputRange(-0.25, 0.25);
+    pidNeo.setIZone(0);
   }
 
   @Override
   public void periodic(){
     // update the smart dashboard with the proper encoder generated velocity
     // somehow uses the periodic function which i guess is cool
-    SmartDashboard.putNumber("Encoder Velocity: ", encoder.getVelocity());
-    SmartDashboard.putNumber("Encoder Position: ", encoder.getPosition());
+    SmartDashboard.putNumber("Neo Velocity: ", encoder.getVelocity());
+    SmartDashboard.putNumber("Neo Position: ", encoder.getPosition());
+    
+    resetPID();
   }
-
 }
