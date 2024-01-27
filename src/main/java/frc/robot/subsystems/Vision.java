@@ -10,6 +10,8 @@ import org.photonvision.targeting.PhotonPipelineResult;
 
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -24,6 +26,8 @@ public class Vision extends SubsystemBase {
 
     private PhotonPipelineResult latestResult;
 
+    private Field2d field;
+
     public Vision() {  
         camera = new PhotonCamera(Constants.Vision.cameraName);
         
@@ -36,10 +40,12 @@ public class Vision extends SubsystemBase {
         estimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
         estimator.setRobotToCameraTransform(Constants.Vision.robotToCamera);
 
+        field = new Field2d();
+
     }
 
     /**
-     *  Get the latest result from the camera.
+     *  Get the latest result from the \camera.
      * 
      */
     private void get() {
@@ -88,9 +94,21 @@ public class Vision extends SubsystemBase {
         // Estimated pose
         Optional<Pose3d> estimated = getEstimatedPose();
         if (estimated.isPresent()) {
-            SmartDashboard.putString("Vision - Estimated Pose", estimated.get().toString());
+            Pose3d meterPose = estimated.get();
+            field.setRobotPose(meterPose.getX(), meterPose.getY(), meterPose.getRotation().toRotation2d());
+
+            Pose3d inchPose = new Pose3d(
+                meterPose.getTranslation().getX() * 39.3701,
+                meterPose.getTranslation().getY() * 39.3701,
+                meterPose.getTranslation().getZ() * 39.3701,
+                meterPose.getRotation()
+            );
+            SmartDashboard.putString("Vision - Estimated Pose (in)", inchPose.toString());
 
         }
+        
+        // Field
+        SmartDashboard.putData("Vision - Field", field);
         
     }
     
