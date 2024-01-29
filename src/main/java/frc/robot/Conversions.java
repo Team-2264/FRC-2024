@@ -100,8 +100,6 @@ public class Conversions {
 
     }
 
-
-
     // NEW CONVERSIONS
     public static double revsToMeters(double revs, double circumference, double gearRatio) {
         return (revs * circumference) / gearRatio;

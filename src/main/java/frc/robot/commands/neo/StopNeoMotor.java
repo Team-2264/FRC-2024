@@ -2,18 +2,17 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.neo;
 import frc.robot.subsystems.Neo;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants;
 
 /** An example command that uses an example subsystem. */
-public class RotateNeoMotor extends Command {
+public class StopNeoMotor extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private Neo NeoMotor;
 
 //    @param subsystem
-  public RotateNeoMotor(Neo motor) {
+  public StopNeoMotor(Neo motor) {
     NeoMotor = motor;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(motor);
@@ -21,13 +20,13 @@ public class RotateNeoMotor extends Command {
 
   @Override
     public void initialize() {
-      // angle TBD
-        NeoMotor.rotateNeoMotor(90);
+        NeoMotor.stopNeoMotor();
     }
 
   @Override
   public boolean isFinished(){
     return true;
   }
+
   
 }
