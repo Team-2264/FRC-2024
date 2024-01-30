@@ -1,4 +1,4 @@
-package frc.lib2264;
+package frc.lib;
 
 import java.util.Optional;
 
