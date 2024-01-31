@@ -6,6 +6,9 @@ package frc.robot;
 
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
@@ -46,6 +49,9 @@ public final class Constants {
 
     }
 
+    /**
+     * LedStrip class holds constants related to the LED strip.
+     */
     public static final class LedStrip {
         public static final int pwmPort = 9;
         public static final int numLeds = 10;
@@ -116,7 +122,7 @@ public final class Constants {
         public static final double driveKA = (0.27 / 12);
 
         // Swerve Profiling Values
-        public static final double maxSpeed = 1; // meters per second
+        public static final double maxSpeed = 1;  // meters per second
         public static final double maxAngularVelocity = Math.PI * 1.5; // radians per second (rad/s)
 
         // Neutral Modes
@@ -182,6 +188,16 @@ public final class Constants {
             public static final boolean driveInverted = false;
 
         }
+
+        // Autonomous 
+        public static final HolonomicPathFollowerConfig pathFollowerConfig = 
+            new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
+                new PIDConstants(0.220019, 0.0, 0.0), // Translation PID constants
+                new PIDConstants(1.201173, 0.0, 0.024023), // Rotation PID constants
+                4.5, // Max module speed, in m/s
+                0.4, // Drive base radius in meters. Distance from robot center to furthest module.
+                new ReplanningConfig() // Default path replanning config. See the API for the options here
+            );
 
     }
 

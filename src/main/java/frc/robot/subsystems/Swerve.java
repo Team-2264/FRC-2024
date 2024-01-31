@@ -9,13 +9,26 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 
 import com.ctre.phoenix6.hardware.Pigeon2;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.FollowPathHolonomic;
+import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.PathPlannerLogging;
+import com.pathplanner.lib.util.ReplanningConfig;
+
+import java.util.List;
+
 import com.ctre.phoenix6.configs.Pigeon2Configuration;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 /**
@@ -24,20 +37,23 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
  */
 public class Swerve extends SubsystemBase {
     public SwerveDriveOdometry swerveOdometry;
+    private final Field2d field;
     public Pigeon2 pidgey;
 
     public SwerveModule[] swerveModules;
 
-    private boolean fieldRelative;
+    private boolean fieldRelative = true;
 
     /**
      * Constructs a Swerve subsystem instance.
      */
     public Swerve() {
+        // Init pigeon
         pidgey = new Pigeon2(Constants.Swerve.pigeonID);
         pidgey.getConfigurator().apply(new Pigeon2Configuration());
         zeroGyro();
 
+        // Init Modules
         swerveModules = new SwerveModule[] {
             new SwerveModule(0,
                 Constants.Swerve.Mod0.driveMotorID,
@@ -73,8 +89,51 @@ public class Swerve extends SubsystemBase {
 
         };
 
+        // Init Odometry
         swerveOdometry = new SwerveDriveOdometry(Constants.Swerve.swerveKinematics, getGyroAngle(), getModulePositions());
-        fieldRelative = true;
+
+        // Configure AutoBuilder
+        AutoBuilder.configureHolonomic(
+            this::getPose, 
+            this::setPose, 
+            this::getChassisSpeeds, 
+            this::drive, 
+            Constants.Swerve.pathFollowerConfig,
+            () -> {
+                // Boolean supplier that controls when the path will be mirrored for the red alliance
+                // This will flip the path being followed to the red side of the field.
+                // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+
+                var alliance = DriverStation.getAlliance();
+                if (alliance.isPresent()) {
+                    return alliance.get() == DriverStation.Alliance.Red;
+                }
+                return false;
+            },
+            this
+        );
+
+        // Init Field
+        field = new Field2d();
+
+        // Logging callback for current robot pose
+        PathPlannerLogging.setLogCurrentPoseCallback((Pose2d pose) -> {
+            field.setRobotPose(pose);
+
+        });
+
+        // Logging callback for target robot pose
+        PathPlannerLogging.setLogTargetPoseCallback((Pose2d pose) -> {
+            field.getObject("target pose").setPose(pose);
+
+        });
+
+        // Logging callback for the active path, this is sent as a list of poses
+        PathPlannerLogging.setLogActivePathCallback((List<Pose2d> poses) -> {
+            field.getObject("path").setPoses(poses);
+
+        });
+        
     }
 
     /**
@@ -87,6 +146,16 @@ public class Swerve extends SubsystemBase {
     }
 
     /**
+     * Drives the swerve drive based on field-relative {@link ChassisSpeeds}.
+     */
+    public void drive(ChassisSpeeds chassisSpeeds) {
+        SwerveModuleState[] swerveModuleStates = Constants.Swerve.swerveKinematics.toSwerveModuleStates(chassisSpeeds);
+
+        SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.Swerve.maxSpeed);
+
+        setModuleStates(swerveModuleStates);
+    }
+    /**
      * Drives the swerve drive based on translation and rotation inputs.
      *
      * @param translation The translation vector representing movement in x and y directions.
@@ -95,13 +164,9 @@ public class Swerve extends SubsystemBase {
     public void drive(Translation2d translation, double rotation) {
         ChassisSpeeds chassisSpeeds = fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(translation.getX(), translation.getY(), rotation, getGyroAngle()): new ChassisSpeeds(translation.getX(), translation.getY(), rotation);
 
-        SwerveModuleState[] swerveModuleStates = Constants.Swerve.swerveKinematics.toSwerveModuleStates(chassisSpeeds);
-
-        SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.Swerve.maxSpeed);
-
-        setModuleStates(swerveModuleStates);
-
+        drive(chassisSpeeds);
     }
+
 
     /**
      * Sets the desired states for swerve modules.
@@ -154,6 +219,13 @@ public class Swerve extends SubsystemBase {
 
     }
 
+    /**
+     * Gets the field-relative {@link ChassisSpeeds} for the robot.
+     */
+    public ChassisSpeeds getChassisSpeeds() {
+        return Constants.Swerve.swerveKinematics.toChassisSpeeds(getModuleStates());
+    }
+
      /**
      * Gets the current states of swerve modules.
      *
@@ -201,6 +273,36 @@ public class Swerve extends SubsystemBase {
         double yaw = pidgey.getYaw().refresh().getValue();
         return (Constants.Swerve.invertGyro) ? Rotation2d.fromDegrees(360 - yaw)
                 : Rotation2d.fromDegrees(yaw);
+
+    }
+
+    /**
+     * Generates a command that will follow a specified path.
+     * 
+     * @param pathName
+     * @return
+     */
+    public Command followPathCommand(PathPlannerPath path) {
+        return new FollowPathHolonomic(
+                path,
+                this::getPose, // Robot pose supplier
+                this::getChassisSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+                this::drive, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
+                Constants.Swerve.pathFollowerConfig, // PathFollowerConfig
+                () -> {
+                    // Boolean supplier that controls when the path will be mirrored for the red alliance
+                    // This will flip the path being followed to the red side of the field.
+                    // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+
+                    var alliance = DriverStation.getAlliance();
+                    if (alliance.isPresent()) {
+                        return alliance.get() == DriverStation.Alliance.Red;
+                    }
+                    return false;
+
+                },
+                this // Reference to this subsystem to set requirements
+        );
 
     }
 

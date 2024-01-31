@@ -12,7 +12,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- * A command for teleoperated control of a swerve drive subsystem using a PS4 controller.
+ * A command for teleoperated control of a swerve drive subsystem using a PS5 controller.
  */
 public class TeleopSwerve extends Command {
     private final Swerve swerve;
@@ -23,7 +23,7 @@ public class TeleopSwerve extends Command {
      * Creates a new TeleopSwerve command.
      *
      * @param swerve The swerve drive subsystem to control.
-     * @param controller The PS4 controller used for input.
+     * @param controller The PS5 controller used for input.
      */
     public TeleopSwerve(Swerve swerve, CommandPS4Controller controller) {
         this.swerve = swerve;
