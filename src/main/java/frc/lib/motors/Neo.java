@@ -10,11 +10,6 @@ import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Constants;
-import frc.robot.Constants.NeoMotor;
-import frc.robot.Constants.Swerve;
-import frc.robot.Constants.Swerve.Mod2;
 /**
  * square button press results in the clockwise movement of the neo motor
  * while triangle makes it stop.
@@ -28,46 +23,51 @@ public class Neo {
   private final RelativeEncoder encoder;
   private final SparkPIDController pidNeo;
 
-  public Neo() {
-    motor = new CANSparkMax(Constants.Swerve.Mod2.NeoMotorID, MotorType.kBrushless);
+  /**
+   * Creates a Neo motor with the specified configuration
+   */
+  public Neo(NeoConfiguration c) {
+    motor = new CANSparkMax(c.canId, MotorType.kBrushless);
     encoder = motor.getEncoder();
     pidNeo = motor.getPIDController();
-    resetPID();
-    
-    SmartDashboard.putNumber("Neo kP", Constants.NeoMotor.KP);
-    SmartDashboard.putNumber("Neo kI", Constants.NeoMotor.KI);
-    SmartDashboard.putNumber("Neo kD", Constants.NeoMotor.KD);
-    
-  }
 
-  // Sets velocity in terms of -1.0 to 1.0
-  public void setNeoSpeed(double speed) {
-    // set the speed of the speed controller
-    motor.set(speed);
-    // speed : value btw -1.0 and 1.0
-  }
-
-  public void stopNeoMotor(){
-    // stop motor
-    motor.stopMotor();
-  }
-
-
-  // rotate the motor until it reachese the desired position
-  // says it is going to be deprecated - just ignore it!!!!
-  public void rotateNeoMotor(double degToRotate){
-    double targetPosition =  encoder.getPosition() + degToRotate / 360.0;
-    pidNeo.setReference(targetPosition, ControlType.kPosition);
-  }
-
-  // Sets the PID Values
-  private void resetPID() {
-    pidNeo.setP(SmartDashboard.getNumber("Neo kP", 0));
-    pidNeo.setI(SmartDashboard.getNumber("Neo kI", 0));
-    pidNeo.setD(SmartDashboard.getNumber("Neo kD", 0));
+    pidNeo.setP(c.kP);
+    pidNeo.setI(c.kI);
+    pidNeo.setD(c.kD);
     pidNeo.setFF(0.0);
-    pidNeo.setOutputRange(-0.25, 0.25);
+    pidNeo.setOutputRange(c.outputRangeLower, c.outputRangeUpper);
     pidNeo.setIZone(0);
   }
 
+  /**
+   * Starts rotating the motor at a specific speed.
+   * @param speed The speed in the range of -1 to 1.
+   */
+  public void rotateAtSpeed(double speed) {
+    motor.set(speed);
+  }
+
+  /**
+   * Stops rotating the motor.
+   */
+  public void stop(){
+    motor.stopMotor();
+  }
+
+  /**
+   * Gets the position of the motor. This is reset to 0 when the robot is turned on.
+   * @return The current rotation of the motor in rotations.
+   */
+  public double getPosition() {
+    return encoder.getPosition();
+  }
+
+  /**
+   * Rotates the motor to a specific position.
+   * @param position The angle to rotate to in rotations
+   */
+  public void rotateTo(double position){
+    double targetPosition = position;
+    pidNeo.setReference(targetPosition, ControlType.kPosition);
+  }
 }

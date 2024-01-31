@@ -58,12 +58,6 @@ public final class Constants {
         public static final float scaleFactor = 0.5f;
     }
 
-    public static final class NeoMotor {
-        public static final double KP = 0.5;
-        public static final double KI = 0.001;
-        public static final double KD = 0;
-    }
-
     /**
      * Swerve class holds constants related to the swerve drive system.
      */
@@ -166,8 +160,6 @@ public final class Constants {
             public static final int driveMotorID = 46;
             public static final int angleMotorID = 47;
             public static final int angleEncoderID = 50;
-            // NeoMotorID might have to be moved
-            public static final int NeoMotorID = 8;
 
             public static final double angleOffset = 330.645;
 
