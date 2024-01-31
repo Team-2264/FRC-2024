@@ -10,7 +10,10 @@ import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 
@@ -31,6 +34,19 @@ public final class Constants {
         public static final int controllerPort = 0;
         public static final double stickDeadband = 0.1;
 
+
+    }
+
+    public static class Vision {
+        public static final String cameraName = "apriltag";
+        
+        // Robot to Camera Transform
+        public static final Transform3d robotToCamera = new Transform3d(
+            new Translation3d(Units.inchesToMeters(0), Units.inchesToMeters(0), Units.inchesToMeters(0)),
+            new Rotation3d(0, 0, 0)
+
+        );
+
     }
 
     /**
@@ -40,6 +56,12 @@ public final class Constants {
         public static final int pwmPort = 9;
         public static final int numLeds = 10;
         public static final float scaleFactor = 0.5f;
+    }
+
+    public static final class NeoMotor {
+        public static final double KP = 0.5;
+        public static final double KI = 0.001;
+        public static final double KD = 0;
     }
 
     /**
@@ -144,6 +166,8 @@ public final class Constants {
             public static final int driveMotorID = 46;
             public static final int angleMotorID = 47;
             public static final int angleEncoderID = 50;
+            // NeoMotorID might have to be moved
+            public static final int NeoMotorID = 8;
 
             public static final double angleOffset = 330.645;
 
@@ -176,5 +200,6 @@ public final class Constants {
             );
 
     }
+
 
 }
