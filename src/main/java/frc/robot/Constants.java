@@ -9,13 +9,13 @@ import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
-
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
+import frc.lib.motors.NeoConfiguration;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -56,6 +56,20 @@ public final class Constants {
         public static final int pwmPort = 9;
         public static final int numLeds = 10;
         public static final float scaleFactor = 0.5f;
+    }
+
+    public static final class Arm {
+        public static final NeoConfiguration[] motorConfigs = new NeoConfiguration[] {
+            new NeoConfiguration(8),
+            new NeoConfiguration(0),
+            new NeoConfiguration(8),
+            new NeoConfiguration(0)
+        };
+        public static final double KP = 0.5;
+        public static final double KI = 0.001;
+        public static final double KD = 0;
+        public static final int angleEncoderID = 49;
+        public static final double shoulderRatio = -12.76 * 52/18 * 64/10;
     }
 
     /**
