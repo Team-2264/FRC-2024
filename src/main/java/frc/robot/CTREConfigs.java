@@ -31,7 +31,6 @@ public final class CTREConfigs {
             .withSupplyCurrentThreshold(Constants.Swerve.anglePeakCurrentLimit)
             .withSupplyTimeThreshold(Constants.Swerve.anglePeakCurrentDuration);
 
-
         /* Swerve Drive Motor Configuration */
         swerveDriveFXConfig.Slot0.kP = Constants.Swerve.driveKP;
         swerveDriveFXConfig.Slot0.kI = Constants.Swerve.driveKI;
@@ -49,7 +48,7 @@ public final class CTREConfigs {
 
         /* Swerve CANCoder Configuration */
         swerveCanCoderConfig.MagnetSensor = new MagnetSensorConfigs()
-            .withAbsoluteSensorRange(AbsoluteSensorRangeValue.Unsigned_0To1)
+            .withAbsoluteSensorRange(AbsoluteSensorRangeValue.Signed_PlusMinusHalf)
             .withSensorDirection(Constants.Swerve.canCoderInvert);
 
     }

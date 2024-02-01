@@ -121,19 +121,6 @@ public class SwerveModule {
     }
 
     /**
-     * Resets the angle motor's sensor position to an absolute value based on the encoder reading and the angle offset.
-     */
-    public void resetToAbsolute() {
-        double absolutePosition = Conversions.degreesToRevs(getEncoder().getDegrees() - angleOffset.getDegrees(), Constants.Swerve.angleGearRatio);
-
-        angleMotor.setPosition(absolutePosition);
-
-        // Set the motor's target position to match the encoder position that we just set
-        // angleMotor.setControl(new PositionDutyCycle(absolutePosition));
-        
-    }
-
-    /**
      * Configures settings for the drive motor.
      *
      * @param driveMotorInverted Whether the drive motor should be inverted.
@@ -157,7 +144,10 @@ public class SwerveModule {
         angleMotor.getConfigurator().apply(Robot.ctreConfigs.swerveAngleFXConfig);
         angleMotor.setInverted(angleMotorInverted);
         angleMotor.setNeutralMode(Constants.Swerve.angleNeutralMode);
-        resetToAbsolute();
+
+        // Reset the motors position to absolute
+        double absolutePosition = Conversions.degreesToRevs(getEncoder().getDegrees() - angleOffset.getDegrees(), Constants.Swerve.angleGearRatio);
+        angleMotor.getConfigurator().setPosition(absolutePosition);
 
     }
 

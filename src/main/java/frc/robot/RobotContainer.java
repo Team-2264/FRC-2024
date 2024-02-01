@@ -60,11 +60,6 @@ public class RobotContainer {
 
     }
 
-    public void resetEncoders() {
-        swerve.resetEncoders();
-
-    }
-
      /**
      * Returns the command to run in autonomous mode.
      *
