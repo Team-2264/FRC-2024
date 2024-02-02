@@ -67,7 +67,6 @@ public class Neo {
    * @param position The angle to rotate to in rotations
    */
   public void rotateTo(double position){
-    double targetPosition = position;
-    pidNeo.setReference(targetPosition, ControlType.kPosition);
+    pidNeo.setReference(position, ControlType.kPosition);
   }
 }
