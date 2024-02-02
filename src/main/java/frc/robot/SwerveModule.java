@@ -145,7 +145,7 @@ public class SwerveModule {
         angleMotor.setInverted(angleMotorInverted);
         angleMotor.setNeutralMode(Constants.Swerve.angleNeutralMode);
 
-        // Reset the motors position to absolute
+        // Set the motors position to absolute
         double absolutePosition = Conversions.degreesToRevs(getEncoder().getDegrees() - angleOffset.getDegrees(), Constants.Swerve.angleGearRatio);
         angleMotor.getConfigurator().setPosition(absolutePosition);
 
