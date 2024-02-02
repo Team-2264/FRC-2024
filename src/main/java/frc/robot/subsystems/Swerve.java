@@ -132,16 +132,7 @@ public class Swerve extends SubsystemBase {
         });
         
     }
-
-    /**
-     * Resets the swerve module encoders to the position of the absolute encoders.
-     */
-    public void resetEncoders() {
-        for (SwerveModule mod : swerveModules) {
-            swerveModules[mod.moduleNumber].resetToAbsolute();
-        }
-    }
-
+    
     /**
      * Drives the swerve drive based on field-relative {@link ChassisSpeeds}.
      */
