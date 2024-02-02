@@ -45,11 +45,26 @@ public class Arm extends SubsystemBase {
         return state;
         
     }
+  
+    // set shoulde position to bottm + get intake
+    public void SetIntake(){
+        shoulder.goToPosition(ShoulderPosition.Bottom);
+        // call method for getting intakes
+    }
+
+    public void ShoulderToMiddle(){
+        shoulder.goToPosition(ShoulderPosition.Middle);
+    }
+
+    public void ShoulderToTop(){
+        shoulder.goToPosition(ShoulderPosition.Top);
+
+    }
 
     @Override 
     public void periodic() {
         
 
     }
-    
+
 }
