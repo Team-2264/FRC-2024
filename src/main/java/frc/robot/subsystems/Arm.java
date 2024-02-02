@@ -3,7 +3,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.EndEffector;
 import frc.robot.Shoulder;
-import frc.robot.enums.ArmStatus;
+import frc.robot.enums.ArmState;
 
 /**
  * Subystem for controlling the arm.
@@ -13,7 +13,7 @@ public class Arm extends SubsystemBase {
     private final Shoulder shoulder;
     private final EndEffector endEffector;
     
-    private ArmStatus status;
+    private ArmState state;
 
     /**
      * Constructs a new Arm instance.
@@ -22,7 +22,7 @@ public class Arm extends SubsystemBase {
         shoulder = new Shoulder();
         endEffector = new EndEffector();
 
-        status = ArmStatus.HOME;
+        state = ArmState.HOME;
         
     }
 
@@ -31,8 +31,18 @@ public class Arm extends SubsystemBase {
      * 
      * @param status The new state of the arm.
      */
-    public void setState(ArmStatus status) {
-        this.status = status;
+    public void setState(ArmState state) {
+        this.state = state;
+        
+    }
+
+    /**
+     * Returns the state of the arm.
+     * 
+     * @return The state of the arm.
+     */
+    public ArmState getState() {
+        return state;
         
     }
 
