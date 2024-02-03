@@ -6,10 +6,9 @@ package frc.robot;
 
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.subsystems.Leds;
-import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.Vision;
-
+import frc.robot.subsystems.arm.Arm;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
@@ -29,7 +28,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 public class RobotContainer {
     // Subsystems
     private final Swerve swerve = new Swerve();
-    private final Limelight limelight = new Limelight();
+    private final Arm arm = new Arm();
     private final Leds leds = new Leds(Constants.LedStrip.pwmPort, Constants.LedStrip.numLeds, Constants.LedStrip.scaleFactor);
     private final Vision vision = new Vision();
 
@@ -54,9 +53,19 @@ public class RobotContainer {
      * Configures all button bindings.
      */
     private void configureBindings() {
+        // swerve
         swerve.setDefaultCommand(new TeleopSwerve(swerve, controller));
-
         controller.options().onTrue( new InstantCommand(() -> swerve.zeroGyro()));
+
+        // arm: intake
+        controller.R2().onTrue(new InstantCommand(() -> arm.startIntake()));
+        controller.R2().onFalse(new InstantCommand(() -> arm.stopIntake()));
+
+        // arm: shooter
+        controller.triangle().onTrue(new InstantCommand(() -> arm.spinupShooter(0.5)));
+        controller.cross().onTrue(new InstantCommand(() -> arm.stopShooter()));
+
+
 
     }
 

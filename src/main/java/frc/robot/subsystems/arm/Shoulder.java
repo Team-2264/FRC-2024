@@ -1,6 +1,8 @@
-package frc.robot;
+package frc.robot.subsystems.arm;
 
 import frc.lib.motors.Neo;
+import frc.robot.Constants;
+import frc.robot.Constants.Arm;
 import frc.robot.enums.ShoulderPosition;
 
 public class Shoulder {
@@ -15,7 +17,7 @@ public class Shoulder {
     }
 
     // rotate motors to reach a specific position based on the angle parameter
-    public void massRotateMotors (int targetAngle) {
+    public void massRotateMotors(int targetAngle) {
         for (int i = 0; i < motorsArray.length; i++) {
             motorsArray[i].rotateTo(((double) targetAngle) / 360.0 * Constants.Arm.shoulderRatio);
         }

@@ -33,6 +33,28 @@ public final class Constants {
         public static final int controllerPort = 0;
         public static final double stickDeadband = 0.1;
 
+    }
+
+    /**
+     *  EndEffector class holds constants related to the end effector.
+     */
+    public static class EndEffector {
+        public static final int intakeMotorID = 0;
+        public static final NeoConfiguration[] shooterNeoConfigs = new NeoConfiguration[] {
+            new NeoConfiguration(0)
+                .withKP(0.0)
+                .withKI(0.0)
+                .withKD(0.0),
+            new NeoConfiguration(1)
+                .withKP(0.0)
+                .withKI(0.0)
+                .withKD(0.0)
+               
+        };
+
+        public static final int beamBreakPort = 0;
+        
+        public static final double intakeSpeed = 0.5;
 
     }
 
