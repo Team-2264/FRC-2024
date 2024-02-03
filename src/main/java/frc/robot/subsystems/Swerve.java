@@ -56,33 +56,25 @@ public class Swerve extends SubsystemBase {
                 Constants.Swerve.Mod0.driveMotorID,
                 Constants.Swerve.Mod0.angleMotorID,
                 Constants.Swerve.Mod0.angleEncoderID,
-                Constants.Swerve.Mod0.angleOffset,
-                Constants.Swerve.Mod0.angleInverted,
-                Constants.Swerve.Mod0.driveInverted),
+                Constants.Swerve.Mod0.angleOffset),
 
             new SwerveModule(1,
                 Constants.Swerve.Mod1.driveMotorID,
                 Constants.Swerve.Mod1.angleMotorID,
                 Constants.Swerve.Mod1.angleEncoderID,
-                Constants.Swerve.Mod1.angleOffset,
-                Constants.Swerve.Mod1.angleInverted,
-                Constants.Swerve.Mod1.driveInverted),
+                Constants.Swerve.Mod1.angleOffset),
 
             new SwerveModule(2,
                 Constants.Swerve.Mod2.driveMotorID,
                 Constants.Swerve.Mod2.angleMotorID,
                 Constants.Swerve.Mod2.angleEncoderID,
-                Constants.Swerve.Mod2.angleOffset,
-                Constants.Swerve.Mod2.angleInverted,
-                Constants.Swerve.Mod2.driveInverted),
+                Constants.Swerve.Mod2.angleOffset),
 
             new SwerveModule(3,
                 Constants.Swerve.Mod3.driveMotorID,
                 Constants.Swerve.Mod3.angleMotorID,
                 Constants.Swerve.Mod3.angleEncoderID,
-                Constants.Swerve.Mod3.angleOffset,
-                Constants.Swerve.Mod3.angleInverted,
-                Constants.Swerve.Mod3.driveInverted),
+                Constants.Swerve.Mod3.angleOffset),
 
         };
 

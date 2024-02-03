@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import com.ctre.phoenix6.signals.NeutralModeValue;
-import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
@@ -16,6 +14,7 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 import frc.lib.motors.NeoConfiguration;
+import frc.lib.motors.TalonFxConfiguration;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -99,28 +98,31 @@ public final class Constants {
 
         );
 
-        // Swerve Current Limiting
-        public static final int angleContinuousCurrentLimit = 25;
-        public static final int anglePeakCurrentLimit = 40;
-        public static final double anglePeakCurrentDuration = 0.1;
-        public static final boolean angleEnableCurrentLimit = true;
+        public static final frc.lib.motors.TalonFxConfiguration angleMotorConfig = new TalonFxConfiguration()
+            .withContinuousCurrentLimit(25)
+            .withPeakCurrentLimit(40)
+            .withPeakCurrentDuration(0.1)
+            .withPID(
+                1.201173, // kP
+                0.0, // kI
+                0.024023, // kD
+                0.0 // kF
+            )
+            .withoutNeutralModeBrake();
 
-        public static final int driveContinuousCurrentLimit = 35;
-        public static final int drivePeakCurrentLimit = 60;
-        public static final double drivePeakCurrentDuration = 0.1;
-        public static final boolean driveEnableCurrentLimit = true;
-
-        // Angle Motor PID Values
-        public static final double angleKP = 1.201173; // 0.6
-        public static final double angleKI = 0.0;
-        public static final double angleKD = 0.024023; // 12.0
-        public static final double angleKF = 0.0; // Kf is Kv in CTRE v6 API
-
-        // Drive Motor PID Values
-        public static final double driveKP = 0.20019; //0.1
-        public static final double driveKI = 0.0;
-        public static final double driveKD = 0.0;
-        public static final double driveKF = 0.0; // Kf is Kv in CTRE v6 API
+        public static final frc.lib.motors.TalonFxConfiguration driveMotorConfig = new TalonFxConfiguration()
+            .withContinuousCurrentLimit(35)
+            .withPeakCurrentLimit(60)
+            .withPeakCurrentDuration(0.1)
+            .withPID(
+                0.20019, // kP
+                0.0, // kI
+                0.0, // kD
+                0.0 // kF
+            )
+            .withNeutralModeBrake()
+            .withOpenLoopRamp(0.5)
+            .withClosedLoopRamp(0.5);
 
         // Drive Motor Characterization Values
         public static final double driveKS = (0.667 / 12); // divide by 12 to convert from volts to percent
@@ -133,17 +135,6 @@ public final class Constants {
         public static final double maxSpeed = 1;  // meters per second
         public static final double maxAngularVelocity = Math.PI * 1.5; // radians per second (rad/s)
 
-        // Neutral Modes
-        public static final NeutralModeValue angleNeutralMode = NeutralModeValue.Coast;
-        public static final NeutralModeValue driveNeutralMode = NeutralModeValue.Brake;
-
-        // Global Motor Inverts
-        public static final boolean driveMotorInvert = false;
-        public static final boolean angleMotorInvert = false;
-
-        // Global Angle Encoder Inverts
-        public static final SensorDirectionValue canCoderInvert = SensorDirectionValue.CounterClockwise_Positive;
-
         // Module Specific Constants
         // Front Left Module - Module 0
         public static final class Mod0 {
@@ -152,8 +143,6 @@ public final class Constants {
             public static final int angleEncoderID = 48;
 
             public static final double angleOffset = 203.994;
-            public static final boolean angleInverted = false;
-            public static final boolean driveInverted = false;
 
         }
 
@@ -164,9 +153,6 @@ public final class Constants {
             public static final int angleEncoderID = 49;
 
             public static final double angleOffset = 206.367;
-            public static final boolean angleInverted = false;
-            public static final boolean driveInverted = false;
-
         }
 
         // Back Left Module - Module 2
@@ -176,10 +162,6 @@ public final class Constants {
             public static final int angleEncoderID = 50;
 
             public static final double angleOffset = 330.645;
-
-            public static final boolean angleInverted = false;
-            public static final boolean driveInverted = false;
-
         }
 
         // Back Right Module - Module 3
@@ -189,10 +171,6 @@ public final class Constants {
             public static final int angleEncoderID = 51;
 
             public static final double angleOffset = 125.596;
-
-            public static final boolean angleInverted = false;
-            public static final boolean driveInverted = false;
-
         }
 
         // Autonomous 
