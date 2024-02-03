@@ -16,4 +16,11 @@ public class CanCoder {
 
     inner.getConfigurator().apply(config);
   }
+
+  /**
+   * Gets the absolute position of the CANCoder in revolutions
+  */
+  public double getAbsolutePosition() {
+    return inner.getAbsolutePosition().refresh().getValue();
+  }
 }

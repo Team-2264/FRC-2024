@@ -22,6 +22,10 @@ public class TalonFxConfiguration {
         this.canId = canId;
     }
 
+    public TalonFxConfiguration() {
+        this.canId = 0;
+    }
+
     public TalonFxConfiguration withPID(double kP, double kI, double kD, double kF) {
         this.kP = kP;
         this.kI = kI;
