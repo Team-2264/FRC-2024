@@ -4,6 +4,10 @@ import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 
+/**
+ * Subystem for controlling the end effector.
+ * 
+ */
 public class EndEffector {
     private TalonFX intakeMoter;
     private boolean intaking = false;
@@ -18,7 +22,7 @@ public class EndEffector {
      * @param intakeMotorID The ID of the intake motor.
      * @param shooterMotorIDs The IDs of the shooter motors.
      */
-    public EndEffector(int intakeMotorID, int[] shooterMotorIDs) {
+    public EndEffector(int intakeMotorID, int[] shooterMotorIDs, int beamBreakPort) {
         // create motors
         intakeMoter = new TalonFX(intakeMotorID);
         shooterMotors = new TalonFX[shooterMotorIDs.length];
@@ -27,7 +31,7 @@ public class EndEffector {
         }
 
         // create beam
-        intakeBeam = new DigitalInput(0);
+        intakeBeam = new DigitalInput(beamBreakPort);
         
     }
 
@@ -59,6 +63,7 @@ public class EndEffector {
 
     /** 
      * Returns the state of the intakes beam.
+     * @return The state of the intake beam.
      */
     public boolean hasNote() {
         return !intakeBeam.get();

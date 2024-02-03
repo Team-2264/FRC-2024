@@ -37,6 +37,19 @@ public final class Constants {
 
     }
 
+    /**
+     *  EndEffector class holds constants related to the end effector.
+     */
+    public static class EndEffector {
+        public static final int intakeMotorID = 0;
+        public static final int[] shooterMotorIDs = new int[]{0, 0};
+
+        public static final int beamBreakPort = 0;
+        
+        public static final double intakeSpeed = 0.5;
+
+    }
+
     public static class Vision {
         public static final String cameraName = "apriltag";
         
