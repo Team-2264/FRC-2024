@@ -21,7 +21,7 @@ public class Arm extends SubsystemBase {
      */
     public Arm() {
         shoulder = new Shoulder();
-        endEffector = new EndEffector();
+        endEffector = new EndEffector(0, new int[]{0, 0});
 
         state = ArmState.HOME;
         
@@ -47,8 +47,8 @@ public class Arm extends SubsystemBase {
         
     }
   
-    // set shoulde position to bottm + get intake
-    public void SetIntake(){
+    // Shoulder setpoints
+    public void ShoulderToBottom(){
         shoulder.goToPosition(ShoulderPosition.Bottom);
         // call method for getting intakes
     }
@@ -62,10 +62,28 @@ public class Arm extends SubsystemBase {
 
     }
 
+    /**
+     * Starts the intake.
+     */
+    public void Intake(){
+        endEffector.startIntake();
+    }
+
+    /**
+     * Stops the intake.
+     */
+    public void StopIntake(){
+        endEffector.stopIntake();
+    }
+
     @Override 
     public void periodic() {
-        
+        // Stop intaking if the end effector has a note
+        if (endEffector.intaking() && endEffector.hasNote()) {
+            endEffector.stopIntake();
 
+        }
+        
     }
 
 }
