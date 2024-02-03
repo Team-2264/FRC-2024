@@ -15,8 +15,8 @@ public class TalonFxConfiguration {
 
     public boolean neutralModeBrake = false;
 
-    public double openLoopRamp = 0.5;
-    public double closedLoopRamp = 0.5;
+    public double openLoopRamp = 0;
+    public double closedLoopRamp = 0;
 
     public TalonFxConfiguration(int canId) {
         this.canId = canId;

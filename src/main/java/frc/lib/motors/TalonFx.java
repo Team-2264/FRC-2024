@@ -11,7 +11,7 @@ public class TalonFx {
     com.ctre.phoenix6.hardware.TalonFX inner;
 
     public TalonFx(TalonFxConfiguration configuration) {
-        inner = new com.ctre.phoenix6.hardware.TalonFX(configuration.canId);
+        this(configuration.canId);
 
         applyConfiguration(configuration);
     }
