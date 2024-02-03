@@ -20,31 +20,11 @@ public class Arm extends SubsystemBase {
      */
     public Arm() {
         shoulder = new Shoulder();
-        endEffector = new EndEffector(Constants.EndEffector.intakeMotorID, 
+        endEffector = new EndEffector(Constants.EndEffector.intakeNeoConfig, 
             Constants.EndEffector.shooterNeoConfigs,
             Constants.EndEffector.beamBreakPort);
 
-        state = ArmState.HOME;
-        
-    }
-
-    /**
-     * Sets the state of the arm.
-     * 
-     * @param status The new state of the arm.
-     */
-    public void setState(ArmState state) {
-        this.state = state;
-        
-    }
-
-    /**
-     * Returns the state of the arm.
-     * 
-     * @return The state of the arm.
-     */
-    public ArmState getState() {
-        return state;
+        state = ArmState.START;
         
     }
 

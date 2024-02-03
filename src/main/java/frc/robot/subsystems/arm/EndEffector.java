@@ -5,13 +5,14 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.wpilibj.DigitalInput;
 import frc.lib.motors.Neo;
 import frc.lib.motors.NeoConfiguration;
+import frc.robot.Constants;
 
 /**
  * Subystem for controlling the end effector.
  * 
  */
 public class EndEffector {
-    private TalonFX intakeMoter;
+    private Neo intakeMoter;
     private boolean intaking = false;
 
     private Neo[] shooterMotors;
@@ -24,9 +25,9 @@ public class EndEffector {
      * @param intakeMotorID The ID of the intake motor.
      * @param shooterMotorIDs The IDs of the shooter motors.
      */
-    public EndEffector(int intakeMotorID, NeoConfiguration[] shooterNeoConfigs, int beamBreakPort) {
+    public EndEffector(NeoConfiguration intakeNeoConfig, NeoConfiguration[] shooterNeoConfigs, int beamBreakPort) {
         // create motors
-        intakeMoter = new TalonFX(intakeMotorID);
+        intakeMoter = new Neo(intakeNeoConfig);
         shooterMotors = new Neo[shooterNeoConfigs.length];
         for (int i = 0; i < shooterNeoConfigs.length; i++) {
             shooterMotors[i] = new Neo(shooterNeoConfigs[i]);
@@ -61,7 +62,7 @@ public class EndEffector {
      * @param speed
      */
     public void startIntake() {
-        intakeMoter.set(0.1);
+        intakeMoter.rotateAtSpeed(0.2);
         intaking = true;
 
     }
@@ -70,8 +71,9 @@ public class EndEffector {
      * Stops the intake motor.
      */
     public void stopIntake() {
-        intakeMoter.set(0);
+        intakeMoter.rotateAtSpeed(0);
         intaking = false;
+
     }
 
     /**

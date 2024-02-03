@@ -2,7 +2,6 @@ package frc.robot.subsystems.arm;
 
 import frc.lib.motors.Neo;
 import frc.robot.Constants;
-import frc.robot.Constants.Arm;
 import frc.robot.enums.ShoulderPosition;
 
 public class Shoulder {

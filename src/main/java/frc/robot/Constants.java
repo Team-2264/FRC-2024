@@ -34,12 +34,33 @@ public final class Constants {
         public static final double stickDeadband = 0.1;
 
     }
+    
+    public static final class Arm {
+        public static final NeoConfiguration[] motorConfigs = new NeoConfiguration[] {
+            new NeoConfiguration(60),
+            new NeoConfiguration(61),
+            new NeoConfiguration(62),
+            new NeoConfiguration(63)
+        };
+        public static final double KP = 0.5;
+        public static final double KI = 0.001;
+        public static final double KD = 0;
+        public static final int angleEncoderID = 90; 
+        public static final double shoulderRatio = -12.76 * 52/18 * 64/10;
+    }
+
 
     /**
      *  EndEffector class holds constants related to the end effector.
      */
     public static class EndEffector {
         public static final int intakeMotorID = 0;
+
+        public static final NeoConfiguration intakeNeoConfig = new NeoConfiguration(0)
+            .withKP(0.0)
+            .withKI(0.0)
+            .withKD(0.0);
+
         public static final NeoConfiguration[] shooterNeoConfigs = new NeoConfiguration[] {
             new NeoConfiguration(0)
                 .withKP(0.0)
@@ -58,6 +79,9 @@ public final class Constants {
 
     }
 
+    /**
+     * Vision class holds constants related to the vision system.
+     */
     public static class Vision {
         public static final String cameraName = "apriltag";
         
@@ -77,20 +101,6 @@ public final class Constants {
         public static final int pwmPort = 9;
         public static final int numLeds = 10;
         public static final float scaleFactor = 0.5f;
-    }
-
-    public static final class Arm {
-        public static final NeoConfiguration[] motorConfigs = new NeoConfiguration[] {
-            new NeoConfiguration(8),
-            new NeoConfiguration(0),
-            new NeoConfiguration(8),
-            new NeoConfiguration(0)
-        };
-        public static final double KP = 0.5;
-        public static final double KI = 0.001;
-        public static final double KD = 0;
-        public static final int angleEncoderID = 49;
-        public static final double shoulderRatio = -12.76 * 52/18 * 64/10;
     }
 
     /**

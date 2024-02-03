@@ -65,8 +65,6 @@ public class RobotContainer {
         controller.triangle().onTrue(new InstantCommand(() -> arm.spinupShooter(0.5)));
         controller.cross().onTrue(new InstantCommand(() -> arm.stopShooter()));
 
-
-
     }
 
      /**
