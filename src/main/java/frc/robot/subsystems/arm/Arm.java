@@ -47,7 +47,26 @@ public class Arm extends SubsystemBase {
         return state;
         
     }
-  
+
+    /**
+     * Spins up the shooter motors to a given speed.
+     * Speed is a value between -1 and 1.
+     * 
+     * @param speed The speed to spin the motors at.
+     */
+    public void spinupShooter(double speed) {
+        endEffector.spinupShooter(speed);
+
+    }
+    
+    /**
+     * Stops the shooter motors.
+     */
+    public void stopShooter() {
+        endEffector.stopShooter();
+    
+    }
+
     // Shoulder setpoints
     public void shoulderToBottom(){
         shoulder.goToPosition(ShoulderPosition.Bottom);

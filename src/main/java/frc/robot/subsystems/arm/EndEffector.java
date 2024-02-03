@@ -38,6 +38,25 @@ public class EndEffector {
     }
 
     /**
+     * Spins up the shooter motors to a given speed.
+     * Speed is a value between -1 and 1.
+     */
+    public void spinupShooter(double speed) {
+        for (Neo motor : shooterMotors) {
+            motor.rotateAtSpeed(speed);
+        }
+    }
+
+    /**
+     * Stops the shooter motors.
+     */
+    public void stopShooter() {
+        for (Neo motor : shooterMotors) {
+            motor.stop();
+        }
+    }
+
+    /**
      * Starts the intake.
      * @param speed
      */

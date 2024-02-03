@@ -53,12 +53,19 @@ public class RobotContainer {
      * Configures all button bindings.
      */
     private void configureBindings() {
+        // swerve
         swerve.setDefaultCommand(new TeleopSwerve(swerve, controller));
         controller.options().onTrue( new InstantCommand(() -> swerve.zeroGyro()));
 
-        // arm
+        // arm: intake
         controller.R2().onTrue(new InstantCommand(() -> arm.startIntake()));
         controller.R2().onFalse(new InstantCommand(() -> arm.stopIntake()));
+
+        // arm: shooter
+        controller.triangle().onTrue(new InstantCommand(() -> arm.spinupShooter(0.5)));
+        controller.cross().onTrue(new InstantCommand(() -> arm.stopShooter()));
+
+
 
     }
 
