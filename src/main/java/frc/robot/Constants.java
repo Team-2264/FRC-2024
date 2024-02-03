@@ -42,7 +42,17 @@ public final class Constants {
      */
     public static class EndEffector {
         public static final int intakeMotorID = 0;
-        public static final int[] shooterMotorIDs = new int[]{0, 0};
+        public static final NeoConfiguration[] shooterNeoConfigs = new NeoConfiguration[] {
+            new NeoConfiguration(0)
+                .withKP(0.0)
+                .withKI(0.0)
+                .withKD(0.0),
+            new NeoConfiguration(1)
+                .withKP(0.0)
+                .withKI(0.0)
+                .withKD(0.0)
+               
+        };
 
         public static final int beamBreakPort = 0;
         

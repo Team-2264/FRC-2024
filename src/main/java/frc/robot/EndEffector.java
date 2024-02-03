@@ -3,6 +3,8 @@ package frc.robot;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import frc.lib.motors.Neo;
+import frc.lib.motors.NeoConfiguration;
 
 /**
  * Subystem for controlling the end effector.
@@ -12,7 +14,7 @@ public class EndEffector {
     private TalonFX intakeMoter;
     private boolean intaking = false;
 
-    private TalonFX[] shooterMotors;
+    private Neo[] shooterMotors;
 
     private DigitalInput intakeBeam;
 
@@ -22,12 +24,12 @@ public class EndEffector {
      * @param intakeMotorID The ID of the intake motor.
      * @param shooterMotorIDs The IDs of the shooter motors.
      */
-    public EndEffector(int intakeMotorID, int[] shooterMotorIDs, int beamBreakPort) {
+    public EndEffector(int intakeMotorID, NeoConfiguration[] shooterNeoConfigs, int beamBreakPort) {
         // create motors
         intakeMoter = new TalonFX(intakeMotorID);
-        shooterMotors = new TalonFX[shooterMotorIDs.length];
-        for (int i = 0; i < shooterMotorIDs.length; i++) {
-            shooterMotors[i] = new TalonFX(shooterMotorIDs[i]);
+        shooterMotors = new Neo[shooterNeoConfigs.length];
+        for (int i = 0; i < shooterNeoConfigs.length; i++) {
+            shooterMotors[i] = new Neo(shooterNeoConfigs[i]);
         }
 
         // create beam
