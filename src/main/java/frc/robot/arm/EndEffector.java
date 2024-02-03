@@ -1,4 +1,4 @@
-package frc.robot;
+package frc.robot.arm;
 
 import com.ctre.phoenix6.hardware.TalonFX;
 

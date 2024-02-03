@@ -2,8 +2,8 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.EndEffector;
-import frc.robot.Shoulder;
+import frc.robot.arm.EndEffector;
+import frc.robot.arm.Shoulder;
 import frc.robot.enums.ArmState;
 import frc.robot.enums.ShoulderPosition;
 
@@ -23,7 +23,7 @@ public class Arm extends SubsystemBase {
     public Arm() {
         shoulder = new Shoulder();
         endEffector = new EndEffector(Constants.EndEffector.intakeMotorID, 
-            Constants.EndEffector.shooterMotorIDs,
+            Constants.EndEffector.shooterNeoConfigs,
             Constants.EndEffector.beamBreakPort);
 
         state = ArmState.HOME;
@@ -86,6 +86,8 @@ public class Arm extends SubsystemBase {
             endEffector.stopIntake();
 
         }
+
+        
         
     }
 
