@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.EndEffector;
 import frc.robot.Shoulder;
 import frc.robot.enums.ArmState;
+import frc.robot.enums.ShoulderPosition;
 
 /**
  * Subystem for controlling the arm.
