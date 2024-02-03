@@ -139,8 +139,6 @@ public class Swerve extends SubsystemBase {
     public void drive(ChassisSpeeds chassisSpeeds) {
         SwerveModuleState[] swerveModuleStates = Constants.Swerve.swerveKinematics.toSwerveModuleStates(chassisSpeeds);
 
-        SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.Swerve.maxSpeed);
-
         setModuleStates(swerveModuleStates);
     }
     /**
@@ -150,7 +148,13 @@ public class Swerve extends SubsystemBase {
      * @param rotation    The rotation value for the swerve drive.
      */
     public void drive(Translation2d translation, double rotation) {
-        ChassisSpeeds chassisSpeeds = fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(translation.getX(), translation.getY(), rotation, getGyroAngle()): new ChassisSpeeds(translation.getX(), translation.getY(), rotation);
+        Translation2d limitedTranslation = translation;
+
+        if(translation.getNorm() > Constants.Swerve.maxSpeed) {
+            limitedTranslation = translation.div(translation.getNorm() / Constants.Swerve.maxSpeed);
+        }
+
+        ChassisSpeeds chassisSpeeds = fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(limitedTranslation.getX(), limitedTranslation.getY(), rotation, getGyroAngle()): new ChassisSpeeds(limitedTranslation.getX(), limitedTranslation.getY(), rotation);
 
         drive(chassisSpeeds);
     }
@@ -162,12 +166,9 @@ public class Swerve extends SubsystemBase {
      * @param desiredStates The array of desired swerve module states.
      */
     public void setModuleStates(SwerveModuleState[] desiredStates) {
-        SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, Constants.Swerve.maxSpeed);
-
         for (SwerveModule mod : swerveModules) {
             mod.setDesiredState(desiredStates[mod.moduleNumber]);
         }
-
     }
 
      /**
