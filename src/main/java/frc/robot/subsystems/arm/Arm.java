@@ -1,9 +1,7 @@
-package frc.robot.subsystems;
+package frc.robot.subsystems.arm;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.arm.EndEffector;
-import frc.robot.arm.Shoulder;
 import frc.robot.enums.ArmState;
 import frc.robot.enums.ShoulderPosition;
 
@@ -51,16 +49,16 @@ public class Arm extends SubsystemBase {
     }
   
     // Shoulder setpoints
-    public void ShoulderToBottom(){
+    public void shoulderToBottom(){
         shoulder.goToPosition(ShoulderPosition.Bottom);
         // call method for getting intakes
     }
 
-    public void ShoulderToMiddle(){
+    public void shoulderToMiddle(){
         shoulder.goToPosition(ShoulderPosition.Middle);
     }
 
-    public void ShoulderToTop(){
+    public void shoulderToTop(){
         shoulder.goToPosition(ShoulderPosition.Top);
 
     }
@@ -68,14 +66,14 @@ public class Arm extends SubsystemBase {
     /**
      * Starts the intake.
      */
-    public void Intake(){
+    public void startIntake(){
         endEffector.startIntake();
     }
 
     /**
      * Stops the intake.
      */
-    public void StopIntake(){
+    public void stopIntake(){
         endEffector.stopIntake();
     }
 
@@ -86,8 +84,6 @@ public class Arm extends SubsystemBase {
             endEffector.stopIntake();
 
         }
-
-        
         
     }
 

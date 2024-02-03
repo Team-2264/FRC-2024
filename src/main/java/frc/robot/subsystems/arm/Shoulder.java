@@ -1,4 +1,4 @@
-package frc.robot.arm;
+package frc.robot.subsystems.arm;
 
 import frc.lib.motors.Neo;
 import frc.robot.Constants;
