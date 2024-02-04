@@ -3,7 +3,6 @@ package frc.robot.subsystems.arm;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.enums.ArmState;
-import frc.robot.enums.ShoulderPosition;
 
 /**
  * Subystem for controlling the arm.
@@ -19,13 +18,28 @@ public class Arm extends SubsystemBase {
      * Constructs a new Arm instance.
      */
     public Arm() {
-        shoulder = new Shoulder();
+        shoulder = new Shoulder(Constants.Arm.neoConfigs);
         endEffector = new EndEffector(Constants.EndEffector.intakeNeoConfig, 
             Constants.EndEffector.shooterNeoConfigs,
             Constants.EndEffector.beamBreakPort);
 
         state = ArmState.START;
         
+    }
+
+    /**
+     * Sets the state of the arm. This is the main way to control the arm.
+     * 
+     * @param state
+     */
+    public void setState(ArmState state) {
+        this.state = state;
+
+        if (state != ArmState.AUTO_SHOOT) {
+            shoulder.rotateTo(state.shoulderAngle());
+
+        }
+
     }
 
     /**
@@ -47,21 +61,6 @@ public class Arm extends SubsystemBase {
     
     }
 
-    // Shoulder setpoints
-    public void shoulderToBottom(){
-        shoulder.goToPosition(ShoulderPosition.Bottom);
-        // call method for getting intakes
-    }
-
-    public void shoulderToMiddle(){
-        shoulder.goToPosition(ShoulderPosition.Middle);
-    }
-
-    public void shoulderToTop(){
-        shoulder.goToPosition(ShoulderPosition.Top);
-
-    }
-
     /**
      * Starts the intake.
      */
@@ -81,6 +80,12 @@ public class Arm extends SubsystemBase {
         // Stop intaking if the end effector has a note
         if (endEffector.intaking() && endEffector.hasNote()) {
             endEffector.stopIntake();
+
+        }
+
+        // Constatly update the angle of the shoulder to a target angle
+        if (state == ArmState.AUTO_SHOOT) {
+            
 
         }
         

@@ -5,6 +5,24 @@ package frc.robot.enums;
  * 
  */
 public enum ArmState {
-    INTAKE, HOME, AMP, SHOOT
+    INTAKE, AMP, START, HOME, MANUAL_SHOOT, AUTO_SHOOT;
+
+    /**
+     * Returns the angle the shoulder should be at for the given state.
+     * 
+     * @return The angle the shoulder should be at.
+     */
+    public int shoulderAngle() {
+        return switch(this){
+                case INTAKE -> 0;
+                case AMP -> 120;
+                case START -> 60;
+                case HOME -> 20;
+                case MANUAL_SHOOT -> 10;
+                case AUTO_SHOOT -> 0; // No angle for auto shoot
     
+        };
+    
+    }
+
 }

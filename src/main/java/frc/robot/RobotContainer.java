@@ -5,6 +5,7 @@
 package frc.robot;
 
 import frc.robot.commands.TeleopSwerve;
+import frc.robot.enums.ArmState;
 import frc.robot.subsystems.Leds;
 import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.Vision;
@@ -56,6 +57,11 @@ public class RobotContainer {
         // swerve
         swerve.setDefaultCommand(new TeleopSwerve(swerve, controller));
         controller.options().onTrue( new InstantCommand(() -> swerve.zeroGyro()));
+
+        // arm general
+        controller.povDown().onTrue(new InstantCommand(() -> arm.setState(ArmState.INTAKE)));
+        controller.povLeft().onTrue(new InstantCommand(() -> arm.setState(ArmState.HOME)));
+        controller.povUp().onTrue(new InstantCommand(() -> arm.setState(ArmState.AMP)));
 
         // arm: intake
         controller.R2().onTrue(new InstantCommand(() -> arm.startIntake()));

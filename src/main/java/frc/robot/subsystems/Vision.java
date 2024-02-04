@@ -45,7 +45,7 @@ public class Vision extends SubsystemBase {
     }
 
     /**
-     *  Get the latest result from the \camera.
+     *  Get the latest result from the camera.
      * 
      */
     private void get() {

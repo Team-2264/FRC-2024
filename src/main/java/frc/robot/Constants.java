@@ -36,7 +36,7 @@ public final class Constants {
     }
     
     public static final class Arm {
-        public static final NeoConfiguration[] motorConfigs = new NeoConfiguration[] {
+        public static final NeoConfiguration[] neoConfigs = new NeoConfiguration[] {
             new NeoConfiguration(60),
             new NeoConfiguration(61),
             new NeoConfiguration(62),
