@@ -34,6 +34,25 @@ public final class Constants {
         public static final double stickDeadband = 0.1;
 
     }
+
+    public static final class Targeting {
+        public static final double armLength = 1; // meters
+
+        public static final double targetHeight = 2.5;
+
+         /** 
+         *  Get the arm angle to hit the speaker
+         * 
+         */
+        public static final double getSpeakerArmAngle(double targetDistance) {
+            double numerator = Math.sqrt(-(armLength * armLength) + (targetHeight * targetHeight) + (targetDistance * targetDistance)) + targetHeight;
+            double angle = Math.atan(numerator / (armLength + targetDistance));
+
+            return angle;
+
+        }
+
+    }
     
     public static final class Arm {
         public static final NeoConfiguration[] neoConfigs = new NeoConfiguration[] {
@@ -46,7 +65,9 @@ public final class Constants {
         public static final double KI = 0.001;
         public static final double KD = 0;
         public static final int angleEncoderID = 90; 
-        public static final double shoulderRatio = -12.76 * 52/18 * 64/10;
+
+        public static final double shoulderRatio = -12.76 * 52/18 * 64/10; // not sure if this is correct
+
     }
 
 
