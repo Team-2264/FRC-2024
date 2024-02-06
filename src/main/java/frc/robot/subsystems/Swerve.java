@@ -151,7 +151,9 @@ public class Swerve extends SubsystemBase {
     }
 
 
-    // set maximum speed based on turbo mode status
+    /**
+     * Set maximum speed based on turbo mode status
+     */
     public double maximumSpeed(){
         if(turboModeStatus == true){
             return Constants.Swerve.turboMaxSpeed;
@@ -297,12 +299,16 @@ public class Swerve extends SubsystemBase {
     }
 
 
-    // turns on/off turbo mode
-    public void turnTurboModeOn(boolean condition){
+    /**
+     * Turns on/off turbo mode
+     */
+    public void toggleTurboMode(boolean condition){
         turboModeStatus = condition;
     }
     
-    // returns if turbo mode is on
+    /** 
+     * Returns if turbo mode is on
+     */ 
     public boolean getTurboStatus(){
         return turboModeStatus;
     }

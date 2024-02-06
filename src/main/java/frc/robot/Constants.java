@@ -167,7 +167,7 @@ public final class Constants {
         public static final double maxSpeed = 1;  // meters per second
         public static final double maxAngularVelocity = Math.PI * 1.5; // radians per second (rad/s)
         
-        // TURBO!!!!! mode values
+        // Turbo mode values
         public static final double turboMaxSpeed = 2;
         public static final double turboMaxAngularVelocity = Math.PI * 2.5;
 
