@@ -35,6 +35,9 @@ public final class Constants {
 
     }
 
+    /**
+     * Targeting class holds constants related to targeting.
+     */
     public static final class Targeting {
         public static final double armLength = 1; // meters
 
@@ -42,14 +45,15 @@ public final class Constants {
 
          /** 
          *  Get the arm angle to hit the speaker
+         *  @param targetDistance The distance to the speaker
+         *  @return The angle to hit the speaker in degrees
          * 
          */
         public static final double getSpeakerArmAngle(double targetDistance) {
             double numerator = Math.sqrt(-(armLength * armLength) + (targetHeight * targetHeight) + (targetDistance * targetDistance)) + targetHeight;
             double angle = Math.atan(numerator / (armLength + targetDistance));
 
-            return angle;
-
+            return Math.toDegrees(angle);
         }
 
     }
