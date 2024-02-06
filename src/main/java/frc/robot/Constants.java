@@ -45,6 +45,8 @@ public final class Constants {
 
          /** 
          *  Get the arm angle to hit the speaker
+         *  Visualiation: https://www.desmos.com/calculator/zvokkhmnqa
+         * 
          *  @param targetDistance The distance to the speaker
          *  @return The angle to hit the speaker in degrees
          * 
@@ -58,6 +60,9 @@ public final class Constants {
 
     }
     
+    /**
+     * Arm class holds constants related to the arm.
+     */
     public static final class Arm {
         public static final NeoConfiguration[] neoConfigs = new NeoConfiguration[] {
             new NeoConfiguration(60),
