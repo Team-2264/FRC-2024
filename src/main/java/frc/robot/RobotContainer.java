@@ -29,7 +29,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
  */
 public class RobotContainer {
     // Subsystems
-    private Swerve swerve = new Swerve(false);
+    private Swerve swerve = new Swerve();
     private final Arm arm = new Arm();
     private final Leds leds = new Leds(Constants.LedStrip.pwmPort, Constants.LedStrip.numLeds, Constants.LedStrip.scaleFactor);
     private final Vision vision = new Vision();
