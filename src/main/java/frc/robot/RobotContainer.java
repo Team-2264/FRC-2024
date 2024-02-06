@@ -5,6 +5,7 @@
 package frc.robot;
 
 import frc.robot.commands.TeleopSwerve;
+import frc.robot.commands.ToggleTurbo;
 import frc.robot.enums.ArmState;
 import frc.robot.subsystems.Leds;
 import frc.robot.subsystems.Swerve;
@@ -28,7 +29,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
  */
 public class RobotContainer {
     // Subsystems
-    private final Swerve swerve = new Swerve();
+    private Swerve swerve = new Swerve(false);
     private final Arm arm = new Arm();
     private final Leds leds = new Leds(Constants.LedStrip.pwmPort, Constants.LedStrip.numLeds, Constants.LedStrip.scaleFactor);
     private final Vision vision = new Vision();
@@ -70,6 +71,8 @@ public class RobotContainer {
         // arm: shooter
         controller.triangle().onTrue(new InstantCommand(() -> arm.spinupShooter(0.5)));
         controller.cross().onTrue(new InstantCommand(() -> arm.stopShooter()));
+        
+        controller.square().onTrue(new ToggleTurbo(swerve));
 
     }
 

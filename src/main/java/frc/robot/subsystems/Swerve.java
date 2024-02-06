@@ -39,12 +39,15 @@ public class Swerve extends SubsystemBase {
 
     public SwerveModule[] swerveModules;
 
+    public boolean turboModeStatus;
+
     private boolean fieldRelative = true;
 
     /**
      * Constructs a Swerve subsystem instance.
      */
     public Swerve() {
+
         // Init pigeon
         pidgey = new Pigeon2(Constants.Swerve.pigeonID);
         pidgey.getConfigurator().apply(new Pigeon2Configuration());
@@ -75,7 +78,6 @@ public class Swerve extends SubsystemBase {
                 Constants.Swerve.Mod3.angleMotorID,
                 Constants.Swerve.Mod3.angleEncoderID,
                 Constants.Swerve.Mod3.angleOffset),
-
         };
 
         // Init Odometry
@@ -141,14 +143,21 @@ public class Swerve extends SubsystemBase {
      */
     public void drive(Translation2d translation, double rotation) {
         Translation2d limitedTranslation = translation;
+            if(translation.getNorm() > maximumSpeed()) {
+                limitedTranslation = translation.div(translation.getNorm() / maximumSpeed());
+                ChassisSpeeds chassisSpeeds = fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(limitedTranslation.getX(), limitedTranslation.getY(), rotation, getGyroAngle()): new ChassisSpeeds(limitedTranslation.getX(), limitedTranslation.getY(), rotation);
+                drive(chassisSpeeds);
+            }
+    }
 
-        if(translation.getNorm() > Constants.Swerve.maxSpeed) {
-            limitedTranslation = translation.div(translation.getNorm() / Constants.Swerve.maxSpeed);
+
+    // set maximum speed based on turbo mode status
+    public double maximumSpeed(){
+        if(turboModeStatus == true){
+            return Constants.Swerve.turboMaxSpeed;
+        }else{
+            return Constants.Swerve.maxSpeed;
         }
-
-        ChassisSpeeds chassisSpeeds = fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(limitedTranslation.getX(), limitedTranslation.getY(), rotation, getGyroAngle()): new ChassisSpeeds(limitedTranslation.getX(), limitedTranslation.getY(), rotation);
-
-        drive(chassisSpeeds);
     }
 
 
@@ -287,15 +296,26 @@ public class Swerve extends SubsystemBase {
 
     }
 
+
+    // turns on/off turbo mode
+    public void turnTurboModeOn(boolean condition){
+        turboModeStatus = condition;
+    }
+    
+    // returns if turbo mode is on
+    public boolean getTurboStatus(){
+        return turboModeStatus;
+    }
+
     @Override
     public void periodic() {
         swerveOdometry.update(getGyroAngle(), getModulePositions());
-
         for (SwerveModule mod : swerveModules) {
             SmartDashboard.putNumber("Mod " + mod.moduleNumber, mod.getState().angle.getDegrees());
 
         }
 
     }
+
 
 }
