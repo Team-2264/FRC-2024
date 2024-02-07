@@ -73,7 +73,7 @@ public class TeleopSwerve extends Command {
         yAxis = xyCurve(yAxis);
         rAxis = rCurve(rAxis);
         
-        Translation2d translation = new Translation2d(yAxis, xAxis).times(Constants.Swerve.maxSpeed);
+        Translation2d translation = new Translation2d(yAxis, xAxis).times(swerve.maximumSpeed());
         double rotation = rAxis * Constants.Swerve.maxAngularVelocity;
 
         SmartDashboard.putNumber("Rot", rotation);

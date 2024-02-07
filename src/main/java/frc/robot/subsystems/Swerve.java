@@ -39,7 +39,7 @@ public class Swerve extends SubsystemBase {
 
     public SwerveModule[] swerveModules;
 
-    public boolean turboModeStatus;
+    public boolean turboModeStatus = false;
 
     private boolean fieldRelative = true;
 
@@ -143,16 +143,19 @@ public class Swerve extends SubsystemBase {
      */
     public void drive(Translation2d translation, double rotation) {
         Translation2d limitedTranslation = translation;
-            if(translation.getNorm() > maximumSpeed()) {
-                limitedTranslation = translation.div(translation.getNorm() / maximumSpeed());
-                ChassisSpeeds chassisSpeeds = fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(limitedTranslation.getX(), limitedTranslation.getY(), rotation, getGyroAngle()): new ChassisSpeeds(limitedTranslation.getX(), limitedTranslation.getY(), rotation);
-                drive(chassisSpeeds);
-            }
+        if(translation.getNorm() > maximumSpeed()) {
+            limitedTranslation = translation.div(translation.getNorm() / maximumSpeed());
+            
+        }
+
+        ChassisSpeeds chassisSpeeds = fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(limitedTranslation.getX(), limitedTranslation.getY(), rotation, getGyroAngle()): new ChassisSpeeds(limitedTranslation.getX(), limitedTranslation.getY(), rotation);
+        drive(chassisSpeeds);
+        
     }
 
 
     /**
-     * Set maximum speed based on turbo mode status
+     * Get maximum speed based on turbo mode status
      */
     public double maximumSpeed(){
         if(turboModeStatus == true){
@@ -315,6 +318,7 @@ public class Swerve extends SubsystemBase {
 
     @Override
     public void periodic() {
+        SmartDashboard.putBoolean("TURBO", turboModeStatus);
         swerveOdometry.update(getGyroAngle(), getModulePositions());
         for (SwerveModule mod : swerveModules) {
             SmartDashboard.putNumber("Mod " + mod.moduleNumber, mod.getState().angle.getDegrees());

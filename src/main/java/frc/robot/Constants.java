@@ -62,11 +62,11 @@ public final class Constants {
             .withKD(0.0);
 
         public static final NeoConfiguration[] shooterNeoConfigs = new NeoConfiguration[] {
-            new NeoConfiguration(0)
+            new NeoConfiguration(1)
                 .withKP(0.0)
                 .withKI(0.0)
                 .withKD(0.0),
-            new NeoConfiguration(1)
+            new NeoConfiguration(2)
                 .withKP(0.0)
                 .withKI(0.0)
                 .withKD(0.0)
@@ -168,8 +168,8 @@ public final class Constants {
         public static final double maxAngularVelocity = Math.PI * 1.5; // radians per second (rad/s)
         
         // Turbo mode values
-        public static final double turboMaxSpeed = 2;
-        public static final double turboMaxAngularVelocity = Math.PI * 2.5;
+        public static final double turboMaxSpeed = 5;
+        public static final double turboMaxAngularVelocity = Math.PI * 1.5;
 
         // Module Specific Constants
         // Front Left Module - Module 0

@@ -73,6 +73,7 @@ public class RobotContainer {
         controller.cross().onTrue(new InstantCommand(() -> arm.stopShooter()));
         
         controller.square().onTrue(new ToggleTurbo(swerve));
+        controller.square().onFalse(new ToggleTurbo(swerve));
 
     }
 

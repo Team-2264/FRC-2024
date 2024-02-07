@@ -21,4 +21,11 @@ public class ToggleTurbo extends Command {
             swerve.toggleTurboMode(true);
         }
     }
+
+    @Override
+    public boolean isFinished() {
+        return true;
+
+    }
+
 }
