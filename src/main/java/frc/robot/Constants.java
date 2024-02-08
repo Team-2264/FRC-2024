@@ -77,6 +77,8 @@ public final class Constants {
 
         public static final double shoulderRatio = -12.76 * 52/18 * 64/10; // not sure if this is correct
 
+        public static final double shoulderOffset = 0; // degrees
+
     }
 
 

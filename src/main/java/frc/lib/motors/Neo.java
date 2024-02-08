@@ -10,15 +10,8 @@ import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
-/**
- * square button press results in the clockwise movement of the neo motor
- * while triangle makes it stop.
- * get the velocity using the encoder and display it on the smart dashboard
- * set motor to move to a certain relative encoder value converted to degrees
- */
-
-public class Neo {
   /** Creates a new Neo Subsystem. */
+public class Neo {
   private final CANSparkMax motor;
   private final RelativeEncoder encoder;
   private final SparkPIDController pidNeo;
@@ -63,10 +56,11 @@ public class Neo {
   }
 
   /**
-   * Rotates the motor to a specific position.
+   * Rotates the motor to a specific position relative to where it started.
    * @param position The angle to rotate to in rotations
    */
   public void rotateTo(double position){
     pidNeo.setReference(position, ControlType.kPosition);
   }
+  
 }
