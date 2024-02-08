@@ -18,7 +18,7 @@ public class Shoulder {
      */
     public Shoulder(NeoConfiguration[] neoConfigs) {
         // create encoder
-        absEncoder = new DutyCycleEncoder(Constants.Arm.encoderID);
+        absEncoder = new DutyCycleEncoder(Constants.Arm.angleEncoderID);
         
 
         // create motors

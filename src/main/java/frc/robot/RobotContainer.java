@@ -69,7 +69,7 @@ public class RobotContainer {
         controller.R2().onFalse(new InstantCommand(() -> arm.stopIntake()));
 
         // arm: shooter
-        controller.triangle().onTrue(new InstantCommand(() -> arm.spinupShooter(0.5)));
+        controller.triangle().onTrue(new InstantCommand(() -> arm.spinupShooter(0.1)));
         controller.cross().onTrue(new InstantCommand(() -> arm.stopShooter()));
         
         controller.square().onTrue(new ToggleTurbo(swerve));
