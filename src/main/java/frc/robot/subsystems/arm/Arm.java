@@ -85,7 +85,9 @@ public class Arm extends SubsystemBase {
 
         // Constatly update the angle of the shoulder to a target angle
         if (state == ArmState.AUTO_SHOOT) {
-            
+            double distance = 0; // TODO: get distance from vision;
+            int angle = (int)Constants.Targeting.getSpeakerArmAngle(distance);
+            shoulder.rotateTo(angle);
 
         }
         
