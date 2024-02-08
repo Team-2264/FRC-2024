@@ -27,9 +27,6 @@ public class Shoulder {
             motors[i] = new Neo(neoConfigs[i]);
 
         }
-
-        // Bottom the shoulder on startup
-        rotateTo(15);
                 
     }
 
