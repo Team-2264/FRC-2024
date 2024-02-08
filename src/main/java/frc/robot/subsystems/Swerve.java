@@ -4,8 +4,6 @@ import frc.robot.SwerveModule;
 import frc.robot.Constants;
 
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 
 import com.ctre.phoenix6.hardware.Pigeon2;
@@ -16,12 +14,19 @@ import com.pathplanner.lib.util.PathPlannerLogging;
 
 import java.util.List;
 
+import org.photonvision.EstimatedRobotPose;
+import org.photonvision.targeting.PhotonTrackedTarget;
+
 import com.ctre.phoenix6.configs.Pigeon2Configuration;
 
+import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -33,7 +38,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
  * This class handles swerve modules, odometry, and gyro integration.
  */
 public class Swerve extends SubsystemBase {
-    public SwerveDriveOdometry swerveOdometry;
     private final Field2d field;
     public Pigeon2 pidgey;
 
@@ -43,11 +47,12 @@ public class Swerve extends SubsystemBase {
 
     private boolean fieldRelative = true;
 
+    public final SwerveDrivePoseEstimator poseEstimator;
+
     /**
      * Constructs a Swerve subsystem instance.
      */
     public Swerve() {
-
         // Init pigeon
         pidgey = new Pigeon2(Constants.Swerve.pigeonID);
         pidgey.getConfigurator().apply(new Pigeon2Configuration());
@@ -78,10 +83,10 @@ public class Swerve extends SubsystemBase {
                 Constants.Swerve.Mod3.angleMotorID,
                 Constants.Swerve.Mod3.angleEncoderID,
                 Constants.Swerve.Mod3.angleOffset),
+
         };
 
-        // Init Odometry
-        swerveOdometry = new SwerveDriveOdometry(Constants.Swerve.swerveKinematics, getGyroAngle(), getModulePositions());
+        poseEstimator = new SwerveDrivePoseEstimator(Constants.Swerve.swerveKinematics, getGyroAngle(), getModulePositions(), Constants.Swerve.initialPose);
 
         // Configure AutoBuilder
         AutoBuilder.configureHolonomic(
@@ -103,6 +108,7 @@ public class Swerve extends SubsystemBase {
             },
             this
         );
+
 
         // Init Field
         field = new Field2d();
@@ -143,16 +149,15 @@ public class Swerve extends SubsystemBase {
      */
     public void drive(Translation2d translation, double rotation) {
         Translation2d limitedTranslation = translation;
+
         if(translation.getNorm() > maximumSpeed()) {
             limitedTranslation = translation.div(translation.getNorm() / maximumSpeed());
-            
         }
 
         ChassisSpeeds chassisSpeeds = fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(limitedTranslation.getX(), limitedTranslation.getY(), rotation, getGyroAngle()): new ChassisSpeeds(limitedTranslation.getX(), limitedTranslation.getY(), rotation);
-        drive(chassisSpeeds);
-        
-    }
 
+        drive(chassisSpeeds);
+    }
 
     /**
      * Get maximum speed based on turbo mode status
@@ -164,8 +169,7 @@ public class Swerve extends SubsystemBase {
             return Constants.Swerve.maxSpeed;
         }
     }
-
-
+    
     /**
      * Sets the desired states for swerve modules.
      *
@@ -183,7 +187,7 @@ public class Swerve extends SubsystemBase {
      * @return The current robot pose.
      */
     public Pose2d getPose() {
-        return swerveOdometry.getPoseMeters();
+        return poseEstimator.getEstimatedPosition();
 
     }
 
@@ -210,7 +214,7 @@ public class Swerve extends SubsystemBase {
      * @param pose The desired pose for the robot.
      */
     public void setPose(Pose2d pose) {
-        swerveOdometry.resetPosition(getGyroAngle(), getModulePositions(), pose);
+        poseEstimator.resetPosition(getGyroAngle(), getModulePositions(), pose);
 
     }
 
@@ -301,7 +305,6 @@ public class Swerve extends SubsystemBase {
 
     }
 
-
     /**
      * Turns on/off turbo mode
      */
@@ -316,16 +319,37 @@ public class Swerve extends SubsystemBase {
         return turboModeStatus;
     }
 
+    public void addVisionMeasurement(EstimatedRobotPose pose) {
+        Pose2d measuredPose = pose.estimatedPose.toPose2d();
+
+        double totalDistance = 0;
+        for(PhotonTrackedTarget target: pose.targetsUsed) {
+            totalDistance += target.getBestCameraToTarget().getTranslation().getNorm();
+        }
+
+        double averageDistance = totalDistance / pose.targetsUsed.size();
+
+        double devMultiplier = averageDistance;
+        if(pose.targetsUsed.size() == 1) {
+            devMultiplier *= Constants.Vision.singleTargetMultiplier;
+        }
+
+        Matrix<N3, N1> standardDevs = Constants.Vision.visionStandardDevs.times(devMultiplier);
+
+        poseEstimator.addVisionMeasurement(measuredPose, pose.timestampSeconds, standardDevs);
+    }
+
     @Override
     public void periodic() {
         SmartDashboard.putBoolean("TURBO", turboModeStatus);
-        swerveOdometry.update(getGyroAngle(), getModulePositions());
+
+        poseEstimator.update(getGyroAngle(), getModulePositions());
+
         for (SwerveModule mod : swerveModules) {
             SmartDashboard.putNumber("Mod " + mod.moduleNumber, mod.getState().angle.getDegrees());
 
         }
 
     }
-
 
 }

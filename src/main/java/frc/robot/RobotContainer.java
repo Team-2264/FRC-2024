@@ -18,6 +18,10 @@ import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import java.util.Optional;
+
+import org.photonvision.EstimatedRobotPose;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 
 /**
@@ -85,6 +89,17 @@ public class RobotContainer {
     public Command getAutonomousCommand() {
         return autoChooser.getSelected();
 
+    }
+
+    /**
+     * Called every robot loop in both autonomous and teleop.
+     */
+    public void robotPeriodic() {
+        Optional<EstimatedRobotPose> visionPose = vision.getEstimatedPose();
+
+        if(visionPose.isPresent()) {
+            swerve.addVisionMeasurement(visionPose.get());
+        }
     }
 
     public Leds getLeds() {

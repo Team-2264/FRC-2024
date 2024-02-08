@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import java.util.Arrays;
 import java.util.Optional;
 
+import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
@@ -57,21 +58,14 @@ public class Vision extends SubsystemBase {
      * Estimate the pose of the robot.
      * 
      */
-    public Optional<Pose3d> getEstimatedPose() {
+    public Optional<EstimatedRobotPose> getEstimatedPose() {
         // Method 1 - pose estimator
         var robot_pose = estimator.update();
         if(robot_pose.isPresent()) {
-            Pose3d pose = robot_pose.get().estimatedPose;
-
-            return Optional.of(pose);
-
+            return Optional.of(robot_pose.get());
         }
 
-        // Method 2 - getMultiTagResult
-        // Transform3d fieldToCamera = camera.getLatestResult().getMultiTagResult().estimatedPose.best;
-
-        return Optional.empty();        
-
+        return Optional.empty();
     }
     
     /**
@@ -92,9 +86,9 @@ public class Vision extends SubsystemBase {
         SmartDashboard.putString("Vision - Tracked Targets", Arrays.toString(targetIds));
 
         // Estimated pose
-        Optional<Pose3d> estimated = getEstimatedPose();
+        Optional<EstimatedRobotPose> estimated = getEstimatedPose();
         if (estimated.isPresent()) {
-            Pose3d meterPose = estimated.get();
+            Pose3d meterPose = estimated.get().estimatedPose;
             field.setRobotPose(meterPose.getX(), meterPose.getY(), meterPose.getRotation().toRotation2d());
 
             Pose3d inchPose = new Pose3d(

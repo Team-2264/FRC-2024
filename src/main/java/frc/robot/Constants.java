@@ -7,11 +7,18 @@ package frc.robot;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
+
+import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 import frc.lib.motors.NeoConfiguration;
 import frc.lib.motors.TalonFxConfiguration;
@@ -116,6 +123,9 @@ public final class Constants {
      */
     public static class Vision {
         public static final String cameraName = "apriltag";
+
+        public static final Matrix<N3, N1> visionStandardDevs = VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(30));
+        public static double singleTargetMultiplier = 0.33;
         
         // Robot to Camera Transform
         public static final Transform3d robotToCamera = new Transform3d(
@@ -141,6 +151,8 @@ public final class Constants {
     public static final class Swerve {
         public static final int pigeonID = 15;
         public static final boolean invertGyro = false; // Always ensure Gyro is CCW+ CW-
+
+        public static final Pose2d initialPose = new Pose2d(0, 0, new Rotation2d());
 
         // Drivetrain Constants
         public static final double trackWidth = Units.inchesToMeters(25.5);
