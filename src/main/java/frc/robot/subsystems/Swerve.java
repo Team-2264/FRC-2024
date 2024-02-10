@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import frc.robot.SwerveModule;
+import frc.lib.Math2264;
 import frc.robot.Constants;
 
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -13,13 +14,16 @@ import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.PathPlannerLogging;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 import com.ctre.phoenix6.configs.Pigeon2Configuration;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -46,6 +50,9 @@ public class Swerve extends SubsystemBase {
     public boolean turboModeStatus = false;
 
     private boolean fieldRelative = true;
+
+    private PIDController rotationLockController = new PIDController(Constants.Swerve.rotationLockKP, Constants.Swerve.rotationLockKI, Constants.Swerve.rotationLockKD);
+    private Optional<Translation2d> lockedOnto = Optional.empty();
 
     public final SwerveDrivePoseEstimator poseEstimator;
 
@@ -133,6 +140,16 @@ public class Swerve extends SubsystemBase {
         
     }
     
+    public void lockOnto(Translation2d translation2d) {
+        rotationLockController.reset();
+        
+        lockedOnto = Optional.of(translation2d);
+    }
+
+    public void unlockRotation() {
+        lockedOnto = Optional.empty();
+    }
+    
     /**
      * Drives the swerve drive based on field-relative {@link ChassisSpeeds}.
      */
@@ -148,11 +165,18 @@ public class Swerve extends SubsystemBase {
      * @param rotation    The rotation value for the swerve drive.
      */
     public void drive(Translation2d translation, double rotation) {
-        Translation2d limitedTranslation = translation;
+        if(lockedOnto.isPresent()) {
+            Pose2d robot_pose = getPose();
 
-        if(translation.getNorm() > maximumSpeed()) {
-            limitedTranslation = translation.div(translation.getNorm() / maximumSpeed());
+            Translation2d look_vector = lockedOnto.get().minus(robot_pose.getTranslation());
+            double targetRotationOffset = MathUtil.angleModulus(new Rotation2d(look_vector.getX(), look_vector.getY()).minus(robot_pose.getRotation()).getRadians());
+            double targetRotation = robot_pose.getRotation().getRadians() + targetRotationOffset;
+
+            rotation = rotationLockController.calculate(robot_pose.getRotation().getRadians(), targetRotation);
         }
+
+        rotation = Math2264.limitMagnitude(rotation, Constants.Swerve.maxAngularVelocity);
+        Translation2d limitedTranslation = Math2264.limitMagnitude(translation, maximumSpeed());
 
         ChassisSpeeds chassisSpeeds = fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(limitedTranslation.getX(), limitedTranslation.getY(), rotation, getGyroAngle()): new ChassisSpeeds(limitedTranslation.getX(), limitedTranslation.getY(), rotation);
 

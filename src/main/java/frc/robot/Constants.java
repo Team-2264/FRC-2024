@@ -263,6 +263,11 @@ public final class Constants {
                 new ReplanningConfig() // Default path replanning config. See the API for the options here
             );
 
+        // Robot rotation locking
+
+        public static final double rotationLockKP = 1.0;
+        public static final double rotationLockKI = 0.0;
+        public static final double rotationLockKD = 0.0;
     }
 
 
