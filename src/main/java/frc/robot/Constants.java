@@ -11,6 +11,7 @@ import com.pathplanner.lib.util.ReplanningConfig;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
@@ -20,6 +21,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
+import frc.lib.FieldPose;
 import frc.lib.motors.NeoConfiguration;
 import frc.lib.motors.TalonFxConfiguration;
 
@@ -252,6 +254,15 @@ public final class Constants {
 
             public static final double angleOffset = 125.596;
         }
+
+          // field pose for shooting to speaker
+        public static final FieldPose speakerPose = FieldPose.fromNative(new Pose3d(
+            new Translation3d(
+                Units.inchesToMeters(9.055), // x
+                Units.inchesToMeters(218.42), // y
+                Units.inchesToMeters(82.9)), // z
+                new Rotation3d()
+        ));
 
         // Autonomous 
         public static final HolonomicPathFollowerConfig pathFollowerConfig = 
