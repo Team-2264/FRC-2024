@@ -116,7 +116,7 @@ public class SwerveModule {
     public void resetToAbsolute() {
         double absolutePosition = Conversions.degreesToRevs(getEncoder().getDegrees() - angleOffset.getDegrees(), Constants.Swerve.angleGearRatio);
 
-        angleMotor.rotateTo(absolutePosition);
+        angleMotor.setSensorPosition(absolutePosition);
     }
 
     /**

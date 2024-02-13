@@ -36,7 +36,7 @@ public class RobotContainer {
     private Swerve swerve = new Swerve();
     private final Arm arm = new Arm();
     private final Leds leds = new Leds(Constants.LedStrip.pwmPort, Constants.LedStrip.numLeds, Constants.LedStrip.scaleFactor);
-    private final Vision vision = new Vision();
+    // private final Vision vision = new Vision();
 
     // Controllers
     private final CommandPS4Controller controller = new CommandPS4Controller(Constants.Operator.controllerPort);
@@ -64,20 +64,20 @@ public class RobotContainer {
         controller.options().onTrue( new InstantCommand(() -> swerve.zeroGyro()));
 
         // arm general
-        controller.povDown().onTrue(new InstantCommand(() -> arm.setState(ArmState.INTAKE)));
-        controller.povLeft().onTrue(new InstantCommand(() -> arm.setState(ArmState.HOME)));
-        controller.povUp().onTrue(new InstantCommand(() -> arm.setState(ArmState.AMP)));
+        // controller.povDown().onTrue(new InstantCommand(() -> arm.setState(ArmState.INTAKE)));
+        // controller.povLeft().onTrue(new InstantCommand(() -> arm.setState(ArmState.HOME)));
+        // controller.povUp().onTrue(new InstantCommand(() -> arm.setState(ArmState.AMP)));
 
-        // arm: intake
+        // // arm: intake
         controller.R2().onTrue(new InstantCommand(() -> arm.startIntake()));
         controller.R2().onFalse(new InstantCommand(() -> arm.stopIntake()));
 
-        // arm: shooter
-        controller.triangle().onTrue(new InstantCommand(() -> arm.spinupShooter(0.1)));
+        // // arm: shooter
+        controller.triangle().onTrue(new InstantCommand(() -> arm.spinupShooter(0.4)));
         controller.cross().onTrue(new InstantCommand(() -> arm.stopShooter()));
         
-        controller.square().onTrue(new ToggleTurbo(swerve));
-        controller.square().onFalse(new ToggleTurbo(swerve));
+        // controller.square().onTrue(new ToggleTurbo(swerve));
+        // controller.square().onFalse(new ToggleTurbo(swerve));
 
     }
 
@@ -95,11 +95,11 @@ public class RobotContainer {
      * Called every robot loop in both autonomous and teleop.
      */
     public void robotPeriodic() {
-        Optional<EstimatedRobotPose> visionPose = vision.getEstimatedPose();
+        // Optional<EstimatedRobotPose> visionPose = vision.getEstimatedPose();
 
-        if(visionPose.isPresent()) {
-            swerve.addVisionMeasurement(visionPose.get());
-        }
+        // if(visionPose.isPresent()) {
+        //     swerve.addVisionMeasurement(visionPose.get());
+        // }
     }
 
     public Leds getLeds() {

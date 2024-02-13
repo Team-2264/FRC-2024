@@ -1,6 +1,5 @@
 package frc.robot.subsystems.arm;
 
-import edu.wpi.first.wpilibj.DutyCycle;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import frc.lib.motors.Neo;
 import frc.lib.motors.NeoConfiguration;

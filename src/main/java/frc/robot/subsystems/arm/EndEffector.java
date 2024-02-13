@@ -1,7 +1,5 @@
 package frc.robot.subsystems.arm;
 
-import com.ctre.phoenix6.hardware.TalonFX;
-
 import edu.wpi.first.wpilibj.DigitalInput;
 import frc.lib.motors.Neo;
 import frc.lib.motors.NeoConfiguration;
@@ -62,7 +60,7 @@ public class EndEffector {
      * @param speed
      */
     public void startIntake() {
-        intakeMoter.rotateAtSpeed(0.2);
+        intakeMoter.rotateAtSpeed(0.6);
         intaking = true;
 
     }
