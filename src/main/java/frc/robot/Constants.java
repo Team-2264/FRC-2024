@@ -157,8 +157,8 @@ public final class Constants {
         public static final Pose2d initialPose = new Pose2d(0, 0, new Rotation2d());
 
         // Drivetrain Constants
-        public static final double trackWidth = Units.inchesToMeters(25.5);
-        public static final double wheelBase = Units.inchesToMeters(30);
+        public static final double trackWidth = Units.inchesToMeters(21.5); 
+        public static final double wheelBase = Units.inchesToMeters(21.5);
         public static final double wheelDiameter = Units.inchesToMeters(4.05);
         public static final double wheelCircumference = wheelDiameter * Math.PI;
 
@@ -210,7 +210,7 @@ public final class Constants {
         public static final double driveKA = (0.27 / 12);
 
         // Swerve Profiling Values
-        public static final double maxSpeed = 1;  // meters per second
+        public static final double maxSpeed = 1; // meters per second
         public static final double maxAngularVelocity = Math.PI * 1.5; // radians per second (rad/s)
         
         // Turbo mode values
@@ -224,7 +224,7 @@ public final class Constants {
             public static final int angleMotorID = 6;
             public static final int angleEncoderID = 2;
 
-            public static final double angleOffset = 203.994;
+            public static final double angleOffset = 0.244873 * 360;
 
         }
 
@@ -234,7 +234,8 @@ public final class Constants {
             public static final int angleMotorID = 7;
             public static final int angleEncoderID = 3;
 
-            public static final double angleOffset = 206.367;
+            public static final double angleOffset = 0.300781 * 360;
+
         }
 
         // Back Right Module - Module 2
@@ -243,7 +244,7 @@ public final class Constants {
             public static final int angleMotorID = 8;
             public static final int angleEncoderID = 4;
 
-            public static final double angleOffset = 330.645;
+            public static final double angleOffset = 0.210693 * 360;
         }
 
         // Back Left Module - Module 3
@@ -252,7 +253,7 @@ public final class Constants {
             public static final int angleMotorID = 9;
             public static final int angleEncoderID = 5;
 
-            public static final double angleOffset = 125.596;
+            public static final double angleOffset = 0.008057 * 360;
         }
 
           // field pose for shooting to speaker
