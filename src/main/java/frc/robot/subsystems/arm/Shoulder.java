@@ -49,7 +49,7 @@ public class Shoulder {
      * 
      * @param targetAngle The angle to rotate to in degrees.
      */
-    public void rotateTo(int targetAngle) {
+    public void rotateTo(double targetAngle) {
         double currentAngle = getAngle();
         double angleDifference = targetAngle - currentAngle;
 

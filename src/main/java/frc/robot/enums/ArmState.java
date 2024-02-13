@@ -12,7 +12,7 @@ public enum ArmState {
      * 
      * @return The angle the shoulder should be at.
      */
-    public int shoulderAngle() {
+    public double shoulderAngle() {
         return switch(this){
                 case INTAKE -> 0;
                 case AMP -> 120;
