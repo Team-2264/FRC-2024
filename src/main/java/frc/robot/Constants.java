@@ -74,10 +74,10 @@ public final class Constants {
      */
     public static final class Arm {
         public static final NeoConfiguration[] neoConfigs = new NeoConfiguration[] {
-            new NeoConfiguration(60),
-            new NeoConfiguration(61),
-            new NeoConfiguration(62),
-            new NeoConfiguration(63)
+            new NeoConfiguration(20),
+            new NeoConfiguration(21),
+            new NeoConfiguration(22),
+            new NeoConfiguration(23)
         };
         public static final double KP = 0.5;
         public static final double KI = 0.001;
@@ -97,17 +97,17 @@ public final class Constants {
     public static class EndEffector {
         public static final int intakeMotorID = 0;
 
-        public static final NeoConfiguration intakeNeoConfig = new NeoConfiguration(0)
+        public static final NeoConfiguration intakeNeoConfig = new NeoConfiguration(26)
             .withKP(0.0)
             .withKI(0.0)
             .withKD(0.0);
 
         public static final NeoConfiguration[] shooterNeoConfigs = new NeoConfiguration[] {
-            new NeoConfiguration(1)
+            new NeoConfiguration(24)
                 .withKP(0.0)
                 .withKI(0.0)
                 .withKD(0.0),
-            new NeoConfiguration(2)
+            new NeoConfiguration(25)
                 .withKP(0.0)
                 .withKI(0.0)
                 .withKD(0.0)
@@ -151,7 +151,7 @@ public final class Constants {
      * Swerve class holds constants related to the swerve drive system.
      */
     public static final class Swerve {
-        public static final int pigeonID = 15;
+        public static final int pigeonID = 1;
         public static final boolean invertGyro = false; // Always ensure Gyro is CCW+ CW-
 
         public static final Pose2d initialPose = new Pose2d(0, 0, new Rotation2d());
@@ -214,15 +214,15 @@ public final class Constants {
         public static final double maxAngularVelocity = Math.PI * 1.5; // radians per second (rad/s)
         
         // Turbo mode values
-        public static final double turboMaxSpeed = 5;
+        public static final double turboMaxSpeed = 3;
         public static final double turboMaxAngularVelocity = Math.PI * 1.5;
 
         // Module Specific Constants
         // Front Left Module - Module 0
         public static final class Mod0 {
-            public static final int driveMotorID = 40;
-            public static final int angleMotorID = 41;
-            public static final int angleEncoderID = 48;
+            public static final int driveMotorID = 10;
+            public static final int angleMotorID = 6;
+            public static final int angleEncoderID = 2;
 
             public static final double angleOffset = 203.994;
 
@@ -230,27 +230,27 @@ public final class Constants {
 
         // Front Right Module - Module 1
         public static final class Mod1 {
-            public static final int driveMotorID = 42;
-            public static final int angleMotorID = 43;
-            public static final int angleEncoderID = 49;
+            public static final int driveMotorID = 11;
+            public static final int angleMotorID = 7;
+            public static final int angleEncoderID = 3;
 
             public static final double angleOffset = 206.367;
         }
 
-        // Back Left Module - Module 2
+        // Back Right Module - Module 2
         public static final class Mod2 {
-            public static final int driveMotorID = 46;
-            public static final int angleMotorID = 47;
-            public static final int angleEncoderID = 50;
+            public static final int driveMotorID = 12;
+            public static final int angleMotorID = 8;
+            public static final int angleEncoderID = 4;
 
             public static final double angleOffset = 330.645;
         }
 
-        // Back Right Module - Module 3
+        // Back Left Module - Module 3
         public static final class Mod3 {
-            public static final int driveMotorID = 44;
-            public static final int angleMotorID = 45;
-            public static final int angleEncoderID = 51;
+            public static final int driveMotorID = 13;
+            public static final int angleMotorID = 9;
+            public static final int angleEncoderID = 5;
 
             public static final double angleOffset = 125.596;
         }
