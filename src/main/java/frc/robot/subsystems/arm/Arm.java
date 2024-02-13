@@ -9,7 +9,7 @@ import frc.robot.enums.ArmState;
  * 
  */
 public class Arm extends SubsystemBase {
-    private final Shoulder shoulder;
+    // private final Shoulder shoulder;
     private final EndEffector endEffector;
     
     private ArmState state;
@@ -18,7 +18,7 @@ public class Arm extends SubsystemBase {
      * Constructs a new Arm instance.
      */
     public Arm() {
-        shoulder = new Shoulder(Constants.Arm.neoConfigs);
+        // shoulder = new Shoulder(Constants.Arm.neoConfigs);
         endEffector = new EndEffector(Constants.EndEffector.intakeNeoConfig, 
             Constants.EndEffector.shooterNeoConfigs,
             Constants.EndEffector.beamBreakPort);
@@ -35,10 +35,10 @@ public class Arm extends SubsystemBase {
     public void setState(ArmState state) {
         this.state = state;
 
-        if (state != ArmState.AUTO_SHOOT) {
-            shoulder.rotateTo(state.shoulderAngle());
+        // if (state != ArmState.AUTO_SHOOT) {
+        //     shoulder.rotateTo(state.shoulderAngle());
 
-        }
+        // }
 
     }
 
@@ -78,18 +78,18 @@ public class Arm extends SubsystemBase {
     @Override 
     public void periodic() {
         // Stop intaking if the end effector has a note
-        if (endEffector.intaking() && endEffector.hasNote()) {
-            endEffector.stopIntake();
+        // if (endEffector.intaking() && endEffector.hasNote()) {
+        //     endEffector.stopIntake();
 
-        }
+        // }
 
-        // Constatly update the angle of the shoulder to a target angle
-        if (state == ArmState.AUTO_SHOOT) {
-            double distance = 0; // TODO: get distance from vision;
-            int angle = (int)Constants.Targeting.getSpeakerArmAngle(distance);
-            shoulder.rotateTo(angle);
+        // // Constatly update the angle of the shoulder to a target angle
+        // if (state == ArmState.AUTO_SHOOT) {
+        //     double distance = 0; // TODO: get distance from vision;
+        //     int angle = (int)Constants.Targeting.getSpeakerArmAngle(distance);
+        //     shoulder.rotateTo(angle);
 
-        }
+        // }
         
     }
 

@@ -34,7 +34,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 public class RobotContainer {
     // Subsystems
     private Swerve swerve = new Swerve();
-    // private final Arm arm = new Arm();
+    private final Arm arm = new Arm();
     private final Leds leds = new Leds(Constants.LedStrip.pwmPort, Constants.LedStrip.numLeds, Constants.LedStrip.scaleFactor);
     // private final Vision vision = new Vision();
 
@@ -69,12 +69,12 @@ public class RobotContainer {
         // controller.povUp().onTrue(new InstantCommand(() -> arm.setState(ArmState.AMP)));
 
         // // arm: intake
-        // controller.R2().onTrue(new InstantCommand(() -> arm.startIntake()));
-        // controller.R2().onFalse(new InstantCommand(() -> arm.stopIntake()));
+        controller.R2().onTrue(new InstantCommand(() -> arm.startIntake()));
+        controller.R2().onFalse(new InstantCommand(() -> arm.stopIntake()));
 
         // // arm: shooter
-        // controller.triangle().onTrue(new InstantCommand(() -> arm.spinupShooter(0.1)));
-        // controller.cross().onTrue(new InstantCommand(() -> arm.stopShooter()));
+        controller.triangle().onTrue(new InstantCommand(() -> arm.spinupShooter(0.4)));
+        controller.cross().onTrue(new InstantCommand(() -> arm.stopShooter()));
         
         // controller.square().onTrue(new ToggleTurbo(swerve));
         // controller.square().onFalse(new ToggleTurbo(swerve));

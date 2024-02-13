@@ -62,7 +62,7 @@ public class EndEffector {
      * @param speed
      */
     public void startIntake() {
-        intakeMoter.rotateAtSpeed(0.2);
+        intakeMoter.rotateAtSpeed(0.6);
         intaking = true;
 
     }
