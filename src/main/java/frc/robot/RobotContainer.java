@@ -63,6 +63,9 @@ public class RobotContainer {
         swerve.setDefaultCommand(new TeleopSwerve(swerve, controller));
         controller.options().onTrue( new InstantCommand(() -> swerve.zeroGyro()));
 
+        controller.square().onTrue(new ToggleTurbo(swerve));
+        controller.square().onFalse(new ToggleTurbo(swerve));
+
         // arm general
         // controller.povDown().onTrue(new InstantCommand(() -> arm.setState(ArmState.INTAKE)));
         // controller.povLeft().onTrue(new InstantCommand(() -> arm.setState(ArmState.HOME)));
@@ -75,9 +78,6 @@ public class RobotContainer {
         // // arm: shooter
         controller.triangle().onTrue(new InstantCommand(() -> arm.spinupShooter(0.4)));
         controller.cross().onTrue(new InstantCommand(() -> arm.stopShooter()));
-        
-        // controller.square().onTrue(new ToggleTurbo(swerve));
-        // controller.square().onFalse(new ToggleTurbo(swerve));
 
     }
 

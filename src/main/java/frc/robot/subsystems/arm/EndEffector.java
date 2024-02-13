@@ -52,15 +52,26 @@ public class EndEffector {
     public void stopShooter() {
         for (Neo motor : shooterMotors) {
             motor.stop();
+
         }
+
     }
 
     /**
      * Starts the intake.
-     * @param speed
      */
     public void startIntake() {
         intakeMoter.rotateAtSpeed(0.6);
+        intaking = true;
+
+    }
+
+
+    /**
+     * Reverses the intake. Sometimes referred to as "outtaking".
+     */
+    public void reverseIntake() {
+        intakeMoter.rotateAtSpeed(-0.3);
         intaking = true;
 
     }
