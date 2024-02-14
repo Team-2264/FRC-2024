@@ -56,24 +56,24 @@ public class EndEffector {
         }
 
     }
-
+    
     /**
      * Starts the intake.
+     * @param speed The speed to intake at from 0 to 1.
      */
-    public void startIntake() {
-        intakeMoter.rotateAtSpeed(0.6);
+    public void intake(double speed) {
+        intakeMoter.rotateAtSpeed(speed);
         intakeStatus = IntakeStatus.INTAKING;
 
     }
 
-
     /**
-     * Reverses the intake. Sometimes referred to as "outtaking".
+     * Reverses the intake. Referred to as "outtaking".
+     * @param speed The speed to outtake at from 0 to 1.
      */
-    public void reverseIntake() {
-        intakeMoter.rotateAtSpeed(-0.3);
+    public void outtake(double speed) {
+        intakeMoter.rotateAtSpeed(-speed);
         intakeStatus = IntakeStatus.OUTTAKING;
-
     }
 
     /**
@@ -82,14 +82,13 @@ public class EndEffector {
     public void stopIntake() {
         intakeMoter.rotateAtSpeed(0);
         intakeStatus = IntakeStatus.STOPPED;
-
     }
 
     /**
      * Returns the state of the intake.
      * @return The state of the intake.
      */
-    public IntakeStatus intaking() {
+    public IntakeStatus intakeStatus() {
         return intakeStatus;
     }
 

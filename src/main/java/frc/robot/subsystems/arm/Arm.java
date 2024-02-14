@@ -3,6 +3,7 @@ package frc.robot.subsystems.arm;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.enums.ArmState;
+import frc.robot.enums.IntakeStatus;
 
 /**
  * Subystem for controlling the arm.
@@ -64,10 +65,14 @@ public class Arm extends SubsystemBase {
     /**
      * Starts the intake.
      */
-    public void startIntake(){
-        endEffector.startIntake();
-    }
+    public void startIntake() {
+        if (endEffector.intakeStatus() == IntakeStatus.STOPPED && !endEffector.hasNote()) {
+            endEffector.intake(Constants.EndEffector.intakeSpeed);
 
+        }
+
+    }
+    
     /**
      * Stops the intake.
      */
@@ -77,11 +82,11 @@ public class Arm extends SubsystemBase {
 
     @Override 
     public void periodic() {
-        // Stop intaking if the end effector has a note
-        // if (endEffector.intaking() && endEffector.hasNote()) {
-        //     endEffector.stopIntake();
+        // Stop intaking if we have a note
+        if (endEffector.intakeStatus() == IntakeStatus.INTAKING && endEffector.hasNote()) {
+            endEffector.stopIntake();
 
-        // }
+        }
 
         // // Constatly update the angle of the shoulder to a target angle
         // if (state == ArmState.AUTO_SHOOT) {

@@ -116,7 +116,7 @@ public final class Constants {
 
         public static final int beamBreakPort = 0;
         
-        public static final double intakeSpeed = 0.5;
+        public static final double intakeSpeed = 0.6;
 
     }
 

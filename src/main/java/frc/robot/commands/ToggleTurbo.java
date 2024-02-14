@@ -15,7 +15,7 @@ public class ToggleTurbo extends Command {
 
     @Override
     public void initialize() {
-        if (swerve.getTurboStatus()==true){
+        if (swerve.getTurboStatus()){
             swerve.toggleTurboMode(false);
         }else{
             swerve.toggleTurboMode(true);
