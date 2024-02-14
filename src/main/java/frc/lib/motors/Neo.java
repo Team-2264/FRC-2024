@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
+import com.revrobotics.CANSparkBase.ExternalFollower;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
   /** Creates a new Neo Subsystem. */
@@ -31,6 +32,9 @@ public class Neo {
     pidNeo.setOutputRange(c.outputRangeLower, c.outputRangeUpper);
     pidNeo.setIZone(0);
 
+    if(c.followMotor.isPresent()) {
+        motor.follow(ExternalFollower.kFollowerSpark, c.followMotor.getAsInt(), c.followInvert);
+    }
   }
 
   /**
