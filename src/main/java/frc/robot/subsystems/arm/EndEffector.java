@@ -3,7 +3,7 @@ package frc.robot.subsystems.arm;
 import edu.wpi.first.wpilibj.DigitalInput;
 import frc.lib.motors.Neo;
 import frc.lib.motors.NeoConfiguration;
-import frc.robot.Constants;
+import frc.robot.enums.IntakeStatus;
 
 /**
  * Subystem for controlling the end effector.
@@ -11,7 +11,7 @@ import frc.robot.Constants;
  */
 public class EndEffector {
     private Neo intakeMoter;
-    private boolean intaking = false;
+    private IntakeStatus intakeStatus = IntakeStatus.STOPPED;
 
     private Neo[] shooterMotors;
 
@@ -62,7 +62,7 @@ public class EndEffector {
      */
     public void startIntake() {
         intakeMoter.rotateAtSpeed(0.6);
-        intaking = true;
+        intakeStatus = IntakeStatus.INTAKING;
 
     }
 
@@ -72,7 +72,7 @@ public class EndEffector {
      */
     public void reverseIntake() {
         intakeMoter.rotateAtSpeed(-0.3);
-        intaking = true;
+        intakeStatus = IntakeStatus.OUTTAKING;
 
     }
 
@@ -81,7 +81,7 @@ public class EndEffector {
      */
     public void stopIntake() {
         intakeMoter.rotateAtSpeed(0);
-        intaking = false;
+        intakeStatus = IntakeStatus.STOPPED;
 
     }
 
@@ -89,8 +89,8 @@ public class EndEffector {
      * Returns the state of the intake.
      * @return The state of the intake.
      */
-    public boolean intaking() {
-        return intaking;
+    public IntakeStatus intaking() {
+        return intakeStatus;
     }
 
     /** 
