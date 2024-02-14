@@ -52,10 +52,7 @@ public class Shoulder {
         double currentAngle = getAngle();
         double angleDifference = targetAngle - currentAngle;
 
-        for (int i = 0; i < motors.length; i++) {
-            motors[i].rotateTo(Conversions.degreesToRevs(angleDifference, Constants.Arm.shoulderRatio));
-
-        }
+        motors[0].rotateTo(Conversions.degreesToRevs(angleDifference, Constants.Arm.shoulderRatio));
 
     }
 

@@ -75,9 +75,12 @@ public final class Constants {
     public static final class Arm {
         public static final NeoConfiguration[] neoConfigs = new NeoConfiguration[] {
             new NeoConfiguration(20),
-            new NeoConfiguration(21),
-            new NeoConfiguration(22),
+            new NeoConfiguration(21)
+                .followMotor(20),
+            new NeoConfiguration(22)
+                .followMotor(20),
             new NeoConfiguration(23)
+                .followMotor(20)
         };
         public static final double KP = 0.5;
         public static final double KI = 0.001;
@@ -111,6 +114,7 @@ public final class Constants {
                 .withKP(0.0)
                 .withKI(0.0)
                 .withKD(0.0)
+                .followMotor(24)
                
         };
 

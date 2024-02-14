@@ -41,20 +41,14 @@ public class EndEffector {
      * Speed is a value between -1 and 1.
      */
     public void spinupShooter(double speed) {
-        for (Neo motor : shooterMotors) {
-            motor.rotateAtSpeed(speed);
-        }
+        shooterMotors[0].rotateAtSpeed(speed);
     }
 
     /**
      * Stops the shooter motors.
      */
     public void stopShooter() {
-        for (Neo motor : shooterMotors) {
-            motor.stop();
-
-        }
-
+        shooterMotors[0].stop();
     }
     
     /**
