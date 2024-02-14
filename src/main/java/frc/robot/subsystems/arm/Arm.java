@@ -11,7 +11,7 @@ import frc.robot.enums.IntakeStatus;
  */
 public class Arm extends SubsystemBase {
     // private final Shoulder shoulder;
-    private final EndEffector endEffector;
+    public final EndEffector endEffector;
     
     private ArmState state;
 
