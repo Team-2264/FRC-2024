@@ -76,9 +76,11 @@ public final class Constants {
         public static final NeoConfiguration[] neoConfigs = new NeoConfiguration[] {
             new NeoConfiguration(20),
             new NeoConfiguration(21)
-                .followMotor(20),
+                .followMotor(20)
+                .withFollowInvert(true),
             new NeoConfiguration(22)
-                .followMotor(20),
+                .followMotor(20)
+                .withFollowInvert(true),
             new NeoConfiguration(23)
                 .followMotor(20)
         };
