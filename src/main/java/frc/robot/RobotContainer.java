@@ -5,8 +5,10 @@
 package frc.robot;
 
 import frc.robot.commands.FeedShooter;
+import frc.robot.commands.SetArmAngle;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.ToggleTurbo;
+import frc.robot.enums.ArmState;
 import frc.robot.subsystems.Climbing;
 import frc.robot.subsystems.Leds;
 import frc.robot.subsystems.Swerve;
@@ -19,6 +21,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -45,8 +48,27 @@ public class RobotContainer {
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
+        // Register named commands - pathplanner
+        NamedCommands.registerCommand("startIntake", new InstantCommand(() -> arm.startIntake()));
+        NamedCommands.registerCommand("stopIntake", new InstantCommand(() -> arm.stopIntake()));
+
+        NamedCommands.registerCommand("spinupShooter", new InstantCommand(() -> arm.spinupShooter(0.1)));
+        NamedCommands.registerCommand("stopShooter", new InstantCommand(() -> arm.stopShooter()));
+
+        NamedCommands.registerCommand("armIntake", new InstantCommand(() -> arm.setState(ArmState.INTAKE)));
+        NamedCommands.registerCommand("armHome", new InstantCommand(() -> arm.setState(ArmState.AMP)));
+        
+        NamedCommands.registerCommand("arm5deg", new SetArmAngle(arm, 5));
+        NamedCommands.registerCommand("arm10deg", new SetArmAngle(arm, 10));
+        NamedCommands.registerCommand("arm15deg", new SetArmAngle(arm, 15));
+        NamedCommands.registerCommand("arm20deg", new SetArmAngle(arm, 20));
+        NamedCommands.registerCommand("arm25deg", new SetArmAngle(arm, 25));
+
+
+        // Configure the button bindings
         configureBindings();
 
+        // Set up autonomous
         autoChooser = AutoBuilder.buildAutoChooser(); // Default auto will be `Commands.none()`
         SmartDashboard.putData("Auto Mode", autoChooser);
         

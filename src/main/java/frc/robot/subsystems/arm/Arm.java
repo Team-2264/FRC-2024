@@ -38,10 +38,18 @@ public class Arm extends SubsystemBase {
         this.state = state;
 
         // if (state != ArmState.AUTO_SHOOT) {
-        //     shoulder.rotateTo(state.shoulderAngle());
+            // setShoulderAngle(state.shoulderAngle());
 
         // }
 
+    }
+
+    /**
+     * Rotates the shoulder to a given angle. NEED TO IMPLEMENT!
+     * 
+     * @param angle The angle to rotate the shoulder to.
+     */
+    public void setShoulderAngle(double angle) {
     }
 
     /**
