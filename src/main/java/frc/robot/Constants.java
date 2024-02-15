@@ -11,6 +11,7 @@ import com.pathplanner.lib.util.ReplanningConfig;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.ArmFeedforward;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -92,12 +93,21 @@ public final class Constants {
                 .withBrakeMode(true)
                 .followMotor(20)
         };
+
         public static final ArmFeedforward shoulderFeedForward = new ArmFeedforward(
             0.0, // kS 
             0.0, // kG 
             0.0, // kV 
             0.0  // kA 
         );
+
+        public static final PIDController shoulderFeedback = new PIDController(
+            0.0, // kP
+            0.0, // kI
+            0.0  // kD
+        );
+
+        public static final double shoulderMaxPower = 0.05;
         
         public static final int angleEncoderID = 1;
 

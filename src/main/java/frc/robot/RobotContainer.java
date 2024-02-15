@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-import frc.robot.commands.MoveArmBy;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.ToggleTurbo;
 import frc.robot.enums.ArmState;

@@ -4,6 +4,7 @@ import java.util.OptionalDouble;
 
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj2.command.ProfiledPIDSubsystem;
+import frc.lib.Math2264;
 import frc.lib.motors.Neo;
 import frc.lib.motors.NeoConfiguration;
 import frc.robot.Constants;
@@ -12,6 +13,8 @@ import frc.robot.Conversions;
 public class Shoulder {
     private Neo[] motors;
     public DutyCycleEncoder absEncoder;
+
+    private OptionalDouble desiredAngle = OptionalDouble.empty();
 
     /**
      * Creates a new Shoulder object.
@@ -54,6 +57,24 @@ public class Shoulder {
     public void rotateConstant(double speed) {
         motors[0].rotateAtSpeed(speed);
 
+        desiredAngle = OptionalDouble.empty();
     }
 
+    public void rotateTo(double angle) {
+        desiredAngle = OptionalDouble.of(angle);
+        Constants.Arm.shoulderFeedback.reset();
+    }
+
+    public void periodic() {
+        if(desiredAngle.isPresent()) {
+            double desiredAngle = this.desiredAngle.getAsDouble();
+            double currentAngle = this.getRots();
+
+            double feedforward = Constants.Arm.shoulderFeedForward.calculate(desiredAngle * 2 * Math.PI, 0);
+            double feedback = Constants.Arm.shoulderFeedback.calculate(currentAngle, desiredAngle);
+
+            double voltage = Math2264.limitMagnitude(feedforward + feedback, Constants.Arm.shoulderMaxPower);
+            motors[0].rotateAtSpeed(voltage);
+        }
+    }
 }
