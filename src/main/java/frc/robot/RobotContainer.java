@@ -7,6 +7,7 @@ package frc.robot;
 import frc.robot.commands.FeedShooter;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.ToggleTurbo;
+import frc.robot.subsystems.Climbing;
 import frc.robot.subsystems.Leds;
 import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.arm.Arm;
@@ -30,6 +31,7 @@ public class RobotContainer {
     // Subsystems
     private final Swerve swerve = new Swerve();
     private final Arm arm = new Arm();
+    private final Climbing climbing = new Climbing();
     private final Leds leds = new Leds(Constants.LedStrip.pwmPort, Constants.LedStrip.numLeds, Constants.LedStrip.scaleFactor);
     // private final Vision vision = new Vision();
 
@@ -61,7 +63,7 @@ public class RobotContainer {
         controller.share().onTrue(new ToggleTurbo(swerve));
         controller.share().onFalse(new ToggleTurbo(swerve));
 
-        // arm general
+        // shoulder
         controller.L2().onTrue(new InstantCommand(() -> arm.shoulder.rotateConstant(0.05)));
         controller.L2().onFalse(new InstantCommand(() -> arm.shoulder.rotateConstant(0)));
 
@@ -77,6 +79,13 @@ public class RobotContainer {
         controller.cross().onTrue(new InstantCommand(() -> arm.stopShooter()));
 
         controller.square().onTrue(new FeedShooter(arm));
+
+        // climbing
+        controller.povUp().onTrue(new InstantCommand(() -> climbing.spinWinch(0.5)));
+        controller.povUp().onFalse(new InstantCommand(() -> climbing.stopWinch()));
+
+        controller.povDown().onTrue(new InstantCommand(() -> climbing.spinWinch(-0.5)));
+        controller.povDown().onFalse(new InstantCommand(() -> climbing.stopWinch()));
 
     }
 
