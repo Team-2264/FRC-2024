@@ -94,14 +94,14 @@ public final class Constants {
                 .followMotor(20)
         };
 
-        public static final ArmFeedforward shoulderFeedForward = new ArmFeedforward(
+        public static ArmFeedforward shoulderFeedForward = new ArmFeedforward(
             0.0, // kS 
             0.0, // kG 
             0.0, // kV 
             0.0  // kA 
         );
 
-        public static final PIDController shoulderFeedback = new PIDController(
+        public static PIDController shoulderFeedback = new PIDController(
             0.0, // kP
             0.0, // kI
             0.0  // kD
