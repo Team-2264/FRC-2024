@@ -4,13 +4,11 @@
 
 package frc.robot;
 
-import frc.robot.commands.MoveArmBy;
+import frc.robot.commands.FeedShooter;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.ToggleTurbo;
-import frc.robot.enums.ArmState;
 import frc.robot.subsystems.Leds;
 import frc.robot.subsystems.Swerve;
-import frc.robot.subsystems.Vision;
 import frc.robot.subsystems.arm.Arm;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -18,10 +16,6 @@ import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import java.util.Optional;
-
-import org.photonvision.EstimatedRobotPose;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 
@@ -34,7 +28,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
  */
 public class RobotContainer {
     // Subsystems
-    private Swerve swerve = new Swerve();
+    private final Swerve swerve = new Swerve();
     private final Arm arm = new Arm();
     private final Leds leds = new Leds(Constants.LedStrip.pwmPort, Constants.LedStrip.numLeds, Constants.LedStrip.scaleFactor);
     // private final Vision vision = new Vision();
@@ -64,24 +58,25 @@ public class RobotContainer {
         swerve.setDefaultCommand(new TeleopSwerve(swerve, controller));
         controller.options().onTrue( new InstantCommand(() -> swerve.zeroGyro()));
 
-        controller.square().onTrue(new ToggleTurbo(swerve));
-        controller.square().onFalse(new ToggleTurbo(swerve));
+        controller.share().onTrue(new ToggleTurbo(swerve));
+        controller.share().onFalse(new ToggleTurbo(swerve));
 
         // arm general
-        controller.L2().onFalse(new InstantCommand(() -> arm.shoulder.rotateConstant(0.05)));
-        controller.square().onTrue(new InstantCommand(() -> arm.shoulder.rotateConstant(0)));
-        controller.L1().onTrue(new InstantCommand(() -> arm.shoulder.rotateConstant(-0.05)));
-        
-        // controller.triangle().onTrue(new InstantCommand(() -> arm.shoulder.rotateRelative(0.05)));
-        // controller.cross().onTrue(new InstantCommand(() -> arm.shoulder.rotateRelative(-0.05)));
+        controller.L2().onTrue(new InstantCommand(() -> arm.shoulder.rotateConstant(0.05)));
+        controller.L2().onFalse(new InstantCommand(() -> arm.shoulder.rotateConstant(0)));
 
-        // arm: intake
+        controller.L1().onTrue(new InstantCommand(() -> arm.shoulder.rotateConstant(-0.05)));
+        controller.L1().onFalse(new InstantCommand(() -> arm.shoulder.rotateConstant(0)));
+
+        // intake
         controller.R2().onTrue(new InstantCommand(() -> arm.startIntake()));
         controller.R2().onFalse(new InstantCommand(() -> arm.stopIntake()));
 
-        // arm: shooter
-        // controller.triangle().onTrue(new InstantCommand(() -> arm.spinupShooter(0.4)));
-        // controller.cross().onTrue(new InstantCommand(() -> arm.stopShooter()));
+        // shooter
+        controller.triangle().onTrue(new InstantCommand(() -> arm.spinupShooter(0.4)));
+        controller.cross().onTrue(new InstantCommand(() -> arm.stopShooter()));
+
+        controller.square().onTrue(new FeedShooter(arm));
 
     }
 
@@ -104,12 +99,11 @@ public class RobotContainer {
         // if(visionPose.isPresent()) {
         //     swerve.addVisionMeasurement(visionPose.get());
         // }
+
     }
 
     public Leds getLeds() {
         return leds;
     }
-
-    // -3 to 110 arm range
 
 }

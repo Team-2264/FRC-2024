@@ -12,7 +12,7 @@ import frc.robot.enums.IntakeStatus;
  */
 public class Arm extends SubsystemBase {
     public final Shoulder shoulder;
-    private final EndEffector endEffector;
+    public final EndEffector endEffector;
     
     private ArmState state;
 
@@ -23,7 +23,7 @@ public class Arm extends SubsystemBase {
         shoulder = new Shoulder(Constants.Arm.neoConfigs);
         endEffector = new EndEffector(Constants.EndEffector.intakeNeoConfig, 
             Constants.EndEffector.shooterNeoConfigs,
-            Constants.EndEffector.beamBreakPort);
+            Constants.EndEffector.beamBreakPorts);
 
         state = ArmState.START;
         
@@ -67,10 +67,10 @@ public class Arm extends SubsystemBase {
      * Starts the intake.
      */
     public void startIntake() {
-        // if (endEffector.intakeStatus() == IntakeStatus.STOPPED && !endEffector.hasNote()) {
+        if (endEffector.intakeStatus() == IntakeStatus.STOPPED && !endEffector.hasNote()) {
             endEffector.intake(Constants.EndEffector.intakeSpeed);
 
-        // }
+        }
 
     }
     
@@ -83,16 +83,14 @@ public class Arm extends SubsystemBase {
 
     @Override 
     public void periodic() {
-        shoulder.periodic();
-        
         SmartDashboard.putNumber("Shoulder abs encoder", shoulder.absEncoder.getAbsolutePosition());
         SmartDashboard.putNumber("Shoulder rel rots", shoulder.getRots());
 
         // Stop intaking if we have a note
-        // if (endEffector.intakeStatus() == IntakeStatus.INTAKING && endEffector.hasNote()) {
-            // endEffector.stopIntake();
+        if (endEffector.intakeStatus() == IntakeStatus.INTAKING && endEffector.hasNote()) {
+            endEffector.stopIntake();
 
-        // }
+        }
 
         // // Constatly update the angle of the shoulder to a target angle
         // if (state == ArmState.AUTO_SHOOT) {
