@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import frc.robot.commands.MoveArmBy;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.ToggleTurbo;
 import frc.robot.enums.ArmState;
@@ -67,9 +68,9 @@ public class RobotContainer {
         controller.square().onFalse(new ToggleTurbo(swerve));
 
         // arm general
-        // controller.povDown().onTrue(new InstantCommand(() -> arm.setState(ArmState.INTAKE)));
+        controller.povDown().onTrue(new MoveArmBy(arm, -1.0/360.0));
         // controller.povLeft().onTrue(new InstantCommand(() -> arm.setState(ArmState.HOME)));
-        // controller.povUp().onTrue(new InstantCommand(() -> arm.setState(ArmState.AMP)));
+        controller.povUp().onTrue(new MoveArmBy(arm, 1.0/360.0));
 
         // // arm: intake
         controller.R2().onTrue(new InstantCommand(() -> arm.startIntake()));

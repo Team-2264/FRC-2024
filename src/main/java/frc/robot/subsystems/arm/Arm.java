@@ -53,6 +53,13 @@ public class Arm extends SubsystemBase {
         endEffector.spinupShooter(speed);
 
     }
+
+    /**
+     * Moves the shoulder by offset rotations.
+     */
+    public void moveShoulder(double offset) {
+        // shoulder.rotateRelative(offset);
+    }
     
     /**
      * Stops the shooter motors.

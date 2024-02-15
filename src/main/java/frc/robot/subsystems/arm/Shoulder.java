@@ -42,6 +42,10 @@ public class Shoulder {
         return relAngle;
     }
 
+    public void rotateRelative(double offset) {
+        motors[0].rotateTo(motors[0].getPosition() + offset);
+    }
+
     /**
      * Rotates the shoulder to a target angle relative to its bottom position.
      * The bottom position is defined as the position where the arm is parallel to the ground.
@@ -50,9 +54,10 @@ public class Shoulder {
      */
     public void rotateTo(double targetAngle) {
         double currentAngle = getAngle();
-        double angleDifference = targetAngle - currentAngle;
+        double angleDifference = Conversions.degreesToRevs(targetAngle - currentAngle, 1);
+        double targetNativeAngle = angleDifference + motors[0].getPosition();
 
-        motors[0].rotateTo(Conversions.degreesToRevs(angleDifference, Constants.Arm.shoulderRatio));
+        motors[0].rotateTo(Conversions.degreesToRevs(targetNativeAngle, Constants.Arm.shoulderRatio));
 
     }
 
