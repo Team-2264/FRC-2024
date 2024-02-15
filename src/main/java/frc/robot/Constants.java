@@ -76,7 +76,10 @@ public final class Constants {
     public static final class Arm {
         public static final NeoConfiguration[] neoConfigs = new NeoConfiguration[] {
             new NeoConfiguration(20)
-                .withBrakeMode(true),
+                .withBrakeMode(true)
+                .withKP(1.0)
+                .withKI(0.0)
+                .withKD(0.1),
             new NeoConfiguration(21)
                 .withBrakeMode(true)
                 .followMotor(20)
@@ -89,18 +92,18 @@ public final class Constants {
                 .withBrakeMode(true)
                 .followMotor(20)
         };
-
         public static final ArmFeedforward shoulderFeedForward = new ArmFeedforward(
             0.0, // kS 
             0.0, // kG 
             0.0, // kV 
             0.0  // kA 
         );
-        public static final int angleEncoderID = 90; 
+        
+        public static final int angleEncoderID = 1;
 
-        public static final double shoulderRatio = -12.76 * 52/18 * 64/10; // not sure if this is correct
+        public static final double shoulderRatio = 235.8276644 / 1; // not sure if this is correct
 
-        public static final double shoulderOffset = 0; // degrees
+        public static final double shoulderOffset = 0.4178160104454; // rotations
 
     }
 

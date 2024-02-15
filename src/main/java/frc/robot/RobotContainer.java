@@ -68,17 +68,20 @@ public class RobotContainer {
         controller.square().onFalse(new ToggleTurbo(swerve));
 
         // arm general
-        controller.povDown().onTrue(new MoveArmBy(arm, -1.0/360.0));
-        // controller.povLeft().onTrue(new InstantCommand(() -> arm.setState(ArmState.HOME)));
-        controller.povUp().onTrue(new MoveArmBy(arm, 1.0/360.0));
+        controller.L2().onFalse(new InstantCommand(() -> arm.shoulder.rotateConstant(0.05)));
+        controller.square().onTrue(new InstantCommand(() -> arm.shoulder.rotateConstant(0)));
+        controller.L1().onTrue(new InstantCommand(() -> arm.shoulder.rotateConstant(-0.05)));
+        
+        // controller.triangle().onTrue(new InstantCommand(() -> arm.shoulder.rotateRelative(0.05)));
+        // controller.cross().onTrue(new InstantCommand(() -> arm.shoulder.rotateRelative(-0.05)));
 
-        // // arm: intake
+        // arm: intake
         controller.R2().onTrue(new InstantCommand(() -> arm.startIntake()));
         controller.R2().onFalse(new InstantCommand(() -> arm.stopIntake()));
 
-        // // arm: shooter
-        controller.triangle().onTrue(new InstantCommand(() -> arm.spinupShooter(0.4)));
-        controller.cross().onTrue(new InstantCommand(() -> arm.stopShooter()));
+        // arm: shooter
+        // controller.triangle().onTrue(new InstantCommand(() -> arm.spinupShooter(0.4)));
+        // controller.cross().onTrue(new InstantCommand(() -> arm.stopShooter()));
 
     }
 
@@ -106,5 +109,7 @@ public class RobotContainer {
     public Leds getLeds() {
         return leds;
     }
+
+    // -3 to 110 arm range
 
 }

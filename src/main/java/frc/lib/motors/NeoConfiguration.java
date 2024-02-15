@@ -9,8 +9,8 @@ public class NeoConfiguration {
     public double kI = 0.001;
     public double kD = 0;
 
-    public double outputRangeLower = -1.0;
-    public double outputRangeUpper = 1.0;
+    public double outputRangeLower = -0.05;
+    public double outputRangeUpper = 0.05;
 
     public boolean breakMode = false;
 

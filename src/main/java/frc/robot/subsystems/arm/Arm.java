@@ -1,5 +1,6 @@
 package frc.robot.subsystems.arm;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.enums.ArmState;
@@ -10,7 +11,7 @@ import frc.robot.enums.IntakeStatus;
  * 
  */
 public class Arm extends SubsystemBase {
-    private final Shoulder shoulder;
+    public final Shoulder shoulder;
     private final EndEffector endEffector;
     
     private ArmState state;
@@ -53,13 +54,6 @@ public class Arm extends SubsystemBase {
         endEffector.spinupShooter(speed);
 
     }
-
-    /**
-     * Moves the shoulder by offset rotations.
-     */
-    public void moveShoulder(double offset) {
-        // shoulder.rotateRelative(offset);
-    }
     
     /**
      * Stops the shooter motors.
@@ -73,10 +67,10 @@ public class Arm extends SubsystemBase {
      * Starts the intake.
      */
     public void startIntake() {
-        if (endEffector.intakeStatus() == IntakeStatus.STOPPED && !endEffector.hasNote()) {
+        // if (endEffector.intakeStatus() == IntakeStatus.STOPPED && !endEffector.hasNote()) {
             endEffector.intake(Constants.EndEffector.intakeSpeed);
 
-        }
+        // }
 
     }
     
@@ -89,11 +83,16 @@ public class Arm extends SubsystemBase {
 
     @Override 
     public void periodic() {
-        // Stop intaking if we have a note
-        if (endEffector.intakeStatus() == IntakeStatus.INTAKING && endEffector.hasNote()) {
-            endEffector.stopIntake();
+        shoulder.periodic();
+        
+        SmartDashboard.putNumber("Shoulder abs encoder", shoulder.absEncoder.getAbsolutePosition());
+        SmartDashboard.putNumber("Shoulder rel rots", shoulder.getRots());
 
-        }
+        // Stop intaking if we have a note
+        // if (endEffector.intakeStatus() == IntakeStatus.INTAKING && endEffector.hasNote()) {
+            // endEffector.stopIntake();
+
+        // }
 
         // // Constatly update the angle of the shoulder to a target angle
         // if (state == ArmState.AUTO_SHOOT) {

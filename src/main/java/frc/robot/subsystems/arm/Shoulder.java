@@ -1,6 +1,9 @@
 package frc.robot.subsystems.arm;
 
+import java.util.OptionalDouble;
+
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj2.command.ProfiledPIDSubsystem;
 import frc.lib.motors.Neo;
 import frc.lib.motors.NeoConfiguration;
 import frc.robot.Constants;
@@ -8,7 +11,7 @@ import frc.robot.Conversions;
 
 public class Shoulder {
     private Neo[] motors;
-    private DutyCycleEncoder absEncoder;
+    public DutyCycleEncoder absEncoder;
 
     /**
      * Creates a new Shoulder object.
@@ -35,29 +38,21 @@ public class Shoulder {
      * 
      * @return The angle of the shoulder in degrees.
      */
-    private double getAngle() {
-        double absAngle = absEncoder.getAbsolutePosition();
-        double relAngle = absAngle + Constants.Arm.shoulderOffset;
+    public double getRots() {
+        double absRotations = absEncoder.getAbsolutePosition();
+        double relRotations = -1.0 * (absRotations - Constants.Arm.shoulderOffset);
         
-        return relAngle;
+        return relRotations;
     }
 
     public void rotateRelative(double offset) {
-        motors[0].rotateTo(motors[0].getPosition() + offset);
+        double setPointRots = motors[0].getPosition() + (offset * Constants.Arm.shoulderRatio);
+
+        motors[0].rotateTo(setPointRots);
     }
 
-    /**
-     * Rotates the shoulder to a target angle relative to its bottom position.
-     * The bottom position is defined as the position where the arm is parallel to the ground.
-     * 
-     * @param targetAngle The angle to rotate to in degrees.
-     */
-    public void rotateTo(double targetAngle) {
-        double currentAngle = getAngle();
-        double angleDifference = Conversions.degreesToRevs(targetAngle - currentAngle, 1);
-        double targetNativeAngle = angleDifference + motors[0].getPosition();
-
-        motors[0].rotateTo(Conversions.degreesToRevs(targetNativeAngle, Constants.Arm.shoulderRatio));
+    public void rotateConstant(double speed) {
+        motors[0].rotateAtSpeed(speed);
 
     }
 

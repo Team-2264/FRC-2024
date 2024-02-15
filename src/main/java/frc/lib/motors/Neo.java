@@ -39,6 +39,8 @@ public class Neo {
     pidNeo.setOutputRange(c.outputRangeLower, c.outputRangeUpper);
     pidNeo.setIZone(0);
 
+    encoder.setVelocityConversionFactor(1.0/60.0);
+
     if(c.followMotor.isPresent()) {
         motor.follow(ExternalFollower.kFollowerSpark, c.followMotor.getAsInt(), c.followInvert);
     }
@@ -65,6 +67,14 @@ public class Neo {
    */
   public double getPosition() {
     return encoder.getPosition();
+  }
+
+  /**
+   * Gets the velocity of the motor.
+   * @return The current velocity of the motor in rotations per second.
+   */
+  public double getVelocity() {
+    return encoder.getVelocity();
   }
 
   /**
