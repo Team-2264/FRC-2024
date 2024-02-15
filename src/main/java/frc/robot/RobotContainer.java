@@ -81,10 +81,10 @@ public class RobotContainer {
         controller.square().onTrue(new FeedShooter(arm));
 
         // climbing
-        controller.povUp().onTrue(new InstantCommand(() -> climbing.spinWinch(0.5)));
+        controller.povUp().onTrue(new InstantCommand(() -> climbing.accend(0.5)));
         controller.povUp().onFalse(new InstantCommand(() -> climbing.stopWinch()));
 
-        controller.povDown().onTrue(new InstantCommand(() -> climbing.spinWinch(-0.5)));
+        controller.povDown().onTrue(new InstantCommand(() -> climbing.descend(0.5)));
         controller.povDown().onFalse(new InstantCommand(() -> climbing.stopWinch()));
 
     }
