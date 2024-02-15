@@ -71,7 +71,7 @@ public class RobotContainer {
         controller.square().onTrue(new InstantCommand(() -> arm.shoulder.rotateConstant(0)));
         controller.L1().onTrue(new InstantCommand(() -> arm.shoulder.rotateConstant(-0.05)));
         
-        // controller.triangle().onTrue(new InstantCommand(() -> arm.shoulder.rotateRelative(0.05)));
+        controller.triangle().onTrue(new InstantCommand(() -> arm.shoulder.rotateTo(0.25)));
         // controller.cross().onTrue(new InstantCommand(() -> arm.shoulder.rotateRelative(-0.05)));
 
         // arm: intake
