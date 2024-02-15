@@ -1,7 +1,6 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.arm.Arm;
-import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 
