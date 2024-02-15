@@ -12,11 +12,18 @@ public class NeoConfiguration {
     public double outputRangeLower = -1.0;
     public double outputRangeUpper = 1.0;
 
+    public boolean breakMode = false;
+
     public OptionalInt followMotor = OptionalInt.empty();
     public boolean followInvert = false;
 
     public NeoConfiguration(int canId) {
         this.canId = canId;
+    }
+
+    public NeoConfiguration withBrakeMode(boolean brake_mode) {
+        this.breakMode = brake_mode;
+        return this;
     }
 
     public NeoConfiguration followMotor(int canId) {

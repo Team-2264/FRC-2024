@@ -9,6 +9,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.ExternalFollower;
+import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
   /** Creates a new Neo Subsystem. */
@@ -24,6 +25,12 @@ public class Neo {
     motor = new CANSparkMax(c.canId, MotorType.kBrushless);
     encoder = motor.getEncoder();
     pidNeo = motor.getPIDController();
+
+    if(c.breakMode) {
+        motor.setIdleMode(IdleMode.kBrake);
+    } else {
+        motor.setIdleMode(IdleMode.kCoast);
+    }
 
     pidNeo.setP(c.kP);
     pidNeo.setI(c.kI);
