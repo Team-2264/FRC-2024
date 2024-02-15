@@ -14,12 +14,12 @@ public enum ArmState {
      */
     public double shoulderAngle() {
         return switch(this){
-                case INTAKE -> 0;
-                case AMP -> 120;
-                case START -> 60;
-                case HOME -> 20;
-                case MANUAL_SHOOT -> 10;
-                case AUTO_SHOOT -> 0; // No angle for auto shoot
+            case INTAKE -> 0;
+            case AMP -> 120;
+            case START -> 60;
+            case HOME -> 20;
+            case MANUAL_SHOOT -> 10;
+            case AUTO_SHOOT -> 0; // No angle for auto shoot
     
         };
     

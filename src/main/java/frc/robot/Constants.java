@@ -138,10 +138,20 @@ public final class Constants {
 
     }
 
+    public static final class Climbing {
+        public static final NeoConfiguration winchNeoConfig = new NeoConfiguration(27)
+            .withKP(0.0)
+            .withKI(0.0)
+            .withKD(0.0);
+        
+        public static final double winchSpeed = 0.5;
+
+    }
+
     /**
      * Vision class holds constants related to the vision system.
      */
-    public static class Vision {
+    public static final class Vision {
         public static final String cameraName = "apriltag";
 
         public static final Matrix<N3, N1> visionStandardDevs = VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(30));
