@@ -343,6 +343,11 @@ public class Swerve extends SubsystemBase {
         return turboModeStatus;
     }
 
+    /**
+     * Adds a vision measurement to the pose estimator. This will correct the robot's pose.
+     * 
+     * @param pose The estimated robot pose.
+     */
     public void addVisionMeasurement(EstimatedRobotPose pose) {
         Pose2d measuredPose = pose.estimatedPose.toPose2d();
 

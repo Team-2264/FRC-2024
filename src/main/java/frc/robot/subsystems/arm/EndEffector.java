@@ -65,7 +65,10 @@ public class EndEffector {
 
     }
 
-    public void intakeFeed() {
+    /**
+     * Feeds a held note into the shooter.
+     */
+    public void feed() {
         intakeMoter.rotateAtSpeed(1);
         intakeStatus = IntakeStatus.FEEDING;
 
@@ -84,8 +87,9 @@ public class EndEffector {
      * Stops the intake motor.
      */
     public void stopIntake() {
-        intakeMoter.rotateAtSpeed(0);
+        intakeMoter.stop();
         intakeStatus = IntakeStatus.STOPPED;
+
     }
 
     /**

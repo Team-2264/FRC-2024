@@ -11,6 +11,11 @@ public class FeedShooter extends Command {
     private final Arm arm;
     private double startTime;
 
+    /**
+     * Creates a new FeedShooter command.
+     * 
+     * @param arm The arm subsystem to use.
+     */
     public FeedShooter(Arm arm){
         this.arm = arm;    
         addRequirements(arm);
@@ -21,7 +26,7 @@ public class FeedShooter extends Command {
     public void initialize() {
         startTime = Timer.getFPGATimestamp();
 
-        arm.endEffector.intakeFeed();
+        arm.endEffector.feed();
         
     }
 

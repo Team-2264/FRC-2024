@@ -9,6 +9,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class ToggleTurbo extends Command {
     private final Swerve swerve;
 
+    /**
+     * Creates a new ToggleTurbo command.
+     * 
+     * @param swerve The swerve subsystem to use.
+     */
     public ToggleTurbo(Swerve swerve){
         this.swerve = swerve;    
     }
@@ -21,7 +26,7 @@ public class ToggleTurbo extends Command {
             swerve.toggleTurboMode(true);
         }
     }
-
+    
     @Override
     public boolean isFinished() {
         return true;

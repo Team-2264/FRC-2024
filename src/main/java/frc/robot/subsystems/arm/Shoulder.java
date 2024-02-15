@@ -1,13 +1,9 @@
 package frc.robot.subsystems.arm;
 
-import java.util.OptionalDouble;
-
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
-import edu.wpi.first.wpilibj2.command.ProfiledPIDSubsystem;
 import frc.lib.motors.Neo;
 import frc.lib.motors.NeoConfiguration;
 import frc.robot.Constants;
-import frc.robot.Conversions;
 
 public class Shoulder {
     private Neo[] motors;
@@ -45,12 +41,21 @@ public class Shoulder {
         return relRotations;
     }
 
+    /**
+     * Rotates the shoulder relative to its current position.
+     * 
+     * @param offset The amount to rotate the shoulder in rotations.
+     */
     public void rotateRelative(double offset) {
         double setPointRots = motors[0].getPosition() + (offset * Constants.Arm.shoulderRatio);
 
         motors[0].rotateTo(setPointRots);
     }
 
+    /**
+     * Rotates the shoulder at a constant speed.
+     * @param speed The speed to rotate the shoulder at.
+     */
     public void rotateConstant(double speed) {
         motors[0].rotateAtSpeed(speed);
 

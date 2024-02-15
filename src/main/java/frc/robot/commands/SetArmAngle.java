@@ -12,6 +12,12 @@ public class SetArmAngle extends Command {
     private final Arm arm;
     private final int angle;
 
+    /**
+     * Creates a new SetArmAngle command.
+     * 
+     * @param arm The arm subsystem to use.
+     * @param angle The angle to set the arm to.
+     */
     public SetArmAngle(Arm arm, int angle) {
         this.arm = arm;    
         addRequirements(arm);
