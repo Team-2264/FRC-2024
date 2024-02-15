@@ -10,7 +10,7 @@ import frc.robot.enums.IntakeStatus;
  * 
  */
 public class Arm extends SubsystemBase {
-    // private final Shoulder shoulder;
+    private final Shoulder shoulder;
     private final EndEffector endEffector;
     
     private ArmState state;
@@ -19,7 +19,7 @@ public class Arm extends SubsystemBase {
      * Constructs a new Arm instance.
      */
     public Arm() {
-        // shoulder = new Shoulder(Constants.Arm.neoConfigs);
+        shoulder = new Shoulder(Constants.Arm.neoConfigs);
         endEffector = new EndEffector(Constants.EndEffector.intakeNeoConfig, 
             Constants.EndEffector.shooterNeoConfigs,
             Constants.EndEffector.beamBreakPort);

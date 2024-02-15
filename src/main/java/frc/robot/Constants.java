@@ -10,6 +10,7 @@ import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -88,9 +89,13 @@ public final class Constants {
                 .withBrakeMode(true)
                 .followMotor(20)
         };
-        public static final double KP = 0.5;
-        public static final double KI = 0.001;
-        public static final double KD = 0;
+
+        public static final ArmFeedforward shoulderFeedForward = new ArmFeedforward(
+            0.0, // kS 
+            0.0, // kG 
+            0.0, // kV 
+            0.0  // kA 
+        );
         public static final int angleEncoderID = 90; 
 
         public static final double shoulderRatio = -12.76 * 52/18 * 64/10; // not sure if this is correct
