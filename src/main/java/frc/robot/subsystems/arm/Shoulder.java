@@ -8,7 +8,7 @@ import frc.robot.Conversions;
 
 public class Shoulder {
     private Neo[] motors;
-    private DutyCycleEncoder absEncoder;
+    public DutyCycleEncoder absEncoder;
 
     /**
      * Creates a new Shoulder object.

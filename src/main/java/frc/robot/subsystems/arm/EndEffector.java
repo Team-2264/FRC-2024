@@ -15,7 +15,7 @@ public class EndEffector {
 
     private Neo[] shooterMotors;
 
-    private DigitalInput intakeBeam;
+    private DigitalInput[] intakeBeams;
 
     /**
      * Constructs a new EndEffector instance.
@@ -23,7 +23,7 @@ public class EndEffector {
      * @param intakeMotorID The ID of the intake motor.
      * @param shooterMotorIDs The IDs of the shooter motors.
      */
-    public EndEffector(NeoConfiguration intakeNeoConfig, NeoConfiguration[] shooterNeoConfigs, int beamBreakPort) {
+    public EndEffector(NeoConfiguration intakeNeoConfig, NeoConfiguration[] shooterNeoConfigs, int[] beamBreakPorts) {
         // create motors
         intakeMoter = new Neo(intakeNeoConfig);
         shooterMotors = new Neo[shooterNeoConfigs.length];
@@ -31,8 +31,12 @@ public class EndEffector {
             shooterMotors[i] = new Neo(shooterNeoConfigs[i]);
         }
 
-        // create beam
-        intakeBeam = new DigitalInput(beamBreakPort);
+        // create beams
+        intakeBeams = new DigitalInput[2];
+        for (int i = 0; i < beamBreakPorts.length; i++) {
+            intakeBeams[i] = new DigitalInput(beamBreakPorts[i]);
+
+        }
         
     }
 
@@ -67,6 +71,12 @@ public class EndEffector {
 
     }
 
+    public void intakeFeed() {
+        intakeMoter.rotateAtSpeed(1);
+        intakeStatus = IntakeStatus.FEEDING;
+
+    }
+
     /**
      * Reverses the intake. Referred to as "outtaking".
      * @param speed The speed to outtake at from 0 to 1.
@@ -94,10 +104,10 @@ public class EndEffector {
 
     /** 
      * Returns the state of the intakes beam.
-     * @return The state of the intake beam.
+     * @return The state of the intake beam. 
      */
     public boolean hasNote() {
-        return !intakeBeam.get();
+        return intakeBeams[0].get() || intakeBeams[1].get(); 
 
     }
 

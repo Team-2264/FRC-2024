@@ -1,5 +1,6 @@
 package frc.robot.subsystems.arm;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.enums.ArmState;
@@ -10,7 +11,7 @@ import frc.robot.enums.IntakeStatus;
  * 
  */
 public class Arm extends SubsystemBase {
-    // private final Shoulder shoulder;
+    public final Shoulder shoulder;
     public final EndEffector endEffector;
     
     private ArmState state;
@@ -19,10 +20,10 @@ public class Arm extends SubsystemBase {
      * Constructs a new Arm instance.
      */
     public Arm() {
-        // shoulder = new Shoulder(Constants.Arm.neoConfigs);
+        shoulder = new Shoulder(Constants.Arm.neoConfigs);
         endEffector = new EndEffector(Constants.EndEffector.intakeNeoConfig, 
             Constants.EndEffector.shooterNeoConfigs,
-            Constants.EndEffector.beamBreakPort);
+            Constants.EndEffector.beamBreakPorts);
 
         state = ArmState.START;
         

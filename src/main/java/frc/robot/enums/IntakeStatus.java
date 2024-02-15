@@ -5,6 +5,6 @@ package frc.robot.enums;
  * 
  */
 public enum IntakeStatus {
-    STOPPED, INTAKING, OUTTAKING;
+    STOPPED, INTAKING, OUTTAKING, FEEDING;
 
 }

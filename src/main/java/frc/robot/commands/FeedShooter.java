@@ -22,7 +22,7 @@ public class FeedShooter extends Command {
     public void initialize() {
         startTime = Timer.getFPGATimestamp();
 
-        arm.endEffector.intake(1);
+        arm.endEffector.intakeFeed();
         
     }
 
@@ -35,7 +35,7 @@ public class FeedShooter extends Command {
 
     @Override
     public boolean isFinished() {
-        return (Timer.getFPGATimestamp() - startTime) > 0.3;
+        return (Timer.getFPGATimestamp() - startTime) > 1;
 
     }
 
