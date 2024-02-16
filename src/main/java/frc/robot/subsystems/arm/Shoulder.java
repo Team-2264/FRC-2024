@@ -68,34 +68,6 @@ public class Shoulder {
     }
 
     public void periodic() {
-
-        SmartDashboard.setDefaultNumber("Shoulder kS", 0.0);
-        SmartDashboard.setDefaultNumber("Shoulder kG", 0.0);
-        SmartDashboard.setDefaultNumber("Shoulder kV", 0.0);
-        SmartDashboard.setDefaultNumber("Shoulder kA", 0.0);
-        SmartDashboard.setDefaultNumber("Shoulder kP", 0.0);
-        SmartDashboard.setDefaultNumber("Shoulder kI", 0.0);
-        SmartDashboard.setDefaultNumber("Shoulder kD", 0.0);
-
-        double kS = SmartDashboard.getNumber("Shoulder kS", 0); 
-        double kG = SmartDashboard.getNumber("Shoulder kG", 0); 
-        double kV = SmartDashboard.getNumber("Shoulder kV", 0); 
-        double kA = SmartDashboard.getNumber("Shoulder kA", 0); 
-        double kP = SmartDashboard.getNumber("Shoulder kP", 0);
-        double kI = SmartDashboard.getNumber("Shoulder kI", 0);
-        double kD = SmartDashboard.getNumber("Shoulder kD", 0);
-
-        Constants.Arm.shoulderFeedForward = new ArmFeedforward(
-            kS,
-            kG,
-            kV,
-            kA
-        );
-
-        Constants.Arm.shoulderFeedback.setP(kP);
-        Constants.Arm.shoulderFeedback.setI(kI);
-        Constants.Arm.shoulderFeedback.setD(kD);
-
         if(desiredAngle.isPresent()) {
             double desiredAngle = this.desiredAngle.getAsDouble();
             double currentAngle = this.getRots();
