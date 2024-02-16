@@ -65,7 +65,7 @@ public final class Constants {
         public static final TrajectoryParameters armParameters = new TrajectoryParameters()
             .withArmLength(1)
             .withGoalHeight(2.5)
-            .withLaunchAngleOffset(1.12399203828);
+            .withLaunchAngleOffset(58.97 * (Math.PI/180.0));
 
          /** 
          *  Get the arm angle to hit the speaker
