@@ -64,10 +64,14 @@ public final class Constants {
                 new Rotation3d()
         ));
 
+        public static double pivotToGround = 0.3001;
+        public static double pivotToCenter = 0.2286;
+        public static double logicalArmOffset = 12.742 / 180.0 * Math.PI;
+
         public static final TrajectoryParameters armParameters = new TrajectoryParameters()
-            .withArmLength(1)
-            .withGoalHeight(2.5)
-            .withLaunchAngleOffset(58.97 * (Math.PI/180.0));
+            .withArmLength(0.5917)
+            .withGoalHeight(speakerPose.getZ() - pivotToGround)
+            .withLaunchAngleOffset(107.258 * (Math.PI/180.0));
 
          /** 
          *  Get the arm angle to hit the speaker
@@ -78,9 +82,9 @@ public final class Constants {
          * 
          */
         public static final OptionalDouble getSpeakerArmAngle(double targetDistance) {
-            ArmAngleEstimation estimate = armParameters.getEstimate(targetDistance, 12);
+            ArmAngleEstimation estimate = armParameters.getEstimate(targetDistance + pivotToCenter, 12);
             if(estimate.inaccuracy < 0.1) {
-                return OptionalDouble.of(estimate.estimate * 1/(2*Math.PI));
+                return OptionalDouble.of(estimate.estimate * 1/(2*Math.PI) + logicalArmOffset);
             } else {
                 return OptionalDouble.empty();
             }
