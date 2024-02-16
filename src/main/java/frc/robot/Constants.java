@@ -118,6 +118,7 @@ public final class Constants {
         );
 
         public static final double shoulderMaxPower = 0.70;
+        public static final double shoulderMaxAngle = 100.0 / 360.0;
         
         public static final int angleEncoderID = 1;
 

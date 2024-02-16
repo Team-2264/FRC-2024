@@ -76,9 +76,15 @@ public class Shoulder {
     }
 
     public void periodic() {
+        double currentAngle = this.getRots();
+
+        if(currentAngle > Constants.Arm.shoulderMaxAngle) {
+            motors[0].stop();
+            return;
+        }
+
         if(desiredAngle.isPresent()) {
             double desiredAngle = this.desiredAngle.getAsDouble();
-            double currentAngle = this.getRots();
 
             double feedforward = Constants.Arm.shoulderFeedForward.calculate(desiredAngle * 2 * Math.PI, 0);
             double feedback = Constants.Arm.shoulderFeedback.calculate(currentAngle, desiredAngle);
