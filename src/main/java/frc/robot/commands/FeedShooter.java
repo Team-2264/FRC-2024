@@ -18,8 +18,7 @@ public class FeedShooter extends Command {
      */
     public FeedShooter(Arm arm){
         this.arm = arm;    
-        addRequirements(arm);
-        
+
     }
 
     @Override

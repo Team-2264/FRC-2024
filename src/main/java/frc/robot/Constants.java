@@ -217,11 +217,6 @@ public final class Constants {
             new Translation2d(-wheelBase / 2.0, -trackWidth / 2.0),
             new Translation2d(-wheelBase / 2.0, trackWidth / 2.0)
             
-            
-            
-
-            
-            
         );
 
         public static final frc.lib.motors.TalonFxConfiguration angleMotorConfig = new TalonFxConfiguration()
@@ -258,7 +253,7 @@ public final class Constants {
         public static final double driveKA = (0.27 / 12);
 
         // Swerve Profiling Values
-        public static final double maxSpeed = 1; // meters per second
+        public static final double maxSpeed = 1.5; // meters per second
         public static final double maxAngularVelocity = Math.PI * 1.5; // radians per second (rad/s)
         
         // Turbo mode values

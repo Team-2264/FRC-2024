@@ -5,16 +5,20 @@
 package frc.robot;
 
 import frc.robot.commands.FeedShooter;
-import frc.robot.commands.SetArmAngle;
+import frc.robot.commands.StartShoot;
+import frc.robot.commands.StopShoot;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.ToggleTurbo;
 import frc.robot.enums.ArmState;
 import frc.robot.subsystems.Climbing;
 import frc.robot.subsystems.Leds;
 import frc.robot.subsystems.Swerve;
+import frc.robot.subsystems.Vision;
 import frc.robot.subsystems.arm.Arm;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.Joystick;
@@ -37,7 +41,7 @@ public class RobotContainer {
     private final Arm arm = new Arm();
     private final Climbing climbing = new Climbing();
     private final Leds leds = new Leds(Constants.LedStrip.pwmPort, Constants.LedStrip.numLeds, Constants.LedStrip.scaleFactor);
-    // private final Vision vision = new Vision();
+    private final Vision vision = new Vision();
 
     // Controllers
     private final CommandPS4Controller controller = new CommandPS4Controller(Constants.Operator.controllerPort);
@@ -67,13 +71,6 @@ public class RobotContainer {
 
         NamedCommands.registerCommand("armIntake", new InstantCommand(() -> arm.setState(ArmState.INTAKE)));
         NamedCommands.registerCommand("armHome", new InstantCommand(() -> arm.setState(ArmState.AMP)));
-        
-        NamedCommands.registerCommand("arm5deg", new SetArmAngle(arm, 5));
-        NamedCommands.registerCommand("arm10deg", new SetArmAngle(arm, 10));
-        NamedCommands.registerCommand("arm15deg", new SetArmAngle(arm, 15));
-        NamedCommands.registerCommand("arm20deg", new SetArmAngle(arm, 20));
-        NamedCommands.registerCommand("arm25deg", new SetArmAngle(arm, 25));
-
 
         // Configure the button bindings
         configureBindings();
@@ -93,11 +90,11 @@ public class RobotContainer {
         controller.options().onTrue( new InstantCommand(() -> swerve.zeroGyro()));
 
         controller.share().onTrue(new ToggleTurbo(swerve));
-        controller.share().onFalse(new ToggleTurbo(swerve));
+        controller.share().onFalse(new ToggleTurbo(swerve)); 
 
         // shoulder
         controller.povUp().onTrue(new InstantCommand(() -> arm.setState(ArmState.AMP)));
-        controller.povLeft().onTrue(new InstantCommand(() -> arm.setState(ArmState.START)));
+        controller.povLeft().onTrue(new InstantCommand(() -> arm.setState(ArmState.HOME)));
         controller.povDown().onTrue(new InstantCommand(() -> arm.setState(ArmState.INTAKE)));
         controller.povRight().onTrue(new InstantCommand(() -> arm.setState(ArmState.CLIMB)));
         
@@ -109,12 +106,26 @@ public class RobotContainer {
         manualArmDown.onFalse(new InstantCommand(() -> arm.shoulder.rotateConstant(0)));
     
         // intake
-        controller.R2().onTrue(new InstantCommand(() -> arm.startIntake()));
-        controller.R2().onFalse(new InstantCommand(() -> arm.stopIntake()));
+        controller.R2().onTrue(new SequentialCommandGroup(
+            new InstantCommand(() -> arm.startIntake()),
+            new InstantCommand(() -> arm.setState(ArmState.INTAKE))
+
+        ));
+        controller.R2().onFalse(new SequentialCommandGroup(
+            new InstantCommand(() -> arm.stopIntake()),
+            new InstantCommand(() -> arm.setState(ArmState.HOME))
+
+        ));
 
         // shooter
-        controller.triangle().onTrue(new InstantCommand(() -> arm.spinupShooter(0.8)));
-        controller.cross().onTrue(new InstantCommand(() -> arm.stopShooter()));
+        controller.L2().onTrue( new SequentialCommandGroup(
+            new StartShoot(arm),
+            new InstantCommand(() -> arm.setState(ArmState.MANUAL_SHOOT))
+        ));
+        controller.L2().onFalse(new SequentialCommandGroup(
+            new StopShoot(arm),
+            new InstantCommand(() -> arm.setState(ArmState.HOME))
+        ));
 
         controller.R1().onTrue(new FeedShooter(arm));
 
