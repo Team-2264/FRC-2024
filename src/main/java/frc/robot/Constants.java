@@ -25,6 +25,7 @@ import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib.FieldPose;
+import frc.lib.TrajectoryParameters;
 import frc.lib.motors.NeoConfiguration;
 import frc.lib.motors.TalonFxConfiguration;
 
@@ -51,23 +52,21 @@ public final class Constants {
      * Targeting class holds constants related to targeting.
      */
     public static final class Targeting {
-        public static final double armLength = 1; // meters
-
-        public static final double targetHeight = 2.5;
+        public static final TrajectoryParameters armParameters = new TrajectoryParameters()
+            .withArmLength(1)
+            .withGoalHeight(2.5)
+            .withLaunchAngleOffset(Math.PI / 4);
 
          /** 
          *  Get the arm angle to hit the speaker
-         *  Visualiation: https://www.desmos.com/calculator/zvokkhmnqa
+         *  Visualiation: https://www.desmos.com/calculator/wgwhg7msod
          * 
          *  @param targetDistance The distance to the speaker
          *  @return The angle to hit the speaker in degrees
          * 
          */
         public static final double getSpeakerArmAngle(double targetDistance) {
-            double numerator = Math.sqrt(-(armLength * armLength) + (targetHeight * targetHeight) + (targetDistance * targetDistance)) + targetHeight;
-            double angle = Math.atan(numerator / (armLength + targetDistance));
-
-            return Math.toDegrees(angle);
+            return armParameters.getEstimate(targetDistance, 12).estimate;
         }
 
     }
