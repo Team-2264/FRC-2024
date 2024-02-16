@@ -102,7 +102,8 @@ public class RobotContainer {
         // controller.L1().onFalse(new InstantCommand(() -> arm.shoulder.rotateConstant(0)));
 
         // intake
-        controller.R2().onTrue(new Intake(arm));
+        controller.R2().onTrue(new InstantCommand(() -> arm.startIntake()));
+        controller.R2().onFalse(new InstantCommand(() -> arm.stopIntake()));
 
         // shooter
         controller.triangle().onTrue(new InstantCommand(() -> arm.spinupShooter(0.8)));
@@ -111,8 +112,10 @@ public class RobotContainer {
         controller.square().onTrue(new FeedShooter(arm));
 
         // climbing
-        controller.L1().whileTrue(new Accend(climbing));
-        controller.L2().whileTrue(new Descend(climbing));
+        controller.L1().onTrue(new InstantCommand(() -> climbing.descend(0.6)));
+        controller.L1().onFalse(new InstantCommand(() -> climbing.stopWinch()));
+        controller.L1().onFalse(new InstantCommand(() -> climbing.accend(0.6)));
+        controller.L2().onFalse(new InstantCommand(() -> climbing.stopWinch()));
 
     }
 
