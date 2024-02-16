@@ -43,6 +43,7 @@ public final class Constants {
      */
     public static class Operator {
         public static final int controllerPort = 0;
+        public static final int controller2Port = 1;
         public static final double stickDeadband = 0.1;
 
     }
