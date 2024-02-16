@@ -68,8 +68,11 @@ public class Shoulder {
     }
 
     public void rotateTo(double angle) {
+        if(desiredAngle.isEmpty()) {
+            Constants.Arm.shoulderFeedback.reset();
+        }
+
         desiredAngle = OptionalDouble.of(angle);
-        Constants.Arm.shoulderFeedback.reset();
     }
 
     public void periodic() {

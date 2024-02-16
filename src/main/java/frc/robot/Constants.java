@@ -24,6 +24,7 @@ import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.lib.ArmAngleEstimation;
 import frc.lib.FieldPose;
 import frc.lib.TrajectoryParameters;
 import frc.lib.motors.NeoConfiguration;
@@ -52,10 +53,19 @@ public final class Constants {
      * Targeting class holds constants related to targeting.
      */
     public static final class Targeting {
+          // field pose for shooting to speaker
+        public static final FieldPose speakerPose = FieldPose.fromNative(new Pose3d(
+            new Translation3d(
+                Units.inchesToMeters(9.055), // x
+                Units.inchesToMeters(218.42), // y
+                Units.inchesToMeters(82.9)), // z
+                new Rotation3d()
+        ));
+
         public static final TrajectoryParameters armParameters = new TrajectoryParameters()
             .withArmLength(1)
             .withGoalHeight(2.5)
-            .withLaunchAngleOffset(Math.PI / 4);
+            .withLaunchAngleOffset(1.12399203828);
 
          /** 
          *  Get the arm angle to hit the speaker
@@ -65,8 +75,8 @@ public final class Constants {
          *  @return The angle to hit the speaker in degrees
          * 
          */
-        public static final double getSpeakerArmAngle(double targetDistance) {
-            return armParameters.getEstimate(targetDistance, 12).estimate;
+        public static final ArmAngleEstimation getSpeakerArmAngle(double targetDistance) {
+            return armParameters.getEstimate(targetDistance, 12);
         }
 
     }
@@ -292,15 +302,6 @@ public final class Constants {
 
             public static final double angleOffset = 0.008057 * 360;
         }
-
-          // field pose for shooting to speaker
-        public static final FieldPose speakerPose = FieldPose.fromNative(new Pose3d(
-            new Translation3d(
-                Units.inchesToMeters(9.055), // x
-                Units.inchesToMeters(218.42), // y
-                Units.inchesToMeters(82.9)), // z
-                new Rotation3d()
-        ));
 
         // Autonomous 
         public static final HolonomicPathFollowerConfig pathFollowerConfig = 
