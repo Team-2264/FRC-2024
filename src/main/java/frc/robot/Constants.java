@@ -157,7 +157,8 @@ public final class Constants {
             .withKD(0.0)
             .withBrakeMode(true);
         
-        public static final double winchSpeed = 0.5;
+        public static final double accendSpeed = 0.5;
+        public static final double descendSpeed = 0.5;
 
     }
 
