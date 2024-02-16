@@ -1,5 +1,7 @@
 package frc.robot.commands;
 
+import java.util.OptionalDouble;
+
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.lib.ArmAngleEstimation;
@@ -26,9 +28,9 @@ public class AutoTarget extends Command {
     @Override
     public void execute() {
         final double distance_to_speaker = swerve.getPose().getTranslation().minus(speakerTranslation).getNorm();
-        final ArmAngleEstimation angle_estimate = Constants.Targeting.getSpeakerArmAngle(distance_to_speaker);
-        if(angle_estimate.inaccuracy < 0.1) {
-            arm.shoulder.rotateTo(angle_estimate.estimate);
+        final OptionalDouble angle_estimate = Constants.Targeting.getSpeakerArmAngle(distance_to_speaker);
+        if(angle_estimate.isPresent()) {
+            arm.shoulder.rotateTo(angle_estimate.getAsDouble());
         }
    }
 

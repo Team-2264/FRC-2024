@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import java.util.OptionalDouble;
+
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
@@ -75,8 +77,13 @@ public final class Constants {
          *  @return The angle to hit the speaker in degrees
          * 
          */
-        public static final ArmAngleEstimation getSpeakerArmAngle(double targetDistance) {
-            return armParameters.getEstimate(targetDistance, 12);
+        public static final OptionalDouble getSpeakerArmAngle(double targetDistance) {
+            ArmAngleEstimation estimate = armParameters.getEstimate(targetDistance, 12);
+            if(estimate.inaccuracy < 0.1) {
+                return OptionalDouble.of(estimate.estimate * 1/(2*Math.PI));
+            } else {
+                return OptionalDouble.empty();
+            }
         }
 
     }
