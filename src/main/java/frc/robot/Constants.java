@@ -11,6 +11,7 @@ import com.pathplanner.lib.util.ReplanningConfig;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.ArmFeedforward;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -22,6 +23,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib.FieldPose;
 import frc.lib.motors.NeoConfiguration;
 import frc.lib.motors.TalonFxConfiguration;
@@ -92,12 +94,21 @@ public final class Constants {
                 .withBrakeMode(true)
                 .followMotor(20)
         };
-        public static final ArmFeedforward shoulderFeedForward = new ArmFeedforward(
+
+        public static ArmFeedforward shoulderFeedForward = new ArmFeedforward(
             0.0, // kS 
-            0.0, // kG 
+            0.025, // kG 
             0.0, // kV 
             0.0  // kA 
         );
+
+        public static PIDController shoulderFeedback = new PIDController(
+            7.5, // kP
+            0.01, // kI
+            0.1  // kD
+        );
+
+        public static final double shoulderMaxPower = 0.70;
         
         public static final int angleEncoderID = 1;
 
@@ -106,7 +117,6 @@ public final class Constants {
         public static final double shoulderOffset = 0.4178160104454; // rotations
 
     }
-
 
     /**
      *  EndEffector class holds constants related to the end effector.
