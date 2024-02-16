@@ -108,7 +108,7 @@ public final class Constants {
             0.1  // kD
         );
 
-        public static final double shoulderMaxPower = 0.70;
+        public static final double shoulderMaxPower = 0.50;
         
         public static final int angleEncoderID = 1;
 
@@ -127,7 +127,8 @@ public final class Constants {
         public static final NeoConfiguration intakeNeoConfig = new NeoConfiguration(26)
             .withKP(0.0)
             .withKI(0.0)
-            .withKD(0.0);
+            .withKD(0.0)
+            .withBrakeMode(true);
 
         public static final NeoConfiguration[] shooterNeoConfigs = new NeoConfiguration[] {
             new NeoConfiguration(24)
@@ -152,7 +153,8 @@ public final class Constants {
         public static final NeoConfiguration winchNeoConfig = new NeoConfiguration(27)
             .withKP(0.0)
             .withKI(0.0)
-            .withKD(0.0);
+            .withKD(0.0)
+            .withBrakeMode(true);
         
         public static final double winchSpeed = 0.5;
 

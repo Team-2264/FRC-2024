@@ -86,28 +86,35 @@ public class RobotContainer {
         controller.share().onFalse(new ToggleTurbo(swerve));
 
         // shoulder
-        controller.L2().onTrue(new InstantCommand(() -> arm.shoulder.rotateConstant(0.05)));
-        controller.L2().onFalse(new InstantCommand(() -> arm.shoulder.rotateConstant(0)));
+        // controller.L2().onTrue(new InstantCommand(() ->  arm.shoulder.rotateConstant(0.075)));
+        // controller.L2().onFalse(new InstantCommand(() -> arm.shoulder.rotateConstant(0)));
 
-        controller.L1().onTrue(new InstantCommand(() -> arm.shoulder.rotateConstant(-0.05)));
-        controller.L1().onFalse(new InstantCommand(() -> arm.shoulder.rotateConstant(0)));
+        // controller.L1().onTrue(new InstantCommand(() -> arm.shoulder.rotateConstant(-0.075)));
+        // controller.L1().onFalse(new InstantCommand(() -> arm.shoulder.rotateConstant(0)));
+
+        controller.povUp().onTrue(new InstantCommand(() -> arm.setState(ArmState.START)));
+        controller.povLeft().onTrue(new InstantCommand(() -> arm.setState(ArmState.HOME)));
+        controller.povDown().onTrue(new InstantCommand(() -> arm.setState(ArmState.INTAKE)));
+        controller.povRight().onTrue(new SetArmAngle(arm, 0.25));
+
+        controller.circle().onTrue(new InstantCommand(() -> arm.shoulder.rotateTo(0.125)));
 
         // intake
         controller.R2().onTrue(new InstantCommand(() -> arm.startIntake()));
         controller.R2().onFalse(new InstantCommand(() -> arm.stopIntake()));
 
         // shooter
-        controller.triangle().onTrue(new InstantCommand(() -> arm.spinupShooter(0.4)));
+        controller.triangle().onTrue(new InstantCommand(() -> arm.spinupShooter(0.8)));
         controller.cross().onTrue(new InstantCommand(() -> arm.stopShooter()));
 
         controller.square().onTrue(new FeedShooter(arm));
 
         // climbing
-        controller.povUp().onTrue(new InstantCommand(() -> climbing.accend(0.5)));
-        controller.povUp().onFalse(new InstantCommand(() -> climbing.stopWinch()));
+        controller.L2().onTrue(new InstantCommand(() -> climbing.descend(0.5)));
+        controller.L2().onFalse(new InstantCommand(() -> climbing.stopWinch()));
 
-        controller.povDown().onTrue(new InstantCommand(() -> climbing.descend(0.5)));
-        controller.povDown().onFalse(new InstantCommand(() -> climbing.stopWinch()));
+        controller.L1().onTrue(new InstantCommand(() -> climbing.accend(0.5)));
+        controller.L1().onFalse(new InstantCommand(() -> climbing.stopWinch()));
 
     }
 

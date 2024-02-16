@@ -12,7 +12,6 @@ public class Climbing extends SubsystemBase {
     private Neo winchMotor;
     private ClimbingStatus climbingStatus;
     
-
     /**
      * Creates a new Climbing object.
      */

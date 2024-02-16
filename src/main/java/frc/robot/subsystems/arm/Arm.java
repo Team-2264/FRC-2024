@@ -37,19 +37,21 @@ public class Arm extends SubsystemBase {
     public void setState(ArmState state) {
         this.state = state;
 
-        // if (state != ArmState.AUTO_SHOOT) {
-            // setShoulderAngle(state.shoulderAngle());
+        if (state != ArmState.CUSTOM) {
+            setShoulderAngle(state.shoulderAngle());
 
-        // }
+        }
 
     }
 
     /**
-     * Rotates the shoulder to a given angle. NEED TO IMPLEMENT!
+     * Rotates the shoulder to a given angle.
      * 
      * @param angle The angle to rotate the shoulder to.
      */
     public void setShoulderAngle(double angle) {
+        shoulder.rotateTo(angle);
+
     }
 
     /**
@@ -91,6 +93,8 @@ public class Arm extends SubsystemBase {
 
     @Override 
     public void periodic() {
+        shoulder.periodic();
+
         SmartDashboard.putNumber("Shoulder abs encoder", shoulder.absEncoder.getAbsolutePosition());
         SmartDashboard.putNumber("Shoulder rel rots", shoulder.getRots());
 

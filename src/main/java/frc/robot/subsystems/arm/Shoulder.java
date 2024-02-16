@@ -47,17 +47,6 @@ public class Shoulder {
     }
 
     /**
-     * Rotates the shoulder relative to its current position.
-     * 
-     * @param offset The amount to rotate the shoulder in rotations.
-     */
-    public void rotateRelative(double offset) {
-        double setPointRots = motors[0].getPosition() + (offset * Constants.Arm.shoulderRatio);
-
-        motors[0].rotateTo(setPointRots);
-    }
-
-    /**
      * Rotates the shoulder at a constant speed.
      * @param speed The speed to rotate the shoulder at.
      */
