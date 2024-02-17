@@ -169,9 +169,16 @@ public class Swerve extends SubsystemBase {
             Pose2d robot_pose = getPose();
 
             Translation2d look_vector = lockedOnto.get().minus(robot_pose.getTranslation()); // Vector from robot to target
-            Rotation2d targetRotation = new Rotation2d(look_vector.getX(), look_vector.getY()); // Rotation of vector
+            Rotation2d look_rotation = new Rotation2d(look_vector.getX(), look_vector.getY()).rotateBy(new Rotation2d(Math.PI)); // Rotation of vector
 
-            rotation = rotationLockController.calculate(robot_pose.getRotation().getRadians(), targetRotation.getRadians());
+            double targetRotationOffest = MathUtil.angleModulus(look_rotation.minus(robot_pose.getRotation()).getRadians());
+
+            double targetRotation = robot_pose.getRotation().getRadians() + targetRotationOffest;
+            if (Math.abs(targetRotationOffest) < Math.toRadians(2)) {
+                rotation = 0;
+            } else {
+                rotation = rotationLockController.calculate(robot_pose.getRotation().getRadians(), targetRotation) * 3;
+            }
         }
 
         rotation = Math2264.limitMagnitude(rotation, Constants.Swerve.maxAngularVelocity);

@@ -8,6 +8,7 @@ import frc.robot.commands.FeedShooter;
 import frc.robot.commands.StartShoot;
 import frc.robot.commands.StopShoot;
 import frc.robot.commands.TeleopSwerve;
+import frc.robot.commands.AutoTarget;
 import frc.robot.commands.ChoiceShoot;
 import frc.robot.commands.ChoiceState;
 import frc.robot.commands.ToggleTurbo;
@@ -96,6 +97,8 @@ public class RobotContainer {
 
         controller.share().onTrue(new ToggleTurbo(swerve));
         controller.share().onFalse(new ToggleTurbo(swerve)); 
+
+        controller.circle().onTrue(new AutoTarget(arm, swerve));
 
         // shoulder
         controller.povUp().onTrue(new InstantCommand(() -> arm.setState(ArmState.AMP)));

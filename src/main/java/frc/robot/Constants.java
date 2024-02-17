@@ -217,7 +217,7 @@ public final class Constants {
         public static final boolean invertGyro = false; // Always ensure Gyro is CCW+ CW-
 
         public static final Pose2d initialPose = new Pose2d(
-            Units.inchesToMeters(39.3701), // x
+            Units.inchesToMeters(39.3701 * 2), // x
             Units.inchesToMeters(218.42), // y
             new Rotation2d()
         );
@@ -334,10 +334,10 @@ public final class Constants {
             );
 
         // Robot rotation locking
+        public static final double rotationLockKP = 2.5;
+        public static final double rotationLockKI = 0.01;
+        public static final double rotationLockKD = 0;
 
-        public static final double rotationLockKP = 1.0;
-        public static final double rotationLockKI = 0.0;
-        public static final double rotationLockKD = 0.0;
     }
 
 
