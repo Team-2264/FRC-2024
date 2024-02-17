@@ -347,7 +347,7 @@ public class Swerve extends SubsystemBase {
 
         double averageDistance = totalDistance / pose.targetsUsed.size();
 
-        double devMultiplier = averageDistance;
+        double devMultiplier = 1.0 / (averageDistance * averageDistance);
         if(pose.targetsUsed.size() == 1) {
             devMultiplier *= Constants.Vision.singleTargetMultiplier;
         }
@@ -360,6 +360,10 @@ public class Swerve extends SubsystemBase {
     @Override
     public void periodic() {
         SmartDashboard.putBoolean("TURBO", turboModeStatus);
+
+        field.setRobotPose(getPose());
+
+        SmartDashboard.putData(field);
 
         poseEstimator.update(getGyroAngle(), getModulePositions());
 

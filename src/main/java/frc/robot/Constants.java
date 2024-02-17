@@ -196,13 +196,16 @@ public final class Constants {
         public static final String cameraName = "apriltag";
 
         public static final Matrix<N3, N1> visionStandardDevs = VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(30));
-        public static double singleTargetMultiplier = 0.33;
+        public static double singleTargetMultiplier = 0;
         
         // Robot to Camera Transform
         public static final Transform3d robotToCamera = new Transform3d(
-            new Translation3d(Units.inchesToMeters(0), Units.inchesToMeters(0), Units.inchesToMeters(0)),
-            new Rotation3d(0, 0, 0)
-
+            new Pose3d(
+                new Translation3d(-Units.inchesToMeters(12), 0, 0),
+                new Rotation3d(0, 0, Math.PI)
+            ),
+            new Pose3d()
+            
         );
 
     }
