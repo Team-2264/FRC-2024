@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import java.util.OptionalDouble;
+
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
@@ -23,8 +25,9 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.lib.ArmAngleEstimation;
 import frc.lib.FieldPose;
+import frc.lib.TrajectoryParameters;
 import frc.lib.motors.NeoConfiguration;
 import frc.lib.motors.TalonFxConfiguration;
 
@@ -52,23 +55,39 @@ public final class Constants {
      * Targeting class holds constants related to targeting.
      */
     public static final class Targeting {
-        public static final double armLength = 1; // meters
+          // field pose for shooting to speaker
+        public static final FieldPose speakerPose = FieldPose.fromNative(new Pose3d(
+            new Translation3d(
+                Units.inchesToMeters(9.055), // x
+                Units.inchesToMeters(218.42), // y
+                Units.inchesToMeters(82.9)), // z
+                new Rotation3d()
+        ));
 
-        public static final double targetHeight = 2.5;
+        public static double pivotToGround = 0.3001;
+        public static double pivotToCenter = 0.2286;
+        public static double logicalArmOffset = 12.742 / 180.0 * Math.PI;
+
+        public static final TrajectoryParameters armParameters = new TrajectoryParameters()
+            .withArmLength(0.5917)
+            .withGoalHeight(speakerPose.getZ() - pivotToGround)
+            .withLaunchAngleOffset(107.258 * (Math.PI/180.0));
 
          /** 
          *  Get the arm angle to hit the speaker
-         *  Visualiation: https://www.desmos.com/calculator/zvokkhmnqa
+         *  Visualiation: https://www.desmos.com/calculator/wgwhg7msod
          * 
          *  @param targetDistance The distance to the speaker
          *  @return The angle to hit the speaker in degrees
          * 
          */
-        public static final double getSpeakerArmAngle(double targetDistance) {
-            double numerator = Math.sqrt(-(armLength * armLength) + (targetHeight * targetHeight) + (targetDistance * targetDistance)) + targetHeight;
-            double angle = Math.atan(numerator / (armLength + targetDistance));
-
-            return Math.toDegrees(angle);
+        public static final OptionalDouble getSpeakerArmAngle(double targetDistance) {
+            ArmAngleEstimation estimate = armParameters.getEstimate(targetDistance - pivotToCenter, 12);
+            if(estimate.inaccuracy < 0.1) {
+                return OptionalDouble.of(0.5 - (estimate.estimate + logicalArmOffset) * 1/(2*Math.PI));
+            } else {
+                return OptionalDouble.empty();
+            }
         }
 
     }
@@ -298,15 +317,6 @@ public final class Constants {
 
             public static final double angleOffset = 0.008057 * 360;
         }
-
-          // field pose for shooting to speaker
-        public static final FieldPose speakerPose = FieldPose.fromNative(new Pose3d(
-            new Translation3d(
-                Units.inchesToMeters(9.055), // x
-                Units.inchesToMeters(218.42), // y
-                Units.inchesToMeters(82.9)), // z
-                new Rotation3d()
-        ));
 
         // Autonomous 
         public static final HolonomicPathFollowerConfig pathFollowerConfig = 
