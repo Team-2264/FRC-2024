@@ -3,6 +3,7 @@ package frc.robot.commands;
 import java.util.OptionalDouble;
 
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.arm.Arm;
@@ -26,11 +27,12 @@ public class AutoTarget extends Command {
 
     @Override
     public void execute() {
-        // final double distance_to_speaker = swerve.getPose().getTranslation().minus(speakerTranslation).getNorm();
-        // final OptionalDouble angle_estimate = Constants.Targeting.getSpeakerArmAngle(distance_to_speaker);
-        // if(angle_estimate.isPresent()) {
-        //     arm.shoulder.rotateTo(angle_estimate.getAsDouble());
-        // }
+        final double distance_to_speaker = swerve.getPose().getTranslation().minus(speakerTranslation).getNorm();
+        final OptionalDouble angle_estimate = Constants.Targeting.getSpeakerArmAngle(distance_to_speaker);
+        if(angle_estimate.isPresent()) {
+            SmartDashboard.putNumber("Processed angle estimatw", angle_estimate.getAsDouble());
+            arm.shoulder.rotateTo(angle_estimate.getAsDouble());
+        }
 
    }
 

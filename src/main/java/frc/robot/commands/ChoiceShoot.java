@@ -30,6 +30,9 @@ public class ChoiceShoot extends Command {
     } else if (heldButtons.getHeld() == 2) { // Holding square -> amp
       arm.spinupShooter(0.2);
 
+    } else {
+       arm.spinupShooter(1);
+
     }
 
   }

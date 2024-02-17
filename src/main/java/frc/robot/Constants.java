@@ -25,6 +25,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib.ArmAngleEstimation;
 import frc.lib.FieldPose;
 import frc.lib.TrajectoryParameters;
@@ -70,7 +71,7 @@ public final class Constants {
 
         public static final TrajectoryParameters armParameters = new TrajectoryParameters()
             .withArmLength(0.5917)
-            .withGoalHeight(speakerPose.getZ() - pivotToGround)
+            .withGoalHeight(speakerPose.getWpiBlue().getZ() - pivotToGround)
             .withLaunchAngleOffset(107.258 * (Math.PI/180.0));
 
          /** 
@@ -82,9 +83,15 @@ public final class Constants {
          * 
          */
         public static final OptionalDouble getSpeakerArmAngle(double targetDistance) {
-            ArmAngleEstimation estimate = armParameters.getEstimate(targetDistance - pivotToCenter, 12);
+            double pivotDistance = targetDistance - pivotToCenter;
+            SmartDashboard.putNumber("Pivot distance", pivotDistance);
+
+            ArmAngleEstimation estimate = armParameters.getEstimate(pivotDistance, 12);
+            SmartDashboard.putNumber("Raw angle estimate", Math.toDegrees(estimate.estimate));
+            SmartDashboard.putNumber("Raw angle inaccurcy", estimate.inaccuracy);
+    
             if(estimate.inaccuracy < 0.1) {
-                return OptionalDouble.of(0.5 - (estimate.estimate + logicalArmOffset) * 1/(2*Math.PI));
+                return OptionalDouble.of(0.5 - (estimate.estimate + logicalArmOffset) * (1/(2*Math.PI)));
             } else {
                 return OptionalDouble.empty();
             }
@@ -339,6 +346,5 @@ public final class Constants {
         public static final double rotationLockKD = 0;
 
     }
-
 
 }
