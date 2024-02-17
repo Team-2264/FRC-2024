@@ -82,7 +82,7 @@ public final class Constants {
          * 
          */
         public static final OptionalDouble getSpeakerArmAngle(double targetDistance) {
-            ArmAngleEstimation estimate = armParameters.getEstimate(targetDistance + pivotToCenter, 12);
+            ArmAngleEstimation estimate = armParameters.getEstimate(targetDistance - pivotToCenter, 12);
             if(estimate.inaccuracy < 0.1) {
                 return OptionalDouble.of(estimate.estimate * 1/(2*Math.PI) + logicalArmOffset);
             } else {
