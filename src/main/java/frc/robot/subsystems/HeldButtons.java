@@ -7,6 +7,10 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+/**
+ * Held buttons subsystem is used to store the current held button on the controller. This is used to determine the outcome of some commands.
+ *
+ */
 public class HeldButtons extends SubsystemBase {
   private int heldbutton;
 
@@ -29,6 +33,6 @@ public class HeldButtons extends SubsystemBase {
   @Override
   public void periodic() {
     SmartDashboard.putNumber("HELD", heldbutton);
-    // This method will be called once per scheduler run
+
   }
 }

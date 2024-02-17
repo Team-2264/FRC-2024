@@ -57,7 +57,7 @@ public class RobotContainer {
     private final JoystickButton manualArmDown = new JoystickButton(controller2, 7);
     
     private final JoystickButton manualClimbUp = new JoystickButton(controller2, 12);
-    private final JoystickButton climbDown = new JoystickButton(controller2, 11);
+    private final JoystickButton manualClimbDown = new JoystickButton(controller2, 11);
     
 
     // Autonomous
@@ -102,13 +102,6 @@ public class RobotContainer {
         controller.povLeft().onTrue(new InstantCommand(() -> arm.setState(ArmState.START)));
         controller.povDown().onTrue(new InstantCommand(() -> arm.setState(ArmState.HOME)));
         
-        // ==== Manual Shoulder ====
-        manualArmUp.onTrue(new InstantCommand(() -> arm.shoulder.rotateConstant(0.075)));
-        manualArmUp.onFalse(new InstantCommand(() -> arm.shoulder.rotateConstant(0)));
-
-        manualArmDown.onTrue(new InstantCommand(() -> arm.shoulder.rotateConstant(-0.075)));
-        manualArmDown.onFalse(new InstantCommand(() -> arm.shoulder.rotateConstant(0)));
-    
         // intake
         controller.R2().onTrue(new SequentialCommandGroup(
             new InstantCommand(() -> arm.startIntake()),
@@ -121,8 +114,11 @@ public class RobotContainer {
 
         ));
 
+        controller.triangle().onTrue(new InstantCommand(() -> arm.endEffector.outtake(1)));
+        controller.triangle().onFalse(new InstantCommand(() -> arm.endEffector.stopIntake()));
+
         // shooter
-        controller.L2().onTrue( new SequentialCommandGroup(
+        controller.L2().onTrue(new SequentialCommandGroup(
             new ChoiceShoot(arm, heldButtons),
             new ChoiceState(arm, heldButtons)
 
@@ -138,9 +134,16 @@ public class RobotContainer {
         manualClimbUp.onTrue(new InstantCommand(() -> climbing.accend(0.6)));
         manualClimbUp.onFalse(new InstantCommand(() -> climbing.stopWinch()));
 
-        climbDown.onTrue(new InstantCommand(() -> climbing.descend(0.6)));
-        climbDown.onFalse(new InstantCommand(() -> climbing.stopWinch()));
+        manualClimbDown.onTrue(new InstantCommand(() -> climbing.descend(0.6)));
+        manualClimbDown.onFalse(new InstantCommand(() -> climbing.stopWinch()));
 
+        // ==== Manual Shoulder ====
+        manualArmUp.onTrue(new InstantCommand(() -> arm.shoulder.rotateConstant(0.075)));
+        manualArmUp.onFalse(new InstantCommand(() -> arm.shoulder.rotateConstant(0)));
+
+        manualArmDown.onTrue(new InstantCommand(() -> arm.shoulder.rotateConstant(-0.075)));
+        manualArmDown.onFalse(new InstantCommand(() -> arm.shoulder.rotateConstant(0)));
+    
         // Held buttons
         controller.cross().onTrue(new InstantCommand(() -> heldButtons.setHeld(1)));
         controller.cross().onFalse(new InstantCommand(() -> heldButtons.setHeld(0)));
@@ -148,7 +151,6 @@ public class RobotContainer {
         controller.square().onTrue(new InstantCommand(() -> heldButtons.setHeld(2)));
         controller.square().onFalse(new InstantCommand(() -> heldButtons.setHeld(0)));
 
-    
     }
 
      /**
