@@ -6,23 +6,35 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
+import frc.robot.enums.ArmState;
+import frc.robot.subsystems.HeldButtons;
 import frc.robot.subsystems.arm.Arm;
 
-public class StartShoot extends Command {
+public class ChoiceState extends Command {
   private final Arm arm;
-  
-  /** Creates a new StartShoot. */
-  public StartShoot(Arm arm) {
+  private final HeldButtons heldButtons;
+
+  /** Creates a new Test. */
+  public ChoiceState(Arm arm, HeldButtons heldButtons) {
     this.arm = arm;
-    
-    
+    this.heldButtons = heldButtons;
+
+    addRequirements(arm);
+    addRequirements(heldButtons);
     // Use addRequirements() here to declare subsystem dependencies.
+
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    arm.spinupShooter(1);
+    if (heldButtons.getHeld() == 1) {
+      arm.setState(ArmState.MANUAL_SHOOT);
+
+    } else if (heldButtons.getHeld() == 2) {
+      arm.setState(ArmState.AMP);
+
+    }
 
   }
 

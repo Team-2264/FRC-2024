@@ -95,8 +95,11 @@ public class Arm extends SubsystemBase {
     public void periodic() {
         shoulder.periodic();
 
+        SmartDashboard.putString("ENDEFFECTOR TEST", endEffector.intakeStatus().toString());
+
         SmartDashboard.putNumber("Shoulder abs encoder", shoulder.absEncoder.getAbsolutePosition());
         SmartDashboard.putNumber("Shoulder rel rots", shoulder.getRots());
+        SmartDashboard.putBoolean("intake BEAMS", endEffector.hasNote());
 
         // Stop intaking if we have a note
         if (endEffector.intakeStatus() == IntakeStatus.INTAKING && endEffector.hasNote()) {

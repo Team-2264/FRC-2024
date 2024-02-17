@@ -15,7 +15,7 @@ public enum ArmState {
     public double shoulderAngle() {
         double degrees = switch(this){
             case INTAKE -> 0;
-            case AMP -> 90;
+            case AMP -> 100;
             case START -> 50;
             case HOME -> 2;
             case CLIMB -> 90;

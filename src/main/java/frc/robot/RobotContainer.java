@@ -8,17 +8,20 @@ import frc.robot.commands.FeedShooter;
 import frc.robot.commands.StartShoot;
 import frc.robot.commands.StopShoot;
 import frc.robot.commands.TeleopSwerve;
+import frc.robot.commands.ChoiceShoot;
+import frc.robot.commands.ChoiceState;
 import frc.robot.commands.ToggleTurbo;
 import frc.robot.enums.ArmState;
 import frc.robot.subsystems.Climbing;
+import frc.robot.subsystems.HeldButtons;
 import frc.robot.subsystems.Leds;
 import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.Vision;
 import frc.robot.subsystems.arm.Arm;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.Joystick;
@@ -42,6 +45,8 @@ public class RobotContainer {
     private final Climbing climbing = new Climbing();
     private final Leds leds = new Leds(Constants.LedStrip.pwmPort, Constants.LedStrip.numLeds, Constants.LedStrip.scaleFactor);
     private final Vision vision = new Vision();
+
+    private final HeldButtons heldButtons = new HeldButtons();
 
     // Controllers
     private final CommandPS4Controller controller = new CommandPS4Controller(Constants.Operator.controllerPort);
@@ -94,9 +99,8 @@ public class RobotContainer {
 
         // shoulder
         controller.povUp().onTrue(new InstantCommand(() -> arm.setState(ArmState.AMP)));
-        controller.povLeft().onTrue(new InstantCommand(() -> arm.setState(ArmState.HOME)));
-        controller.povDown().onTrue(new InstantCommand(() -> arm.setState(ArmState.INTAKE)));
-        controller.povRight().onTrue(new InstantCommand(() -> arm.setState(ArmState.CLIMB)));
+        controller.povLeft().onTrue(new InstantCommand(() -> arm.setState(ArmState.START)));
+        controller.povDown().onTrue(new InstantCommand(() -> arm.setState(ArmState.HOME)));
         
         // ==== Manual Shoulder ====
         manualArmUp.onTrue(new InstantCommand(() -> arm.shoulder.rotateConstant(0.075)));
@@ -119,8 +123,9 @@ public class RobotContainer {
 
         // shooter
         controller.L2().onTrue( new SequentialCommandGroup(
-            new StartShoot(arm),
-            new InstantCommand(() -> arm.setState(ArmState.MANUAL_SHOOT))
+            new ChoiceShoot(arm, heldButtons),
+            new ChoiceState(arm, heldButtons)
+
         ));
         controller.L2().onFalse(new SequentialCommandGroup(
             new StopShoot(arm),
@@ -135,6 +140,14 @@ public class RobotContainer {
 
         climbDown.onTrue(new InstantCommand(() -> climbing.descend(0.6)));
         climbDown.onFalse(new InstantCommand(() -> climbing.stopWinch()));
+
+        // Held buttons
+        controller.cross().onTrue(new InstantCommand(() -> heldButtons.setHeld(1)));
+        controller.cross().onFalse(new InstantCommand(() -> heldButtons.setHeld(0)));
+
+        controller.square().onTrue(new InstantCommand(() -> heldButtons.setHeld(2)));
+        controller.square().onFalse(new InstantCommand(() -> heldButtons.setHeld(0)));
+
     
     }
 

@@ -74,6 +74,13 @@ public class EndEffector {
 
     }
 
+    public void slowFeed() {
+        intakeMoter.rotateAtSpeed(0.3);
+        intakeStatus = IntakeStatus.FEEDING;
+
+
+    }
+
     /**
      * Reverses the intake. Referred to as "outtaking".
      * @param speed The speed to outtake at from 0 to 1.
