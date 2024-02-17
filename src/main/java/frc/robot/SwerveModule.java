@@ -1,5 +1,6 @@
 package frc.robot;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -85,8 +86,14 @@ public class SwerveModule {
      */
     private void setAngle(SwerveModuleState desiredState) {
         Rotation2d angle = (Math.abs(desiredState.speedMetersPerSecond) <= (Constants.Swerve.maxSpeed * 0.01)) ? lastAngle: desiredState.angle; // Prevent rotating module if speed is less then 1%. Prevents Jittering.
+        Rotation2d current_angle = getAngle();
 
-        angleMotor.rotateTo(Conversions.degreesToRevs(angle.getDegrees(), Constants.Swerve.angleGearRatio));
+        double angleOffset = angle.getRadians() - current_angle.getRadians();
+        angleOffset = MathUtil.angleModulus(angleOffset);
+
+        double wrapped_target_angle = current_angle.getRadians() + angleOffset;
+
+        angleMotor.rotateTo(Conversions.degreesToRevs(Math.toDegrees(wrapped_target_angle), Constants.Swerve.angleGearRatio));
 
         lastAngle = angle;
     }
