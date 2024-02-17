@@ -144,7 +144,7 @@ public class RobotContainer {
         manualArmDown.onTrue(new InstantCommand(() -> arm.shoulder.rotateConstant(-0.075)));
         manualArmDown.onFalse(new InstantCommand(() -> arm.shoulder.rotateConstant(0)));
     
-        // Held buttons
+        // ==== Held buttons ====
         controller.cross().onTrue(new InstantCommand(() -> heldButtons.setHeld(1)));
         controller.cross().onFalse(new InstantCommand(() -> heldButtons.setHeld(0)));
 

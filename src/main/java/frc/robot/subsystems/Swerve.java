@@ -168,11 +168,10 @@ public class Swerve extends SubsystemBase {
         if(lockedOnto.isPresent()) {
             Pose2d robot_pose = getPose();
 
-            Translation2d look_vector = lockedOnto.get().minus(robot_pose.getTranslation());
-            double targetRotationOffset = MathUtil.angleModulus(new Rotation2d(look_vector.getX(), look_vector.getY()).minus(robot_pose.getRotation()).getRadians());
-            double targetRotation = robot_pose.getRotation().getRadians() + targetRotationOffset;
+            Translation2d look_vector = lockedOnto.get().minus(robot_pose.getTranslation()); // Vector from robot to target
+            Rotation2d targetRotation = new Rotation2d(look_vector.getX(), look_vector.getY()); // Rotation of vector
 
-            rotation = rotationLockController.calculate(robot_pose.getRotation().getRadians(), targetRotation);
+            rotation = rotationLockController.calculate(robot_pose.getRotation().getRadians(), targetRotation.getRadians());
         }
 
         rotation = Math2264.limitMagnitude(rotation, Constants.Swerve.maxAngularVelocity);
@@ -213,23 +212,6 @@ public class Swerve extends SubsystemBase {
     public Pose2d getPose() {
         return poseEstimator.getEstimatedPosition();
 
-    }
-
-    /**
-    * Converts a pose from robot space to a pose in the SwerveOdometry.getPoseMeters() space.
-    * <ul>
-    *     <li>(0, 0) in robot space is the robot itself</li>
-    *     <li>(1, 0) is 1 meter in from of the robot</li>
-    *     <li>(0, 1) is 1 meter to the right of the robot</li>
-    * </ul>
-    * @param robotSpacePose A pose in robot space
-    * @return The specified pose in swerve space
-    */
-    public Pose2d poseFromRobotSpace(Pose2d robotSpacePose) {
-        Pose2d robot_pose = this.getPose();
-
-        return robotSpacePose.relativeTo(robot_pose);
-        
     }
 
      /**
