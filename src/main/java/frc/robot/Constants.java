@@ -57,9 +57,17 @@ public final class Constants {
      */
     public static final class Targeting {
           // field pose for shooting to speaker
-        public static FieldPose speakerPose = FieldPose.fromWpiBlue(new Pose3d(
+        public static FieldPose blueSpeakerPose = FieldPose.fromWpiBlue(new Pose3d(
             new Translation3d(
                 Units.inchesToMeters(0), // x
+                Units.inchesToMeters(218.42), // y
+                Units.inchesToMeters(82.9)), // z
+                new Rotation3d()
+        ));
+
+        public static FieldPose redSpeakerPose = FieldPose.fromWpiBlue(new Pose3d(
+            new Translation3d(
+                Units.inchesToMeters(652.73), // x
                 Units.inchesToMeters(218.42), // y
                 Units.inchesToMeters(82.9)), // z
                 new Rotation3d()
@@ -71,7 +79,7 @@ public final class Constants {
 
         public static TrajectoryParameters armParameters = new TrajectoryParameters()
             .withArmLength(0.5917)
-            .withGoalHeight(speakerPose.getWpiBlue().getZ() - pivotToGround)
+            .withGoalHeight(blueSpeakerPose.getWpiBlue().getZ() - pivotToGround)
             .withLaunchAngleOffset(107.258 * (Math.PI/180.0));
 
          /** 
@@ -230,10 +238,9 @@ public final class Constants {
         public static final Pose2d initialPose = new Pose2d(
             Units.inchesToMeters(39.3701 * 2), // x
             Units.inchesToMeters(218.42), // y
-            new Rotation2d()
+            new Rotation2d(Math.PI)
         );
      
-
         // Drivetrain Constants
         public static final double trackWidth = Units.inchesToMeters(21.5); 
         public static final double wheelBase = Units.inchesToMeters(21.5);

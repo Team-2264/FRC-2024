@@ -4,9 +4,12 @@
 
 package frc.robot.commands;
 
+import java.util.Optional;
 import java.util.OptionalDouble;
 
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Swerve;
@@ -37,10 +40,23 @@ public class ChoiceState extends Command {
       arm.setState(ArmState.AMP);
 
     } else {
-      Translation2d speakerTranslation = Constants.Targeting.speakerPose.getWpiBlue().getTranslation().toTranslation2d();
-      swerve.lockOnto(speakerTranslation);
-      arm.lockOnto(speakerTranslation);
-      
+      Optional<Alliance> alliance2 = DriverStation.getAlliance();
+      if(alliance2.isEmpty()) {
+        throw new RuntimeException("Failed to get native pose: Alliance is not set in Driverstation");
+      }
+
+      Alliance alliance = alliance2.get();
+
+      if(alliance == Alliance.Blue) {
+        Translation2d speakerTranslation = Constants.Targeting.blueSpeakerPose.getWpiBlue().getTranslation().toTranslation2d();
+        swerve.lockOnto(speakerTranslation);
+        arm.lockOnto(speakerTranslation);
+      } else {
+        Translation2d speakerTranslation = Constants.Targeting.redSpeakerPose.getWpiBlue().getTranslation().toTranslation2d();
+        swerve.lockOnto(speakerTranslation);
+        arm.lockOnto(speakerTranslation);
+      }
+
     }
 
   } 

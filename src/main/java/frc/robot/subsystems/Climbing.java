@@ -27,7 +27,7 @@ public class Climbing extends SubsystemBase {
      * @param speed The speed to accend at from 0 to 1.
      */
     public void accend(double speed) {
-        winchMotor.rotateAtSpeed(speed);
+        winchMotor.rotateAtSpeed(-speed);
         climbingStatus = ClimbingStatus.ACCENDING;
 
     }
@@ -38,7 +38,7 @@ public class Climbing extends SubsystemBase {
      * @param speed The speed to decend at from 0 to 1.
      */
     public void descend(double speed) {
-        winchMotor.rotateAtSpeed(-speed);
+        winchMotor.rotateAtSpeed(speed);
         climbingStatus = ClimbingStatus.DESCENDING;
 
     }

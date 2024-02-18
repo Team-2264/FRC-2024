@@ -99,8 +99,6 @@ public class RobotContainer {
         controller.share().onTrue(new ToggleTurbo(swerve));
         controller.share().onFalse(new ToggleTurbo(swerve)); 
 
-        // controller.circle().onTrue(new AutoTarget(arm, swerve));
-
         // shoulder
         controller.povUp().onTrue(new InstantCommand(() -> arm.setState(ArmState.AMP)));
         controller.povLeft().onTrue(new InstantCommand(() -> arm.setState(ArmState.START)));

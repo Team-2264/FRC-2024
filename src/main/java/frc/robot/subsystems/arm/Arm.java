@@ -31,11 +31,6 @@ public class Arm extends SubsystemBase {
 
     private Optional<Translation2d> lockedOnto = Optional.empty();
 
-    
-    private final Translation2d speakerTranslation = Constants.Targeting.speakerPose.getWpiBlue().getTranslation().toTranslation2d();
-
-
-
     /**
      * Constructs a new Arm instance.
      */
@@ -140,22 +135,9 @@ public class Arm extends SubsystemBase {
 
         // If we are locked onto a speaker, calculate the arm angle
         if (lockedOnto.isPresent()) {
-            final double distance_to_speaker = container.swerve.getPose().getTranslation().minus(speakerTranslation).getNorm();
+            final double distance_to_speaker = container.swerve.getPose().getTranslation().minus(lockedOnto.get()).getNorm();
 
-            double heightOffset = (Math.pow(((0.7 * distance_to_speaker) - 0.9), 3));
-
-            Constants.Targeting.speakerPose =  FieldPose.fromWpiBlue(new Pose3d(
-            new Translation3d(
-                Units.inchesToMeters(8), // x
-                Units.inchesToMeters(218.42), // y
-                Units.inchesToMeters(82.9 + heightOffset)), // z
-                new Rotation3d()
-            ));
-
-            Constants.Targeting.armParameters = new TrajectoryParameters()
-                .withArmLength(0.5917)
-                .withGoalHeight(Constants.Targeting.speakerPose.getWpiBlue().getZ() - Constants.Targeting.pivotToGround)
-                .withLaunchAngleOffset(107.258 * (Math.PI/180.0));
+            SmartDashboard.putNumber("dist to speaker", distance_to_speaker);
 
             final OptionalDouble angle_estimate = Constants.Targeting.getSpeakerArmAngle(distance_to_speaker);
             if(angle_estimate.isPresent()) {
