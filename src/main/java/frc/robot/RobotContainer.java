@@ -7,7 +7,6 @@ package frc.robot;
 import frc.robot.commands.FeedShooter;
 import frc.robot.commands.StopShoot;
 import frc.robot.commands.TeleopSwerve;
-import frc.robot.commands.AutoTarget;
 import frc.robot.commands.ChoiceShoot;
 import frc.robot.commands.ChoiceState;
 import frc.robot.commands.ToggleTurbo;
@@ -43,8 +42,8 @@ import com.pathplanner.lib.auto.NamedCommands;
  */
 public class RobotContainer {
     // Subsystems
-    private final Swerve swerve = new Swerve();
-    private final Arm arm = new Arm();
+    public final Swerve swerve = new Swerve();
+    private final Arm arm = new Arm(this);
     private final Climbing climbing = new Climbing();
     private final Leds leds = new Leds(Constants.LedStrip.pwmPort, Constants.LedStrip.numLeds, Constants.LedStrip.scaleFactor);
     private final Vision vision = new Vision();
@@ -100,7 +99,7 @@ public class RobotContainer {
         controller.share().onTrue(new ToggleTurbo(swerve));
         controller.share().onFalse(new ToggleTurbo(swerve)); 
 
-        controller.circle().onTrue(new AutoTarget(arm, swerve));
+        // controller.circle().onTrue(new AutoTarget(arm, swerve));
 
         // shoulder
         controller.povUp().onTrue(new InstantCommand(() -> arm.setState(ArmState.AMP)));
@@ -125,12 +124,16 @@ public class RobotContainer {
         // shooter
         controller.L2().onTrue(new SequentialCommandGroup(
             new ChoiceShoot(arm, heldButtons),
-            new ChoiceState(arm, heldButtons)
+            new ChoiceState(arm, swerve, heldButtons)
 
         ));
+        
         controller.L2().onFalse(new SequentialCommandGroup(
             new StopShoot(arm),
+            new InstantCommand(() -> swerve.unlockRotation()),
+            new InstantCommand(() -> arm.unlock()),
             new InstantCommand(() -> arm.setState(ArmState.HOME))
+
         ));
 
         controller.R1().onTrue(new FeedShooter(arm));

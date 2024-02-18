@@ -36,7 +36,7 @@ public class Vision extends SubsystemBase {
             AprilTagFields.k2024Crescendo.loadAprilTagLayoutField(), 
             PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
             camera, Constants.Vision.robotToCamera
-            
+                
         );
         estimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
         estimator.setRobotToCameraTransform(Constants.Vision.robotToCamera);

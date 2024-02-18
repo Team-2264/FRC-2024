@@ -57,11 +57,11 @@ public final class Constants {
      */
     public static final class Targeting {
           // field pose for shooting to speaker
-        public static final FieldPose speakerPose = FieldPose.fromWpiBlue(new Pose3d(
+        public static FieldPose speakerPose = FieldPose.fromWpiBlue(new Pose3d(
             new Translation3d(
                 Units.inchesToMeters(0), // x
                 Units.inchesToMeters(218.42), // y
-                Units.inchesToMeters(82.9 + 12)), // z
+                Units.inchesToMeters(82.9)), // z
                 new Rotation3d()
         ));
 
@@ -69,7 +69,7 @@ public final class Constants {
         public static double pivotToCenter = 0.2286;
         public static double logicalArmOffset = 12.742 / 180.0 * Math.PI;
 
-        public static final TrajectoryParameters armParameters = new TrajectoryParameters()
+        public static TrajectoryParameters armParameters = new TrajectoryParameters()
             .withArmLength(0.5917)
             .withGoalHeight(speakerPose.getWpiBlue().getZ() - pivotToGround)
             .withLaunchAngleOffset(107.258 * (Math.PI/180.0));
@@ -184,8 +184,8 @@ public final class Constants {
             .withKD(0.0)
             .withBrakeMode(true);
         
-        public static final double accendSpeed = 0.5;
-        public static final double descendSpeed = 0.5;
+        public static final double accendSpeed = 1;
+        public static final double descendSpeed = 1;
 
     }
 
@@ -200,11 +200,12 @@ public final class Constants {
         
         // Robot to Camera Transform
         public static final Transform3d robotToCamera = new Transform3d(
-            new Pose3d(
-                new Translation3d(-Units.inchesToMeters(12), 0, 0),
-                new Rotation3d(0, 0, Math.PI)
+            new Translation3d(
+                -Units.inchesToMeters(12), 
+                Units.inchesToMeters(0), 
+                Units.inchesToMeters(14)
             ),
-            new Pose3d()
+            new Rotation3d(0, 0, Math.PI)
             
         );
 
@@ -282,12 +283,12 @@ public final class Constants {
         // Drive Motor Characterization Values
         public static final double driveKS = (0.667 / 12); // divide by 12 to convert from volts to percent
                                                            // output for
-                                                           // CTRE
+                                                            // CTRE
         public static final double driveKV = (2.44 / 12);
         public static final double driveKA = (0.27 / 12);
 
         // Swerve Profiling Values
-        public static final double maxSpeed = 1.5; // meters per second
+        public static final double maxSpeed = 2.5; // meters per second
         public static final double maxAngularVelocity = Math.PI * 1.5; // radians per second (rad/s)
         
         // Turbo mode values

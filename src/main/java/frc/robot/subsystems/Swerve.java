@@ -338,20 +338,20 @@ public class Swerve extends SubsystemBase {
      * @param pose The estimated robot pose.
      */
     public void addVisionMeasurement(EstimatedRobotPose pose) {
+        if(pose.targetsUsed.size() == 1) {
+            return;
+        }
+
         Pose2d measuredPose = pose.estimatedPose.toPose2d();
+
 
         double totalDistance = 0;
         for(PhotonTrackedTarget target: pose.targetsUsed) {
             totalDistance += target.getBestCameraToTarget().getTranslation().getNorm();
         }
-
         double averageDistance = totalDistance / pose.targetsUsed.size();
 
-        double devMultiplier = 1.0 / (averageDistance * averageDistance);
-        if(pose.targetsUsed.size() == 1) {
-            devMultiplier *= Constants.Vision.singleTargetMultiplier;
-        }
-
+        double devMultiplier = (averageDistance * averageDistance);
         Matrix<N3, N1> standardDevs = Constants.Vision.visionStandardDevs.times(devMultiplier);
 
         poseEstimator.addVisionMeasurement(measuredPose, pose.timestampSeconds, standardDevs);
