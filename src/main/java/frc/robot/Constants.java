@@ -25,6 +25,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib.ArmAngleEstimation;
 import frc.lib.FieldPose;
 import frc.lib.TrajectoryParameters;
@@ -56,9 +57,9 @@ public final class Constants {
      */
     public static final class Targeting {
           // field pose for shooting to speaker
-        public static final FieldPose speakerPose = FieldPose.fromNative(new Pose3d(
+        public static FieldPose speakerPose = FieldPose.fromWpiBlue(new Pose3d(
             new Translation3d(
-                Units.inchesToMeters(9.055), // x
+                Units.inchesToMeters(0), // x
                 Units.inchesToMeters(218.42), // y
                 Units.inchesToMeters(82.9)), // z
                 new Rotation3d()
@@ -68,9 +69,9 @@ public final class Constants {
         public static double pivotToCenter = 0.2286;
         public static double logicalArmOffset = 12.742 / 180.0 * Math.PI;
 
-        public static final TrajectoryParameters armParameters = new TrajectoryParameters()
+        public static TrajectoryParameters armParameters = new TrajectoryParameters()
             .withArmLength(0.5917)
-            .withGoalHeight(speakerPose.getZ() - pivotToGround)
+            .withGoalHeight(speakerPose.getWpiBlue().getZ() - pivotToGround)
             .withLaunchAngleOffset(107.258 * (Math.PI/180.0));
 
          /** 
@@ -82,9 +83,15 @@ public final class Constants {
          * 
          */
         public static final OptionalDouble getSpeakerArmAngle(double targetDistance) {
-            ArmAngleEstimation estimate = armParameters.getEstimate(targetDistance - pivotToCenter, 12);
+            double pivotDistance = targetDistance - pivotToCenter;
+            SmartDashboard.putNumber("Pivot distance", pivotDistance);
+
+            ArmAngleEstimation estimate = armParameters.getEstimate(pivotDistance, 12);
+            SmartDashboard.putNumber("Raw angle estimate", Math.toDegrees(estimate.estimate));
+            SmartDashboard.putNumber("Raw angle inaccurcy", estimate.inaccuracy);
+    
             if(estimate.inaccuracy < 0.1) {
-                return OptionalDouble.of(0.5 - (estimate.estimate + logicalArmOffset) * 1/(2*Math.PI));
+                return OptionalDouble.of(0.5 - (estimate.estimate + logicalArmOffset) * (1/(2*Math.PI)));
             } else {
                 return OptionalDouble.empty();
             }
@@ -177,8 +184,8 @@ public final class Constants {
             .withKD(0.0)
             .withBrakeMode(true);
         
-        public static final double accendSpeed = 0.5;
-        public static final double descendSpeed = 0.5;
+        public static final double accendSpeed = 1;
+        public static final double descendSpeed = 1;
 
     }
 
@@ -189,13 +196,17 @@ public final class Constants {
         public static final String cameraName = "apriltag";
 
         public static final Matrix<N3, N1> visionStandardDevs = VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(30));
-        public static double singleTargetMultiplier = 0.33;
+        public static double singleTargetMultiplier = 0;
         
         // Robot to Camera Transform
         public static final Transform3d robotToCamera = new Transform3d(
-            new Translation3d(Units.inchesToMeters(0), Units.inchesToMeters(0), Units.inchesToMeters(0)),
-            new Rotation3d(0, 0, 0)
-
+            new Translation3d(
+                -Units.inchesToMeters(12), 
+                Units.inchesToMeters(0), 
+                Units.inchesToMeters(14)
+            ),
+            new Rotation3d(0, 0, Math.PI)
+            
         );
 
     }
@@ -216,7 +227,12 @@ public final class Constants {
         public static final int pigeonID = 1;
         public static final boolean invertGyro = false; // Always ensure Gyro is CCW+ CW-
 
-        public static final Pose2d initialPose = new Pose2d(0, 0, new Rotation2d());
+        public static final Pose2d initialPose = new Pose2d(
+            Units.inchesToMeters(39.3701 * 2), // x
+            Units.inchesToMeters(218.42), // y
+            new Rotation2d()
+        );
+     
 
         // Drivetrain Constants
         public static final double trackWidth = Units.inchesToMeters(21.5); 
@@ -267,12 +283,12 @@ public final class Constants {
         // Drive Motor Characterization Values
         public static final double driveKS = (0.667 / 12); // divide by 12 to convert from volts to percent
                                                            // output for
-                                                           // CTRE
+                                                            // CTRE
         public static final double driveKV = (2.44 / 12);
         public static final double driveKA = (0.27 / 12);
 
         // Swerve Profiling Values
-        public static final double maxSpeed = 1.5; // meters per second
+        public static final double maxSpeed = 2.5; // meters per second
         public static final double maxAngularVelocity = Math.PI * 1.5; // radians per second (rad/s)
         
         // Turbo mode values
@@ -329,11 +345,10 @@ public final class Constants {
             );
 
         // Robot rotation locking
+        public static final double rotationLockKP = 1.5;
+        public static final double rotationLockKI = 0.01;
+        public static final double rotationLockKD = 0;
 
-        public static final double rotationLockKP = 1.0;
-        public static final double rotationLockKI = 0.0;
-        public static final double rotationLockKD = 0.0;
     }
-
 
 }

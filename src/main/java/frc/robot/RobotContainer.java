@@ -5,7 +5,6 @@
 package frc.robot;
 
 import frc.robot.commands.FeedShooter;
-import frc.robot.commands.StartShoot;
 import frc.robot.commands.StopShoot;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.ChoiceShoot;
@@ -21,12 +20,15 @@ import frc.robot.subsystems.arm.Arm;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import java.util.Optional;
+
+import org.photonvision.EstimatedRobotPose;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -40,8 +42,8 @@ import com.pathplanner.lib.auto.NamedCommands;
  */
 public class RobotContainer {
     // Subsystems
-    private final Swerve swerve = new Swerve();
-    private final Arm arm = new Arm();
+    public final Swerve swerve = new Swerve();
+    private final Arm arm = new Arm(this);
     private final Climbing climbing = new Climbing();
     private final Leds leds = new Leds(Constants.LedStrip.pwmPort, Constants.LedStrip.numLeds, Constants.LedStrip.scaleFactor);
     private final Vision vision = new Vision();
@@ -97,6 +99,8 @@ public class RobotContainer {
         controller.share().onTrue(new ToggleTurbo(swerve));
         controller.share().onFalse(new ToggleTurbo(swerve)); 
 
+        // controller.circle().onTrue(new AutoTarget(arm, swerve));
+
         // shoulder
         controller.povUp().onTrue(new InstantCommand(() -> arm.setState(ArmState.AMP)));
         controller.povLeft().onTrue(new InstantCommand(() -> arm.setState(ArmState.START)));
@@ -120,12 +124,16 @@ public class RobotContainer {
         // shooter
         controller.L2().onTrue(new SequentialCommandGroup(
             new ChoiceShoot(arm, heldButtons),
-            new ChoiceState(arm, heldButtons)
+            new ChoiceState(arm, swerve, heldButtons)
 
         ));
+        
         controller.L2().onFalse(new SequentialCommandGroup(
             new StopShoot(arm),
+            new InstantCommand(() -> swerve.unlockRotation()),
+            new InstantCommand(() -> arm.unlock()),
             new InstantCommand(() -> arm.setState(ArmState.HOME))
+
         ));
 
         controller.R1().onTrue(new FeedShooter(arm));
@@ -144,7 +152,7 @@ public class RobotContainer {
         manualArmDown.onTrue(new InstantCommand(() -> arm.shoulder.rotateConstant(-0.075)));
         manualArmDown.onFalse(new InstantCommand(() -> arm.shoulder.rotateConstant(0)));
     
-        // Held buttons
+        // ==== Held buttons ====
         controller.cross().onTrue(new InstantCommand(() -> heldButtons.setHeld(1)));
         controller.cross().onFalse(new InstantCommand(() -> heldButtons.setHeld(0)));
 
@@ -167,11 +175,13 @@ public class RobotContainer {
      * Called every robot loop in both autonomous and teleop.
      */
     public void robotPeriodic() {
-        // Optional<EstimatedRobotPose> visionPose = vision.getEstimatedPose();
+        Optional<EstimatedRobotPose> visionPose = vision.getEstimatedPose();
 
-        // if(visionPose.isPresent()) {
-        //     swerve.addVisionMeasurement(visionPose.get());
-        // }
+        if(visionPose.isPresent()) {
+            
+
+            swerve.addVisionMeasurement(visionPose.get());
+        }
 
     }
 

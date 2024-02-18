@@ -17,18 +17,18 @@ public class ChoiceShoot extends Command {
     this.arm = arm;
     this.heldButtons = heldButtons;
 
-    addRequirements(arm);
-    addRequirements(heldButtons);
-
   }
 
   @Override
   public void initialize() {
     if (heldButtons.getHeld() == 1) { // Holding cross -> manual shoot
-      arm.spinupShooter(1);
+      arm.spinupShooter(0.6);
  
     } else if (heldButtons.getHeld() == 2) { // Holding square -> amp
       arm.spinupShooter(0.2);
+
+    } else {  
+       arm.spinupShooter(0.9);
 
     }
 

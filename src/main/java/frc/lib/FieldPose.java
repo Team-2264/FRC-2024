@@ -11,7 +11,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
-public class FieldPose extends Pose3d {
+public class FieldPose {
   private static final Translation2d FIELD_SIZE = new Translation2d(Units.inchesToMeters(323.25), Units.inchesToMeters(651.25));
 
   // Converts between WpiLib Blue and Red field spaces
