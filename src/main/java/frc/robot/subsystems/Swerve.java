@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import frc.robot.SwerveModule;
+import frc.robot.enums.SwerveStatus;
 import frc.lib.Math2264;
 import frc.robot.Constants;
 
@@ -43,18 +44,19 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
  */
 public class Swerve extends SubsystemBase {
     private final Field2d field;
-    public Pigeon2 pidgey;
+    private Pigeon2 pidgey;
 
-    public SwerveModule[] swerveModules;
+    private SwerveModule[] swerveModules;
 
-    public boolean turboModeStatus = false;
+    private boolean turboModeStatus = false;
+    private SwerveStatus swerveStatus = SwerveStatus.TELEOP;
 
     private boolean fieldRelative = true;
 
     private PIDController rotationLockController = new PIDController(Constants.Swerve.rotationLockKP, Constants.Swerve.rotationLockKI, Constants.Swerve.rotationLockKD);
     private Optional<Translation2d> lockedOnto = Optional.empty();
 
-    public final SwerveDrivePoseEstimator poseEstimator;
+    private final SwerveDrivePoseEstimator poseEstimator;
 
     /**
      * Constructs a Swerve subsystem instance.
@@ -144,10 +146,13 @@ public class Swerve extends SubsystemBase {
         rotationLockController.reset();
         
         lockedOnto = Optional.of(translation2d);
+        swerveStatus = SwerveStatus.LOCKED;
+
     }
 
     public void unlock() {
         lockedOnto = Optional.empty();
+        swerveStatus = SwerveStatus.TELEOP;
     }
     
     /**
@@ -359,7 +364,7 @@ public class Swerve extends SubsystemBase {
 
     @Override
     public void periodic() {
-        SmartDashboard.putBoolean("TURBO", turboModeStatus);
+        SmartDashboard.putString("Swerve Status", swerveStatus.toString());
 
         field.setRobotPose(getPose());
 

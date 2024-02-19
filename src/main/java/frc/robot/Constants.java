@@ -140,7 +140,7 @@ public final class Constants {
      * Arm class holds constants related to the arm.
      */
     public static final class Arm {
-        public static final NeoConfiguration[] neoConfigs = new NeoConfiguration[] {
+        public static final NeoConfiguration[] shoulderNeoConfigs = new NeoConfiguration[] {
             new NeoConfiguration(20)
                 .withBrakeMode(true)
                 .withKP(1.0)
@@ -324,8 +324,8 @@ public final class Constants {
         public static final double driveKA = (0.27 / 12);
 
         // Swerve Profiling Values
-        public static final double maxSpeed = 5; // meters per second
-        public static final double maxAngularVelocity = Math.PI * 1.5; // radians per second (rad/s)
+        public static final double maxSpeed = 4; // meters per second
+        public static final double maxAngularVelocity = Math.PI; // radians per second (rad/s)
         
         // Turbo mode values
         public static final double turboMaxSpeed = 5;

@@ -1,4 +1,4 @@
-package frc.robot.subsystems.arm;
+package frc.robot.subsystems;
 
 import java.util.OptionalDouble;
 

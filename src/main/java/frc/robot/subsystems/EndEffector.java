@@ -1,40 +1,42 @@
-package frc.robot.subsystems.arm;
+package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.motors.Neo;
-import frc.lib.motors.NeoConfiguration;
+import frc.robot.Constants;
 import frc.robot.enums.IntakeStatus;
+import frc.robot.enums.ShooterStatus;
 
 /**
  * Subystem for controlling the end effector.
  * 
  */
-public class EndEffector {
+public class EndEffector extends SubsystemBase {
     private Neo intakeMoter;
     private IntakeStatus intakeStatus = IntakeStatus.STOPPED;
 
     private Neo[] shooterMotors;
+    private ShooterStatus shooterStatus = ShooterStatus.STOPPED;
 
     private DigitalInput[] intakeBeams;
 
     /**
      * Constructs a new EndEffector instance.
      * 
-     * @param intakeMotorID The ID of the intake motor.
-     * @param shooterMotorIDs The IDs of the shooter motors.
      */
-    public EndEffector(NeoConfiguration intakeNeoConfig, NeoConfiguration[] shooterNeoConfigs, int[] beamBreakPorts) {
+    public EndEffector() {
         // create motors
-        intakeMoter = new Neo(intakeNeoConfig);
-        shooterMotors = new Neo[shooterNeoConfigs.length];
-        for (int i = 0; i < shooterNeoConfigs.length; i++) {
-            shooterMotors[i] = new Neo(shooterNeoConfigs[i]);
+        intakeMoter = new Neo(Constants.EndEffector.intakeNeoConfig);
+        shooterMotors = new Neo[2];
+        for (int i = 0; i < 2; i++) {
+            shooterMotors[i] = new Neo(Constants.EndEffector.shooterNeoConfigs[i]);
         }
 
         // create beams
         intakeBeams = new DigitalInput[2];
-        for (int i = 0; i < beamBreakPorts.length; i++) {
-            intakeBeams[i] = new DigitalInput(beamBreakPorts[i]);
+        for (int i = 0; i < 2; i++) {
+            intakeBeams[i] = new DigitalInput(Constants.EndEffector.beamBreakPorts[i]);
 
         }
         
@@ -46,6 +48,7 @@ public class EndEffector {
      */
     public void spinupShooter(double speed) {
         shooterMotors[0].rotateAtSpeed(speed);
+        shooterStatus = ShooterStatus.SPINNING;
     }
 
     /**
@@ -53,6 +56,7 @@ public class EndEffector {
      */
     public void stopShooter() {
         shooterMotors[0].stop();
+        shooterStatus = ShooterStatus.STOPPED;
     }
     
     /**
@@ -64,6 +68,15 @@ public class EndEffector {
         intakeStatus = IntakeStatus.INTAKING;
 
     }
+    
+    /**
+     * Reverses the intake. Referred to as "outtaking".
+     * @param speed The speed to outtake at from 0 to 1.
+     */
+    public void outtake(double speed) {
+        intakeMoter.rotateAtSpeed(-speed);
+        intakeStatus = IntakeStatus.OUTTAKING;
+    }
 
     /**
      * Feeds a held note into the shooter.
@@ -72,22 +85,6 @@ public class EndEffector {
         intakeMoter.rotateAtSpeed(1);
         intakeStatus = IntakeStatus.FEEDING;
 
-    }
-
-    public void slowFeed() {
-        intakeMoter.rotateAtSpeed(0.3);
-        intakeStatus = IntakeStatus.FEEDING;
-
-
-    }
-
-    /**
-     * Reverses the intake. Referred to as "outtaking".
-     * @param speed The speed to outtake at from 0 to 1.
-     */
-    public void outtake(double speed) {
-        intakeMoter.rotateAtSpeed(-speed);
-        intakeStatus = IntakeStatus.OUTTAKING;
     }
 
     /**
@@ -107,12 +104,36 @@ public class EndEffector {
         return intakeStatus;
     }
 
+    /**
+     * Returns the state of the shooter.
+     * @return The state of the shooter.
+     */
+    public ShooterStatus shooterStatus() {
+        return shooterStatus;
+
+    }
+
     /** 
      * Returns the state of the intakes beam.
      * @return The state of the intake beam. 
      */
     public boolean hasNote() {
         return intakeBeams[0].get() || intakeBeams[1].get(); 
+
+    }
+
+    @Override
+    public void periodic() {
+        SmartDashboard.putString("Intake Status", intakeStatus.toString());
+        SmartDashboard.putString("Shooter Status", shooterStatus.toString());
+
+        SmartDashboard.putBoolean("Note", hasNote());
+
+        // Stop intaking if we have a note
+        if (intakeStatus == IntakeStatus.INTAKING && hasNote()) {
+            stopIntake();
+
+        }
 
     }
 

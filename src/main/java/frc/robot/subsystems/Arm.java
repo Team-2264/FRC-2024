@@ -1,4 +1,4 @@
-package frc.robot.subsystems.arm;
+package frc.robot.subsystems;
 
 import java.util.Optional;
 import java.util.OptionalDouble;
@@ -12,7 +12,6 @@ import frc.lib.TrajectoryParameters;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.enums.ArmState;
-import frc.robot.enums.IntakeStatus;
 
 /**
  * Subystem for controlling the arm.
@@ -20,11 +19,10 @@ import frc.robot.enums.IntakeStatus;
  */
 public class Arm extends SubsystemBase {
     public final Shoulder shoulder;
-    public final EndEffector endEffector;
 
     public RobotContainer container;
     
-    private ArmState state;
+    private ArmState armState;
 
     private Optional<Translation2d> lockedOnto = Optional.empty();
 
@@ -32,12 +30,9 @@ public class Arm extends SubsystemBase {
      * Constructs a new Arm instance.
      */
     public Arm(RobotContainer container) {
-        shoulder = new Shoulder(Constants.Arm.neoConfigs);
-        endEffector = new EndEffector(Constants.EndEffector.intakeNeoConfig, 
-            Constants.EndEffector.shooterNeoConfigs,
-            Constants.EndEffector.beamBreakPorts);
-
-        state = ArmState.START;
+        shoulder = new Shoulder(Constants.Arm.shoulderNeoConfigs);
+      
+        armState = ArmState.START;
 
         this.container = container;
         
@@ -49,7 +44,7 @@ public class Arm extends SubsystemBase {
      * @param state
      */
     public void setState(ArmState state) {
-        this.state = state;
+        this.armState = state;
 
         if (state != ArmState.LOCKED) {
             setShoulderAngle(state.shoulderAngle());
@@ -76,58 +71,14 @@ public class Arm extends SubsystemBase {
 
     }
 
-    /**
-     * Spins up the shooter motors to a given speed.
-     * Speed is a value between -1 and 1.
-     * 
-     * @param speed The speed to spin the motors at.
-     */
-    public void spinupShooter(double speed) {
-        endEffector.spinupShooter(speed);
-
-    }
-    
-    /**
-     * Stops the shooter motors.
-     */
-    public void stopShooter() {
-        endEffector.stopShooter();
-    
-    }
-
-    /**
-     * Starts the intake.
-     */
-    public void startIntake() {
-        if (endEffector.intakeStatus() == IntakeStatus.STOPPED && !endEffector.hasNote()) {
-            endEffector.intake(Constants.EndEffector.intakeSpeed);
-
-        }
-
-    }
-    
-    /**
-     * Stops the intake.
-     */
-    public void stopIntake(){
-        endEffector.stopIntake();
-    }
-
     @Override 
     public void periodic() {
         shoulder.periodic();
 
-        SmartDashboard.putString("ENDEFFECTOR TEST", endEffector.intakeStatus().toString());
+        SmartDashboard.putString("Arm Status", armState.toString());
 
         SmartDashboard.putNumber("Shoulder abs encoder", shoulder.absEncoder.getAbsolutePosition());
         SmartDashboard.putNumber("Shoulder rel rots", shoulder.getRots());
-        SmartDashboard.putBoolean("intake BEAMS", endEffector.hasNote());
-
-        // Stop intaking if we have a note
-        if (endEffector.intakeStatus() == IntakeStatus.INTAKING && endEffector.hasNote()) {
-            endEffector.stopIntake();
-
-        }
 
         // If we are locked onto a speaker, calculate the arm angle
         if (lockedOnto.isPresent()) {
@@ -160,7 +111,7 @@ public class Arm extends SubsystemBase {
             }
 
             // Update flywheel speeds
-            endEffector.spinupShooter(Constants.Targeting.getFlywheelSpeed(distance_to_speaker));
+            // endEffector.spinupShooter(Constants.Targeting.getFlywheelSpeed(distance_to_speaker));
 
         }
            

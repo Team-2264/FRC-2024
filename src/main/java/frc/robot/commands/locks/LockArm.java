@@ -2,7 +2,7 @@ package frc.robot.commands.locks;
 
 import frc.robot.Constants;
 import frc.robot.enums.ArmState;
-import frc.robot.subsystems.arm.Arm;
+import frc.robot.subsystems.Arm;
 
 import java.util.Optional;
 

@@ -1,6 +1,6 @@
 package frc.robot.commands;
 
-import frc.robot.subsystems.arm.Arm;
+import frc.robot.subsystems.EndEffector;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.Command;
  * A command for feeding the shooter.
  */
 public class FeedShooter extends Command {
-    private final Arm arm;
+    private final EndEffector endEffector;
     private double startTime;
 
     /**
@@ -16,8 +16,8 @@ public class FeedShooter extends Command {
      * 
      * @param arm The arm subsystem to use.
      */
-    public FeedShooter(Arm arm){
-        this.arm = arm;    
+    public FeedShooter(EndEffector endEffector){
+        this.endEffector = endEffector;    
 
     }
 
@@ -25,13 +25,13 @@ public class FeedShooter extends Command {
     public void initialize() {
         startTime = Timer.getFPGATimestamp();
 
-        arm.endEffector.feed();
+        endEffector.feed();
         
     }
 
     @Override
     public void end(boolean interrupted) {
-        arm.stopIntake();
+        endEffector.stopIntake();
 
     }
 

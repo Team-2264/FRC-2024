@@ -12,7 +12,7 @@ import com.revrobotics.CANSparkBase.ExternalFollower;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
-  /** Creates a new Neo Subsystem. */
+  /** Creates a new Neo. */
 public class Neo {
   private final CANSparkMax motor;
   private final RelativeEncoder encoder;

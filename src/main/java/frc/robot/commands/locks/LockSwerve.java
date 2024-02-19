@@ -1,9 +1,7 @@
 package frc.robot.commands.locks;
 
 import frc.robot.Constants;
-import frc.robot.enums.ArmState;
 import frc.robot.subsystems.Swerve;
-import frc.robot.subsystems.arm.Arm;
 
 import java.util.Optional;
 

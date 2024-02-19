@@ -1,8 +1,7 @@
 package frc.robot.commands.locks;
 
-import frc.robot.subsystems.arm.Arm;
-
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.Arm;
 
 
 public class UnlockArm extends Command {
