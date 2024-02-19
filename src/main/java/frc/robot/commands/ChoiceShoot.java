@@ -28,7 +28,7 @@ public class ChoiceShoot extends Command {
       arm.spinupShooter(0.2);
 
     } else {  
-       arm.spinupShooter(0.9);
+       arm.spinupShooter(1);
 
     }
 

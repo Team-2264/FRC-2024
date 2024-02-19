@@ -104,6 +104,35 @@ public final class Constants {
                 return OptionalDouble.empty();
             }
         }
+        
+        /**
+         *  Gets a offset for the target height of the speaker based on the distance.
+         * 
+         * @param distance The distance to the speaker
+         * @return The height offset in inchs
+         */
+        public static final double heightOffset(double distance) {
+            return (Math.pow(((0.7 * distance) - 0.9), 3));
+
+        }
+
+         /**
+         *  Gets the speed of the flywheel based on the distance to the speaker.
+         * 
+         * @param distance The distance to the speaker
+         * @return The speed of the flywheel from 0 to 1 (percent output)
+         */
+        public static final double getFlywheelSpeed(double distance) {
+            if (distance <= 2) {
+                return 0.6;
+            } else if (distance > 2 && distance <= 5) {
+                return 0.6 + ((0.4 / 3) * (distance - 2));
+            } else {
+                return 1.0;
+
+            }
+
+        }
 
     }
     
@@ -238,7 +267,7 @@ public final class Constants {
         public static final Pose2d initialPose = new Pose2d(
             Units.inchesToMeters(39.3701 * 2), // x
             Units.inchesToMeters(218.42), // y
-            new Rotation2d(Math.PI)
+            new Rotation2d()
         );
      
         // Drivetrain Constants
@@ -295,7 +324,7 @@ public final class Constants {
         public static final double driveKA = (0.27 / 12);
 
         // Swerve Profiling Values
-        public static final double maxSpeed = 2.5; // meters per second
+        public static final double maxSpeed = 5; // meters per second
         public static final double maxAngularVelocity = Math.PI * 1.5; // radians per second (rad/s)
         
         // Turbo mode values
@@ -352,7 +381,7 @@ public final class Constants {
             );
 
         // Robot rotation locking
-        public static final double rotationLockKP = 1.5;
+        public static final double rotationLockKP = 1;
         public static final double rotationLockKI = 0.01;
         public static final double rotationLockKD = 0;
 

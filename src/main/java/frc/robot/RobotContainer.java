@@ -116,7 +116,7 @@ public class RobotContainer {
 
         ));
 
-        controller.triangle().onTrue(new InstantCommand(() -> arm.endEffector.outtake(1)));
+        controller.triangle().onTrue(new InstantCommand(() -> arm.endEffector.outtake(0.5)));
         controller.triangle().onFalse(new InstantCommand(() -> arm.endEffector.stopIntake()));
 
         // shooter
@@ -176,9 +176,8 @@ public class RobotContainer {
         Optional<EstimatedRobotPose> visionPose = vision.getEstimatedPose();
 
         if(visionPose.isPresent()) {
-            
-
             swerve.addVisionMeasurement(visionPose.get());
+            
         }
 
     }

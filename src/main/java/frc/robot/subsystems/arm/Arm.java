@@ -3,14 +3,11 @@ package frc.robot.subsystems.arm;
 import java.util.Optional;
 import java.util.OptionalDouble;
 
-import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.geometry.Translation3d;
-import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.lib.FieldPose;
 import frc.lib.TrajectoryParameters;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
@@ -69,7 +66,6 @@ public class Arm extends SubsystemBase {
         lockedOnto = Optional.empty();
     }
     
-
     /**
      * Rotates the shoulder to a given angle.
      * 
@@ -136,13 +132,35 @@ public class Arm extends SubsystemBase {
         // If we are locked onto a speaker, calculate the arm angle
         if (lockedOnto.isPresent()) {
             final double distance_to_speaker = container.swerve.getPose().getTranslation().minus(lockedOnto.get()).getNorm();
-
             SmartDashboard.putNumber("dist to speaker", distance_to_speaker);
+
+            Optional<Alliance> alliance2 = DriverStation.getAlliance();
+            if(alliance2.isEmpty()) {
+                throw new RuntimeException("Failed to get native pose: Alliance is not set in Driverstation");
+            }
+
+            Alliance alliance = alliance2.get();
+            if(alliance == Alliance.Blue) {
+                Constants.Targeting.armParameters = new TrajectoryParameters()
+                    .withArmLength(0.5917)
+                    .withGoalHeight(Constants.Targeting.blueSpeakerPose.getWpiBlue().getZ() - Constants.Targeting.pivotToGround)
+                    .withLaunchAngleOffset(107.258 * (Math.PI/180.0));
+
+            } else {
+                Constants.Targeting.armParameters = new TrajectoryParameters()
+                    .withArmLength(0.5917)
+                    .withGoalHeight(Constants.Targeting.redSpeakerPose.getWpiBlue().getZ() - Constants.Targeting.pivotToGround)
+                    .withLaunchAngleOffset(107.258 * (Math.PI/180.0));
+
+            }   
 
             final OptionalDouble angle_estimate = Constants.Targeting.getSpeakerArmAngle(distance_to_speaker);
             if(angle_estimate.isPresent()) {
                 setShoulderAngle(angle_estimate.getAsDouble());
             }
+
+            // Update flywheel speeds
+            endEffector.spinupShooter(Constants.Targeting.getFlywheelSpeed(distance_to_speaker));
 
         }
            
