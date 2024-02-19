@@ -146,7 +146,7 @@ public class Swerve extends SubsystemBase {
         lockedOnto = Optional.of(translation2d);
     }
 
-    public void unlockRotation() {
+    public void unlock() {
         lockedOnto = Optional.empty();
     }
     

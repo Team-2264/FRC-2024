@@ -5,7 +5,7 @@ package frc.robot.enums;
  * 
  */
 public enum ArmState {
-    INTAKE, AMP, START, HOME, CUSTOM, MANUAL_SHOOT;
+    INTAKE, AMP, START, HOME, MANUAL_SHOOT, LOCKED;
 
     /**
      * Returns the angle the shoulder should be at for the given state.
@@ -19,7 +19,7 @@ public enum ArmState {
             case START -> 50;
             case HOME -> 2;
             case MANUAL_SHOOT -> 20;
-            case CUSTOM -> 0; // No angle for custom
+            case LOCKED -> 0; // No angle while locked
     
         };
 
