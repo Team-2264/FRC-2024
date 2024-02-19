@@ -146,13 +146,12 @@ public class Swerve extends SubsystemBase {
         rotationLockController.reset();
         
         lockedOnto = Optional.of(translation2d);
-        swerveStatus = SwerveStatus.LOCKED;
 
     }
 
     public void unlock() {
         lockedOnto = Optional.empty();
-        swerveStatus = SwerveStatus.TELEOP;
+        
     }
     
     /**
@@ -171,6 +170,8 @@ public class Swerve extends SubsystemBase {
      */
     public void drive(Translation2d translation, double rotation) {
         if(lockedOnto.isPresent()) {
+            swerveStatus = SwerveStatus.LOCKED;
+
             Pose2d robot_pose = getPose();
 
             Translation2d look_vector = lockedOnto.get().minus(robot_pose.getTranslation()); // Vector from robot to target
@@ -184,6 +185,9 @@ public class Swerve extends SubsystemBase {
             } else {
                 rotation = rotationLockController.calculate(robot_pose.getRotation().getRadians(), targetRotation) * 3;
             }
+        } else {
+            swerveStatus = SwerveStatus.TELEOP;
+
         }
 
         rotation = Math2264.limitMagnitude(rotation, Constants.Swerve.maxAngularVelocity);

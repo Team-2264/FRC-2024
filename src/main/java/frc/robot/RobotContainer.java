@@ -9,8 +9,10 @@ import frc.robot.commands.Intake;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.ToggleTurbo;
 import frc.robot.commands.locks.LockArm;
+import frc.robot.commands.locks.LockShooter;
 import frc.robot.commands.locks.LockSwerve;
 import frc.robot.commands.locks.UnlockArm;
+import frc.robot.commands.locks.UnlockShooter;
 import frc.robot.commands.locks.UnlockSwerve;
 import frc.robot.enums.ArmState;
 import frc.robot.enums.HeldButton;
@@ -22,7 +24,7 @@ import frc.robot.subsystems.Leds;
 import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.Vision;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SelectCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -51,7 +53,7 @@ public class RobotContainer {
     // Subsystems
     public final Swerve swerve = new Swerve();
     private final Arm arm = new Arm(this);
-    private final EndEffector endEffector = new EndEffector();
+    private final EndEffector endEffector = new EndEffector(this);
 
     private final Climbing climbing = new Climbing();
     private final Leds leds = new Leds(Constants.LedStrip.pwmPort, Constants.LedStrip.numLeds, Constants.LedStrip.scaleFactor);
@@ -113,9 +115,13 @@ public class RobotContainer {
         controller.povDown().onTrue(new InstantCommand(() -> arm.setState(ArmState.HOME)));
         
         // ======== Intake ========
-        controller.R2().onTrue(new SequentialCommandGroup(
-            new Intake(endEffector),
-            new InstantCommand(() -> arm.setState(ArmState.INTAKE))
+        controller.R2().onTrue(new ConditionalCommand(
+            new InstantCommand(),
+            new SequentialCommandGroup(
+                new Intake(endEffector),
+                new InstantCommand(() -> arm.setState(ArmState.INTAKE))
+            ),
+            endEffector::hasNote
 
         ));
         controller.R2().onFalse(new SequentialCommandGroup(
@@ -141,10 +147,10 @@ public class RobotContainer {
 
                 )),
                 Map.entry(HeldButton.NONE, new SequentialCommandGroup( // Autolocking
-                    new InstantCommand(() -> endEffector.spinupShooter(1)),
                     new LockSwerve(swerve),
-                    new LockArm(arm)
-                
+                    new LockArm(arm),
+                    new LockShooter(endEffector)
+
                 ))
 
             ),
@@ -152,8 +158,9 @@ public class RobotContainer {
             
         ));
         controller.L2().onFalse(new SequentialCommandGroup(
-            new InstantCommand(() -> new UnlockArm(arm)),
-            new InstantCommand(() -> new UnlockSwerve(swerve)),
+            new UnlockArm(arm),
+            new UnlockSwerve(swerve),
+            new UnlockShooter(endEffector),
             new InstantCommand(() -> endEffector.stopShooter()),
             new InstantCommand(() -> arm.setState(ArmState.HOME))
 

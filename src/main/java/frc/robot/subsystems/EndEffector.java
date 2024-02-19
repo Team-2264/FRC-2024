@@ -1,10 +1,14 @@
 package frc.robot.subsystems;
 
+import java.util.Optional;
+
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.motors.Neo;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 import frc.robot.enums.IntakeStatus;
 import frc.robot.enums.ShooterStatus;
 
@@ -21,11 +25,15 @@ public class EndEffector extends SubsystemBase {
 
     private DigitalInput[] intakeBeams;
 
+    private Optional<Translation2d> lockedOnto = Optional.empty();
+
+    private RobotContainer container;
+
     /**
      * Constructs a new EndEffector instance.
      * 
      */
-    public EndEffector() {
+    public EndEffector(RobotContainer container) {
         // create motors
         intakeMoter = new Neo(Constants.EndEffector.intakeNeoConfig);
         shooterMotors = new Neo[2];
@@ -39,6 +47,20 @@ public class EndEffector extends SubsystemBase {
             intakeBeams[i] = new DigitalInput(Constants.EndEffector.beamBreakPorts[i]);
 
         }
+
+        this.container = container;
+        
+    }
+
+    
+    public void lockOnto(Translation2d translation2d) {
+        lockedOnto = Optional.of(translation2d);
+        shooterStatus = ShooterStatus.LOCKED;
+    }
+
+    public void unlock() {
+        lockedOnto = Optional.empty();
+        shooterStatus = ShooterStatus.STOPPED;
         
     }
 
@@ -132,6 +154,14 @@ public class EndEffector extends SubsystemBase {
         // Stop intaking if we have a note
         if (intakeStatus == IntakeStatus.INTAKING && hasNote()) {
             stopIntake();
+
+        }
+
+        // If we are locked onto a speaker, calculate the flywheel speed.
+        if (lockedOnto.isPresent()) {
+            double distance_to_speaker = container.swerve.getPose().getTranslation().minus(lockedOnto.get()).getNorm();
+
+            shooterMotors[0].rotateAtSpeed(Constants.Targeting.getFlywheelSpeed(distance_to_speaker));
 
         }
 

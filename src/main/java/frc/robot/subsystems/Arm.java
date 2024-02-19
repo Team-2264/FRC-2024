@@ -77,13 +77,9 @@ public class Arm extends SubsystemBase {
 
         SmartDashboard.putString("Arm Status", armState.toString());
 
-        SmartDashboard.putNumber("Shoulder abs encoder", shoulder.absEncoder.getAbsolutePosition());
-        SmartDashboard.putNumber("Shoulder rel rots", shoulder.getRots());
-
         // If we are locked onto a speaker, calculate the arm angle
         if (lockedOnto.isPresent()) {
             final double distance_to_speaker = container.swerve.getPose().getTranslation().minus(lockedOnto.get()).getNorm();
-            SmartDashboard.putNumber("dist to speaker", distance_to_speaker);
 
             Optional<Alliance> alliance2 = DriverStation.getAlliance();
             if(alliance2.isEmpty()) {
@@ -111,8 +107,7 @@ public class Arm extends SubsystemBase {
             }
 
             // Update flywheel speeds
-            // endEffector.spinupShooter(Constants.Targeting.getFlywheelSpeed(distance_to_speaker));
-
+          
         }
            
     }
