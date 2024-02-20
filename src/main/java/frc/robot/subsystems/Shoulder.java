@@ -80,6 +80,7 @@ public class Shoulder {
 
             double voltage = Math2264.limitMagnitude(feedforward + feedback, Constants.Arm.shoulderMaxPower);
             motors[0].rotateAtSpeed(voltage);
+            
         }
     }
 }

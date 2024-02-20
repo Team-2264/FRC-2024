@@ -5,7 +5,6 @@
 package frc.robot;
 
 import frc.robot.commands.FeedShooter;
-import frc.robot.commands.Intake;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.ToggleTurbo;
 import frc.robot.commands.locks.LockArm;
@@ -16,6 +15,8 @@ import frc.robot.commands.locks.UnlockShooter;
 import frc.robot.commands.locks.UnlockSwerve;
 import frc.robot.enums.ArmState;
 import frc.robot.enums.HeldButton;
+import frc.robot.enums.IntakeStatus;
+import frc.robot.enums.ShooterStatus;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Climbing;
 import frc.robot.subsystems.EndEffector;
@@ -80,7 +81,7 @@ public class RobotContainer {
      */
     public RobotContainer() {
         // Register named commands - pathplanner
-        NamedCommands.registerCommand("startIntake", new Intake(endEffector));
+        NamedCommands.registerCommand("startIntake", new InstantCommand(() -> endEffector.intake(0.6)));
         NamedCommands.registerCommand("stopIntake", new InstantCommand(() -> endEffector.stopIntake()));
 
         NamedCommands.registerCommand("spinupShooter", new InstantCommand(() -> endEffector.spinupShooter(0.1)));
@@ -135,21 +136,24 @@ public class RobotContainer {
         
         // ======== Intake ========
         controller.R2().onTrue(new ConditionalCommand(
-            new InstantCommand(),
             new SequentialCommandGroup(
-                new Intake(endEffector),
+                new InstantCommand(() -> endEffector.intake(0.6)),
                 new InstantCommand(() -> arm.setState(ArmState.INTAKE))
             ),
-            endEffector::hasNote
+            new InstantCommand(),
+            () -> (!endEffector.hasNote() && endEffector.intakeStatus() == IntakeStatus.STOPPED && arm.getState() == ArmState.HOME)
 
         ));
-        controller.R2().onFalse(
+        controller.R2().onFalse(new ConditionalCommand(
             new SequentialCommandGroup(
-            new InstantCommand(() -> endEffector.stopIntake()),
-            new InstantCommand(() -> arm.setState(ArmState.HOME))
+                new InstantCommand(() -> endEffector.stopIntake()),
+                new InstantCommand(() -> arm.setState(ArmState.HOME))
+            ),
+            new InstantCommand(),
+            () -> (arm.getState() == ArmState.INTAKE)
 
         ));
-
+ 
         controller.triangle().onTrue(new InstantCommand(() -> endEffector.outtake(0.1)));
         controller.triangle().onFalse(new InstantCommand(() -> endEffector.stopIntake()));
 
@@ -179,14 +183,21 @@ public class RobotContainer {
             
             ),
             new ResetHome(),
-            arm::atHome
+            () -> (arm.getState() == ArmState.HOME)
+
+            
 
         ));
 
-        controller.R1().onTrue(new SequentialCommandGroup(
-            new FeedShooter(endEffector),
-            new ResetHome()
+        controller.R1().onTrue(new ConditionalCommand(
+            new SequentialCommandGroup(
+                new FeedShooter(endEffector),
+                new ResetHome()
 
+            ),
+            new InstantCommand(),
+            () -> (endEffector.shooterStatus() == ShooterStatus.SPINNING || endEffector.shooterStatus() == ShooterStatus.LOCKED)
+            
         ));
 
         // ======== Manual Climbing ========

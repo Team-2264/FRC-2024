@@ -76,8 +76,8 @@ public class Arm extends SubsystemBase {
 
     }
 
-    public boolean atHome() {
-        return armState == ArmState.HOME;
+    public ArmState getState() {
+        return armState;
     }
 
     @Override 
