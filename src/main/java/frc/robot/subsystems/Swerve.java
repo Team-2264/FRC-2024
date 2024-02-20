@@ -153,6 +153,11 @@ public class Swerve extends SubsystemBase {
         lockedOnto = Optional.empty();
         
     }
+
+    public boolean locked() {
+        return lockedOnto.isPresent();
+
+    }
     
     /**
      * Drives the swerve drive based on field-relative {@link ChassisSpeeds}.

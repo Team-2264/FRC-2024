@@ -102,6 +102,25 @@ public class RobotContainer {
      * Configures all button bindings.
      */
     private void configureBindings() {
+        /**
+         * Resets the robot to the home position. Disables all locks and stops all motors.
+         */
+        final class ResetHome extends SequentialCommandGroup {
+            public ResetHome() {
+                addCommands(
+                    new UnlockArm(arm),
+                    new UnlockSwerve(swerve),
+                    new UnlockShooter(endEffector),
+                    new InstantCommand(() -> endEffector.stopShooter()),
+                    new InstantCommand(() -> endEffector.stopIntake()),
+                    new InstantCommand(() -> arm.setState(ArmState.HOME))
+
+                );
+
+            }
+
+        }
+
         // ======== Swerve ========
         swerve.setDefaultCommand(new TeleopSwerve(swerve, controller));
         controller.options().onTrue( new InstantCommand(() -> swerve.zeroGyro()));
@@ -124,49 +143,51 @@ public class RobotContainer {
             endEffector::hasNote
 
         ));
-        controller.R2().onFalse(new SequentialCommandGroup(
+        controller.R2().onFalse(
+            new SequentialCommandGroup(
             new InstantCommand(() -> endEffector.stopIntake()),
             new InstantCommand(() -> arm.setState(ArmState.HOME))
 
         ));
 
-        controller.triangle().onTrue(new InstantCommand(() -> endEffector.outtake(0.5)));
+        controller.triangle().onTrue(new InstantCommand(() -> endEffector.outtake(0.1)));
         controller.triangle().onFalse(new InstantCommand(() -> endEffector.stopIntake()));
 
         // ======== Shooter ========
-        controller.L2().onTrue(new SelectCommand<>(
-            Map.ofEntries(
-                Map.entry(HeldButton.CROSS, new SequentialCommandGroup( // Manual Shooting
-                    new InstantCommand(() -> endEffector.spinupShooter(0.6)),
-                    new InstantCommand(() -> arm.setState(ArmState.MANUAL_SHOOT))
+        controller.L2().onTrue(new ConditionalCommand(
+            new SelectCommand<>(
+                Map.ofEntries(
+                    Map.entry(HeldButton.CROSS, new SequentialCommandGroup( // Manual Shooting
+                        new InstantCommand(() -> endEffector.spinupShooter(0.6)),
+                        new InstantCommand(() -> arm.setState(ArmState.MANUAL_SHOOT))
 
-                )),
-                Map.entry(HeldButton.SQUARE, new SequentialCommandGroup( // Amp
-                    new InstantCommand(() -> endEffector.spinupShooter(0.2)),
-                    new InstantCommand(() -> arm.setState(ArmState.AMP))
+                    )),
+                    Map.entry(HeldButton.SQUARE, new SequentialCommandGroup( // Amp
+                        new InstantCommand(() -> endEffector.spinupShooter(0.2)),
+                        new InstantCommand(() -> arm.setState(ArmState.AMP))
 
-                )),
-                Map.entry(HeldButton.NONE, new SequentialCommandGroup( // Autolocking
-                    new LockSwerve(swerve),
-                    new LockArm(arm),
-                    new LockShooter(endEffector)
+                    )),
+                    Map.entry(HeldButton.NONE, new SequentialCommandGroup( // Autolocking
+                        new LockSwerve(swerve),
+                        new LockArm(arm),
+                        new LockShooter(endEffector)
 
-                ))
+                    ))
 
-            ),
-            heldButtons::currentHeld
+                ),
+                heldButtons::currentHeld
             
-        ));
-        controller.L2().onFalse(new SequentialCommandGroup(
-            new UnlockArm(arm),
-            new UnlockSwerve(swerve),
-            new UnlockShooter(endEffector),
-            new InstantCommand(() -> endEffector.stopShooter()),
-            new InstantCommand(() -> arm.setState(ArmState.HOME))
+            ),
+            new ResetHome(),
+            arm::atHome
 
         ));
 
-        controller.R1().onTrue(new FeedShooter(endEffector));
+        controller.R1().onTrue(new SequentialCommandGroup(
+            new FeedShooter(endEffector),
+            new ResetHome()
+
+        ));
 
         // ======== Manual Climbing ========
         manualClimbUp.onTrue(new InstantCommand(() -> climbing.accend(0.6)));

@@ -60,6 +60,11 @@ public class Arm extends SubsystemBase {
     public void unlock() {
         lockedOnto = Optional.empty();
     }
+
+    public boolean locked() {
+        return lockedOnto.isPresent();
+
+    }
     
     /**
      * Rotates the shoulder to a given angle.
@@ -69,6 +74,10 @@ public class Arm extends SubsystemBase {
     public void setShoulderAngle(double angle) {
         shoulder.rotateTo(angle);
 
+    }
+
+    public boolean atHome() {
+        return armState == ArmState.HOME;
     }
 
     @Override 
@@ -106,8 +115,6 @@ public class Arm extends SubsystemBase {
                 setShoulderAngle(angle_estimate.getAsDouble());
             }
 
-            // Update flywheel speeds
-          
         }
            
     }

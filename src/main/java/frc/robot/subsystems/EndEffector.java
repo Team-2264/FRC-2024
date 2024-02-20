@@ -64,6 +64,11 @@ public class EndEffector extends SubsystemBase {
         
     }
 
+    public boolean locked() {
+        return lockedOnto.isPresent();
+
+    }
+
     /**
      * Spins up the shooter motors to a given speed.
      * Speed is a value between -1 and 1.

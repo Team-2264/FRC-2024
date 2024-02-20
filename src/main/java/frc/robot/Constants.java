@@ -123,12 +123,11 @@ public final class Constants {
          * @return The speed of the flywheel from 0 to 1 (percent output)
          */
         public static final double getFlywheelSpeed(double distance) {
-            if (distance <= 2) {
-                return 0.6;
-            } else if (distance > 2 && distance <= 5) {
-                return 0.6 + ((0.4 / 3) * (distance - 2));
-            } else {
+            if (distance > 4) {
                 return 1.0;
+
+            } else {
+                return (0.1 * distance) + 0.6;
 
             }
 
