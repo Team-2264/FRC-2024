@@ -93,6 +93,11 @@ public class Arm extends SubsystemBase {
             final OptionalDouble angle_estimate = Constants.Targeting.getSpeakerArmAngle(distance_to_speaker);
             SmartDashboard.putString("est angle", angle_estimate.toString());
             if(angle_estimate.isPresent()) {
+                if(angle_estimate.getAsDouble() > Constants.Arm.shoulderMaxAngle) {
+                    return;
+                } else if(angle_estimate.getAsDouble() < 0) {
+                    return;
+                }
                 setShoulderAngle(angle_estimate.getAsDouble());
             }
 
