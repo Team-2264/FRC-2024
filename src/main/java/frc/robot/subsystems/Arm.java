@@ -49,9 +49,6 @@ public class Arm extends SubsystemBase {
         if (state != ArmState.LOCKED) {
             setShoulderAngle(state.shoulderAngle());
 
-        } else {
-            unlock();
-
         }
 
     }
@@ -93,27 +90,8 @@ public class Arm extends SubsystemBase {
         if (lockedOnto.isPresent()) {
             final double distance_to_speaker = container.swerve.getPose().getTranslation().minus(lockedOnto.get()).getNorm();
 
-            Optional<Alliance> alliance2 = DriverStation.getAlliance();
-            if(alliance2.isEmpty()) {
-                throw new RuntimeException("Failed to get native pose: Alliance is not set in Driverstation");
-            }
-
-            Alliance alliance = alliance2.get();
-            if(alliance == Alliance.Blue) {
-                Constants.Targeting.armParameters = new TrajectoryParameters()
-                    .withArmLength(0.5917)
-                    .withGoalHeight(Constants.Targeting.blueSpeakerPose.getWpiBlue().getZ() - Constants.Targeting.pivotToGround)
-                    .withLaunchAngleOffset(107.258 * (Math.PI/180.0));
-
-            } else {
-                Constants.Targeting.armParameters = new TrajectoryParameters()
-                    .withArmLength(0.5917)
-                    .withGoalHeight(Constants.Targeting.redSpeakerPose.getWpiBlue().getZ() - Constants.Targeting.pivotToGround)
-                    .withLaunchAngleOffset(107.258 * (Math.PI/180.0));
-
-            }        
-
             final OptionalDouble angle_estimate = Constants.Targeting.getSpeakerArmAngle(distance_to_speaker);
+            SmartDashboard.putString("est angle", angle_estimate.toString());
             if(angle_estimate.isPresent()) {
                 setShoulderAngle(angle_estimate.getAsDouble());
             }
