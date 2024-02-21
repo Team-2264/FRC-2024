@@ -380,7 +380,7 @@ public final class Constants {
             );
 
         // Robot rotation locking
-        public static final double rotationLockKP = 1;
+        public static final double rotationLockKP = 0.7;
         public static final double rotationLockKI = 0.01;
         public static final double rotationLockKD = 0;
 

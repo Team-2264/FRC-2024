@@ -81,14 +81,26 @@ public class RobotContainer {
      */
     public RobotContainer() {
         // Register named commands - pathplanner
-        NamedCommands.registerCommand("startIntake", new InstantCommand(() -> endEffector.intake(0.6)));
-        NamedCommands.registerCommand("stopIntake", new InstantCommand(() -> endEffector.stopIntake()));
+        NamedCommands.registerCommand("intake", new SequentialCommandGroup(
+            new InstantCommand(() -> endEffector.intake(0.6)),
+            new InstantCommand(() -> arm.setState(ArmState.INTAKE))
 
-        NamedCommands.registerCommand("spinupShooter", new InstantCommand(() -> endEffector.spinupShooter(0.1)));
-        NamedCommands.registerCommand("stopShooter", new InstantCommand(() -> endEffector.stopShooter()));
+        ));
+        NamedCommands.registerCommand("home", new SequentialCommandGroup(
+            new InstantCommand(() -> endEffector.stopIntake()),
+            new InstantCommand(() -> arm.setState(ArmState.HOME))
 
-        NamedCommands.registerCommand("armIntake", new InstantCommand(() -> arm.setState(ArmState.INTAKE)));
-        NamedCommands.registerCommand("armHome", new InstantCommand(() -> arm.setState(ArmState.AMP)));
+        ));
+
+        NamedCommands.registerCommand("lockArm", new LockArm(arm));
+        NamedCommands.registerCommand("lockSwerve", new LockSwerve(swerve));
+        NamedCommands.registerCommand("lockShooter", new LockShooter(endEffector));
+
+        NamedCommands.registerCommand("unlockArm", new UnlockArm(arm));
+        NamedCommands.registerCommand("unlockSwerve", new UnlockSwerve(swerve));
+        NamedCommands.registerCommand("unlockShooter", new UnlockShooter(endEffector));
+        
+        NamedCommands.registerCommand("feedShooter", new FeedShooter(endEffector));
 
         // Configure the button bindings
         configureBindings();

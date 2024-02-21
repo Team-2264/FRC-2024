@@ -49,6 +49,9 @@ public class Arm extends SubsystemBase {
         if (state != ArmState.LOCKED) {
             setShoulderAngle(state.shoulderAngle());
 
+        } else {
+            unlock();
+
         }
 
     }
@@ -108,7 +111,7 @@ public class Arm extends SubsystemBase {
                     .withGoalHeight(Constants.Targeting.redSpeakerPose.getWpiBlue().getZ() - Constants.Targeting.pivotToGround)
                     .withLaunchAngleOffset(107.258 * (Math.PI/180.0));
 
-            }   
+            }        
 
             final OptionalDouble angle_estimate = Constants.Targeting.getSpeakerArmAngle(distance_to_speaker);
             if(angle_estimate.isPresent()) {
