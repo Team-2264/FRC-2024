@@ -16,6 +16,11 @@ public class TrajectoryParameters {
     */
     public double launchAngleOffset = Math.PI / 4;
 
+    /** Initial velocity of arm in meters per second */
+    public double launchVelocity = 30.0;
+
+    public double gravity = 9.8;
+
     /**
      * Returns the estimated angle that the arm must be at to hit a target `goalDistance` units away
      * @param newtonIterations The number of newton iterations to be performed. The higher the number,
@@ -59,6 +64,11 @@ public class TrajectoryParameters {
      */
     public TrajectoryParameters withGoalHeight(double goalHeight) {
         this.goalHeight = goalHeight;
+        return this;
+    }
+
+    public TrajectoryParameters withLaunchVelocity(double launchVelocity) {
+        this.launchVelocity = launchVelocity;
         return this;
     }
 

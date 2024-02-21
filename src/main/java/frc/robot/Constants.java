@@ -80,7 +80,8 @@ public final class Constants {
         public static TrajectoryParameters armParameters = new TrajectoryParameters()
             .withArmLength(0.5917)
             .withGoalHeight(blueSpeakerPose.getWpiBlue().getZ() - pivotToGround)
-            .withLaunchAngleOffset(107.258 * (Math.PI/180.0));
+            .withLaunchAngleOffset(107.258 * (Math.PI/180.0))
+            .withLaunchVelocity(30.0);
 
          /** 
          *  Get the arm angle to hit the speaker

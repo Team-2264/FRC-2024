@@ -20,7 +20,7 @@ public class ArmAngleEstimation {
      * Normalizes the estimate so that it's in the range [0, 2 * Math.PI)
      */
     public void normalize() {
-        double max_value = trajectoryParameters.launchAngleOffset + Math.PI / 2;
+        double max_value = Math.PI / 2;
         estimate %= max_value;
         if(estimate < 0) {
             // Generally in mathematics, `a mod b` is in the range [0, b).
@@ -55,8 +55,19 @@ public class ArmAngleEstimation {
 
         final double L = trajectoryParameters.armLength;
         final double beta = trajectoryParameters.launchAngleOffset;
+        final double v_0 = trajectoryParameters.launchVelocity;
+        final double g = trajectoryParameters.gravity;
 
-        return (x-L*Math.cos(alpha))*Math.tan(alpha-beta)+L*Math.sin(alpha);
+        final double sin_alpha = Math.sin(alpha);
+        final double cos_alpha = Math.cos(alpha);
+
+        final double cos_beta_minus_alpha = Math.cos(beta - alpha);
+        final double sin_beta_minus_alpha = Math.sin(beta - alpha);
+
+        return ((2*L*v_0*v_0*cos_alpha-2*v_0*v_0*x)*cos_beta_minus_alpha*
+        sin_beta_minus_alpha+2*L*v_0*v_0*sin_alpha*cos_beta_minus_alpha*
+        cos_beta_minus_alpha-L*L*g*cos_alpha*cos_alpha+2*L*g*x*cos_alpha-g*
+        x*x)/(2*v_0*v_0*cos_beta_minus_alpha*cos_beta_minus_alpha);
     }
 
     /// Gets the partial derivative with respect to alpha of projectedHeight
@@ -66,9 +77,15 @@ public class ArmAngleEstimation {
 
         final double L = trajectoryParameters.armLength;
         final double beta = trajectoryParameters.launchAngleOffset;
+        final double v_0 = trajectoryParameters.launchVelocity;
+        final double g = trajectoryParameters.gravity;
 
-        final double cos_alpha_minus_beta = Math.cos(alpha - beta);
+        final double sin_alpha = Math.sin(alpha);
+        final double cos_alpha = Math.cos(alpha);
 
-        return 1.0/(cos_alpha_minus_beta * cos_alpha_minus_beta)*(L*Math.cos(alpha-2.0*beta)-L*Math.cos(alpha)+2*x)/2.0;
+        final double cos_beta_minus_alpha = Math.cos(beta - alpha);
+        final double sin_beta_minus_alpha = Math.sin(beta - alpha);
+
+        return -(((L*v_0*v_0*cos_alpha-v_0*v_0*x)*cos_beta_minus_alpha*sin_beta_minus_alpha*sin_beta_minus_alpha*sin_beta_minus_alpha+(L*v_0*v_0*sin_alpha*cos_beta_minus_alpha*cos_beta_minus_alpha-L*L*g*cos_alpha*cos_alpha+2*L*g*x*cos_alpha-g*x*x)*sin_beta_minus_alpha-v_0*v_0*x*cos_beta_minus_alpha*cos_beta_minus_alpha*cos_beta_minus_alpha+(L*g*x-L*L*g*cos_alpha)*sin_alpha*cos_beta_minus_alpha)/(v_0*v_0*cos_beta_minus_alpha*cos_beta_minus_alpha*cos_beta_minus_alpha));
     }
 }
