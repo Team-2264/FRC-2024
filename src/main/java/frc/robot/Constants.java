@@ -81,7 +81,7 @@ public final class Constants {
             .withArmLength(0.5917)
             .withGoalHeight(blueSpeakerPose.getWpiBlue().getZ() - pivotToGround)
             .withLaunchAngleOffset(107.258 * (Math.PI/180.0))
-            .withLaunchVelocity(30.0);
+            .withLaunchVelocity(20);
 
          /** 
          *  Get the arm angle to hit the speaker
@@ -95,7 +95,7 @@ public final class Constants {
             double pivotDistance = targetDistance - pivotToCenter;
             SmartDashboard.putNumber("Pivot distance", pivotDistance);
 
-            ArmAngleEstimation estimate = armParameters.getEstimate(pivotDistance, 12);
+            ArmAngleEstimation estimate = armParameters.getEstimate(pivotDistance, 32);
             SmartDashboard.putNumber("Raw angle estimate", Math.toDegrees(estimate.estimate));
             SmartDashboard.putNumber("Raw angle inaccurcy", estimate.inaccuracy);
     

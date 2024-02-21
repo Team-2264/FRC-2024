@@ -20,16 +20,21 @@ public class ArmAngleEstimation {
      * Normalizes the estimate so that it's in the range [0, 2 * Math.PI)
      */
     public void normalize() {
-        double max_value = Math.PI / 2;
-        estimate %= max_value;
+        double min_value = Math.PI / 2;
+        double max_value = Math.PI;
+
+        estimate += min_value;
+        estimate %= (min_value + max_value);
         if(estimate < 0) {
             // Generally in mathematics, `a mod b` is in the range [0, b).
             // For some reason, this is not true in many programming languages.
             // Instead, if a < 0, `a % b` is negative.
 
             // Therefore, we need to do the following to have reasonable behavior.
-            estimate += max_value;
+            estimate += max_value + max_value;
         }
+
+        estimate -= min_value;
     }
 
     /**
