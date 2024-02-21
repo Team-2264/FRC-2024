@@ -149,10 +149,16 @@ public class EndEffector extends SubsystemBase {
 
     }
 
+    public double shooterSpeed() {
+        return (shooterMotors[0].getVelocity() + shooterMotors[1].getVelocity())/2.0;
+    }
+
     @Override
     public void periodic() {
         SmartDashboard.putString("Intake Status", intakeStatus.toString());
         SmartDashboard.putString("Shooter Status", shooterStatus.toString());
+
+        SmartDashboard.putNumber("Shooter speed: ", shooterSpeed());
 
         SmartDashboard.putBoolean("Note", hasNote());
 
