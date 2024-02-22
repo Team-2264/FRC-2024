@@ -31,6 +31,7 @@ import frc.lib.AngleEstimation;
 import frc.lib.FieldPose;
 import frc.lib.GravityTrajectoryParameters;
 import frc.lib.LinearTrajectoryParameters;
+import frc.lib.Math2264;
 import frc.lib.motors.NeoConfiguration;
 import frc.lib.motors.TalonFxConfiguration;
 
@@ -134,14 +135,7 @@ public final class Constants {
          * @return The speed of the flywheel from 0 to 1 (percent output)
          */
         public static final double getFlywheelSpeed(double distance) {
-            if (distance > 4) {
-                return 1.0;
-
-            } else {
-                return (0.1 * distance) + 0.6;
-
-            }
-
+            return Math2264.clamp(0.2, 0.5 * distance, 1.0);
         }
 
     }
