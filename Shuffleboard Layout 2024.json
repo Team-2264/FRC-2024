@@ -1070,7 +1070,9 @@
               "_showGlyph": false,
               "Game/Game": "k2024Crescendo",
               "Visuals/Robot Icon Size": 50.0,
-              "Visuals/Show Outside Circles": false
+              "Visuals/Show Outside Circles": false,
+              "Colors/path": "#FFFFFFFF",
+              "Colors/target pose": "#FFFFFFFF"
             }
           },
           "16,0": {
@@ -1256,6 +1258,32 @@
               "Colors/Color when true": "#7CFC00FF",
               "Colors/Color when false": "#8B0000FF"
             }
+          },
+          "15,5": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Shooter speed: ",
+              "_title": "Shooter speed: ",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "16,5": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/est angle",
+              "_title": "est angle",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
           }
         }
       }
@@ -1305,7 +1333,9 @@
               "_showGlyph": false,
               "Game/Game": "k2024Crescendo",
               "Visuals/Robot Icon Size": 50.0,
-              "Visuals/Show Outside Circles": false
+              "Visuals/Show Outside Circles": false,
+              "Colors/path": "#FFFFFFFF",
+              "Colors/target pose": "#FFFFFFFF"
             }
           },
           "8,3": {
@@ -1401,9 +1431,9 @@
     }
   ],
   "windowGeometry": {
-    "x": -8.0,
-    "y": -8.0,
-    "width": 2576.0,
-    "height": 1408.0
+    "x": -7.199999809265137,
+    "y": -7.199999809265137,
+    "width": 2062.39990234375,
+    "height": 1118.4000244140625
   }
 }

@@ -16,7 +16,7 @@ public enum ArmState {
         double degrees = switch(this){
             case INTAKE -> 0; 
             case AMP -> 100;
-            case START -> 50;
+            case START -> 70;
             case HOME -> 2;
             case MANUAL_SHOOT -> 20;
             case LOCKED -> 0; // No angle while locked

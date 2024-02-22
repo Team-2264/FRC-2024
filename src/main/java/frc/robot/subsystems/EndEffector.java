@@ -80,7 +80,7 @@ public class EndEffector extends SubsystemBase {
 
     /**
      * Stops the shooter motors.
-     */
+     */     
     public void stopShooter() {
         shooterMotors[0].stop();
         shooterStatus = ShooterStatus.STOPPED;

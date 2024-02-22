@@ -26,13 +26,19 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.5
+            "waitTime": 2.0
           }
         },
         {
           "type": "named",
           "data": {
             "name": "feedShooter"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "unlockArm"
           }
         },
         {
@@ -48,12 +54,6 @@
           }
         },
         {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.5
-          }
-        },
-        {
           "type": "named",
           "data": {
             "name": "lockArm"
@@ -62,7 +62,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.5
+            "waitTime": 1.0
           }
         },
         {
@@ -74,7 +74,19 @@
         {
           "type": "named",
           "data": {
-            "name": "unlockShooter"
+            "name": "unlockArm"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "intake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Out"
           }
         }
       ]

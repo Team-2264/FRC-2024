@@ -72,6 +72,9 @@ public class RobotContainer {
     
     private final JoystickButton manualClimbUp = new JoystickButton(controller2, 12);
     private final JoystickButton manualClimbDown = new JoystickButton(controller2, 11);
+
+    private final JoystickButton manualIntake = new JoystickButton(controller2, 10);
+    private final JoystickButton manualOuttake = new JoystickButton(controller2, 9);
     
     // Autonomous
     private final SendableChooser<Command> autoChooser;
@@ -218,6 +221,13 @@ public class RobotContainer {
 
         manualClimbDown.onTrue(new InstantCommand(() -> climbing.descend(0.6)));
         manualClimbDown.onFalse(new InstantCommand(() -> climbing.stopWinch()));
+
+        // ======== Manual Intake ========
+        manualIntake.onTrue(new InstantCommand(() -> endEffector.intake(0.1)));
+        manualIntake.onFalse(new InstantCommand(() -> endEffector.stopIntake()));
+
+        manualOuttake.onTrue(new InstantCommand(() -> endEffector.intake(-0.1)));
+        manualOuttake.onFalse(new InstantCommand(() -> endEffector.stopIntake()));
 
         // ======== Manual Shoulder ========
         manualArmUp.onTrue(new InstantCommand(() -> arm.shoulder.rotateConstant(0.075)));
