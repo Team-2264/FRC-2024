@@ -1,6 +1,6 @@
 package frc.lib;
 
-public class GravityArmAngleEstimation {
+public class GravityArmAngleEstimation extends AngleEstimation {
     public GravityTrajectoryParameters trajectoryParameters;
 
     public double estimate = 0;

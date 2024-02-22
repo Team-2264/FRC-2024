@@ -27,8 +27,10 @@ import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib.GravityArmAngleEstimation;
+import frc.lib.AngleEstimation;
 import frc.lib.FieldPose;
 import frc.lib.GravityTrajectoryParameters;
+import frc.lib.LinearTrajectoryParameters;
 import frc.lib.motors.NeoConfiguration;
 import frc.lib.motors.TalonFxConfiguration;
 
@@ -83,6 +85,8 @@ public final class Constants {
             .withLaunchAngleOffset(107.258 * (Math.PI/180.0))
             .withLaunchVelocity(20);
 
+        public static LinearTrajectoryParameters linearParameters = LinearTrajectoryParameters.fromGravityParameters(armParameters);
+
          /** 
          *  Get the arm angle to hit the speaker
          *  Visualiation: https://www.desmos.com/calculator/wgwhg7msod
@@ -95,7 +99,13 @@ public final class Constants {
             double pivotDistance = targetDistance - pivotToCenter;
             SmartDashboard.putNumber("Pivot distance", pivotDistance);
 
-            GravityArmAngleEstimation estimate = armParameters.getEstimate(pivotDistance, 32);
+            AngleEstimation estimate;
+            if(targetDistance > 2) {
+                 estimate = armParameters.getEstimate(pivotDistance, 32);
+            } else {
+                 estimate = linearParameters.getEstimate(pivotDistance, 32);
+            }
+
             SmartDashboard.putNumber("Raw angle estimate", Math.toDegrees(estimate.estimate));
             SmartDashboard.putNumber("Raw angle inaccurcy", estimate.inaccuracy);
     
