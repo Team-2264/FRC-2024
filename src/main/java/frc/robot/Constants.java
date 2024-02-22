@@ -26,9 +26,9 @@ import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.lib.ArmAngleEstimation;
+import frc.lib.GravityArmAngleEstimation;
 import frc.lib.FieldPose;
-import frc.lib.TrajectoryParameters;
+import frc.lib.GravityTrajectoryParameters;
 import frc.lib.motors.NeoConfiguration;
 import frc.lib.motors.TalonFxConfiguration;
 
@@ -77,7 +77,7 @@ public final class Constants {
         public static double pivotToCenter = 0.2286;
         public static double logicalArmOffset = 12.742 / 180.0 * Math.PI;
 
-        public static TrajectoryParameters armParameters = new TrajectoryParameters()
+        public static GravityTrajectoryParameters armParameters = new GravityTrajectoryParameters()
             .withArmLength(0.5917)
             .withGoalHeight(blueSpeakerPose.getWpiBlue().getZ() - pivotToGround)
             .withLaunchAngleOffset(107.258 * (Math.PI/180.0))
@@ -95,7 +95,7 @@ public final class Constants {
             double pivotDistance = targetDistance - pivotToCenter;
             SmartDashboard.putNumber("Pivot distance", pivotDistance);
 
-            ArmAngleEstimation estimate = armParameters.getEstimate(pivotDistance, 32);
+            GravityArmAngleEstimation estimate = armParameters.getEstimate(pivotDistance, 32);
             SmartDashboard.putNumber("Raw angle estimate", Math.toDegrees(estimate.estimate));
             SmartDashboard.putNumber("Raw angle inaccurcy", estimate.inaccuracy);
     
