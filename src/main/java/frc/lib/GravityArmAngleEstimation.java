@@ -3,9 +3,6 @@ package frc.lib;
 public class GravityArmAngleEstimation extends AngleEstimation {
     public GravityTrajectoryParameters trajectoryParameters;
 
-    public double estimate = 0;
-    public double inaccuracy = 0;
-
     public double goalDistance = 0;
 
     public GravityArmAngleEstimation(GravityTrajectoryParameters parameters, double initialGuess, double goalDistance) {

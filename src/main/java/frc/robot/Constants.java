@@ -64,7 +64,7 @@ public final class Constants {
             new Translation3d(
                 Units.inchesToMeters(0), // x
                 Units.inchesToMeters(218.42), // y
-                Units.inchesToMeters(82.9)), // z
+                Units.inchesToMeters(80)), // z
                 new Rotation3d()
         ));
 
