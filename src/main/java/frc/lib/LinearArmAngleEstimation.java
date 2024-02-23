@@ -1,14 +1,11 @@
 package frc.lib;
 
-public class ArmAngleEstimation {
-    public TrajectoryParameters trajectoryParameters;
-
-    public double estimate = 0;
-    public double inaccuracy = 0;
+public class LinearArmAngleEstimation extends AngleEstimation {
+    public LinearTrajectoryParameters trajectoryParameters;
 
     public double goalDistance = 0;
 
-    public ArmAngleEstimation(TrajectoryParameters parameters, double initialGuess, double goalDistance) {
+    public LinearArmAngleEstimation(LinearTrajectoryParameters parameters, double initialGuess, double goalDistance) {
         this.trajectoryParameters = parameters;
         this.goalDistance = goalDistance;
         this.estimate = initialGuess;
