@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.3901498943937478,
-      "y": 5.578464848204865
+      "x": 1.4176978689527844,
+      "y": 4.077100234737382
     },
-    "rotation": 0.8550973962668885
+    "rotation": -1.4502162909334275
   },
   "command": {
     "type": "sequential",
@@ -21,6 +21,12 @@
           "type": "named",
           "data": {
             "name": "lockArm"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Bottom Align"
           }
         },
         {
@@ -48,9 +54,15 @@
           }
         },
         {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
           "type": "path",
           "data": {
-            "pathName": "Center Forward"
+            "pathName": "Bottom Forward"
           }
         },
         {
@@ -62,7 +74,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 1.5
+            "waitTime": 2.0
           }
         },
         {
@@ -80,6 +92,6 @@
       ]
     }
   },
-  "folder": "Centers",
+  "folder": "Bottoms",
   "choreoAuto": false
 }

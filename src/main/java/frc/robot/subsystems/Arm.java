@@ -47,6 +47,7 @@ public class Arm extends SubsystemBase {
         this.armState = state;
 
         if (state != ArmState.LOCKED) {
+            unlock();
             setShoulderAngle(state.shoulderAngle());
 
         }

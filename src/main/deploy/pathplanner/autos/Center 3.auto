@@ -38,12 +38,6 @@
         {
           "type": "named",
           "data": {
-            "name": "unlockArm"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
             "name": "intake"
           }
         },
@@ -74,7 +68,31 @@
         {
           "type": "named",
           "data": {
-            "name": "unlockArm"
+            "name": "intake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Loop Under"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "lockArm"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.5
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "feedShooter"
           }
         }
       ]
