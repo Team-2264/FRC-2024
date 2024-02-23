@@ -26,9 +26,12 @@ import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.lib.ArmAngleEstimation;
+import frc.lib.GravityArmAngleEstimation;
+import frc.lib.AngleEstimation;
 import frc.lib.FieldPose;
-import frc.lib.TrajectoryParameters;
+import frc.lib.GravityTrajectoryParameters;
+import frc.lib.LinearTrajectoryParameters;
+import frc.lib.Math2264;
 import frc.lib.motors.NeoConfiguration;
 import frc.lib.motors.TalonFxConfiguration;
 
@@ -61,7 +64,7 @@ public final class Constants {
             new Translation3d(
                 Units.inchesToMeters(0), // x
                 Units.inchesToMeters(218.42), // y
-                Units.inchesToMeters(82.9)), // z
+                Units.inchesToMeters(80)), // z
                 new Rotation3d()
         ));
 
@@ -77,10 +80,13 @@ public final class Constants {
         public static double pivotToCenter = 0.2286;
         public static double logicalArmOffset = 12.742 / 180.0 * Math.PI;
 
-        public static TrajectoryParameters armParameters = new TrajectoryParameters()
+        public static GravityTrajectoryParameters armParameters = new GravityTrajectoryParameters()
             .withArmLength(0.5917)
             .withGoalHeight(blueSpeakerPose.getWpiBlue().getZ() - pivotToGround)
-            .withLaunchAngleOffset(107.258 * (Math.PI/180.0));
+            .withLaunchAngleOffset(107.258 * (Math.PI/180.0))
+            .withLaunchVelocity(20);
+
+        public static LinearTrajectoryParameters linearParameters = LinearTrajectoryParameters.fromGravityParameters(armParameters);
 
          /** 
          *  Get the arm angle to hit the speaker
@@ -94,7 +100,13 @@ public final class Constants {
             double pivotDistance = targetDistance - pivotToCenter;
             SmartDashboard.putNumber("Pivot distance", pivotDistance);
 
-            ArmAngleEstimation estimate = armParameters.getEstimate(pivotDistance, 12);
+            AngleEstimation estimate;
+            if(targetDistance > 2) {
+                 estimate = armParameters.getEstimate(pivotDistance, 32);
+            } else {
+                 estimate = linearParameters.getEstimate(pivotDistance, 32);
+            }
+
             SmartDashboard.putNumber("Raw angle estimate", Math.toDegrees(estimate.estimate));
             SmartDashboard.putNumber("Raw angle inaccurcy", estimate.inaccuracy);
     
@@ -123,14 +135,7 @@ public final class Constants {
          * @return The speed of the flywheel from 0 to 1 (percent output)
          */
         public static final double getFlywheelSpeed(double distance) {
-            if (distance > 4) {
-                return 1.0;
-
-            } else {
-                return (0.1 * distance) + 0.6;
-
-            }
-
+            return Math2264.clamp(0.2, 0.5 * distance, 1.0);
         }
 
     }

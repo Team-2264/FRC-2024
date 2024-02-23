@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.lib.TrajectoryParameters;
+import frc.lib.GravityTrajectoryParameters;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.enums.ArmState;
@@ -94,6 +94,11 @@ public class Arm extends SubsystemBase {
             final OptionalDouble angle_estimate = Constants.Targeting.getSpeakerArmAngle(distance_to_speaker);
             SmartDashboard.putString("est angle", angle_estimate.toString());
             if(angle_estimate.isPresent()) {
+                if(angle_estimate.getAsDouble() > 0.25) {
+                    return;
+                } else if(angle_estimate.getAsDouble() < 0) {
+                    return;
+                }
                 setShoulderAngle(angle_estimate.getAsDouble());
             }
 
