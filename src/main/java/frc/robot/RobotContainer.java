@@ -200,8 +200,6 @@ public class RobotContainer {
             new ResetHome(),
             () -> (arm.getState() == ArmState.HOME)
 
-            
-
         ));
 
         controller.R1().onTrue(new ConditionalCommand(

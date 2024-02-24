@@ -16,27 +16,34 @@
           "data": {
             "commands": [
               {
-                "type": "named",
+                "type": "parallel",
                 "data": {
-                  "name": "lockArm"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "lockShooter"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Top Align"
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "lockArm"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "lockShooter"
+                      }
+                    }
+                  ]
                 }
               },
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 1.0
+                  "waitTime": 0.5
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Top Start"
                 }
               },
               {
@@ -46,27 +53,9 @@
                 }
               },
               {
-                "type": "named",
-                "data": {
-                  "name": "intake"
-                }
-              },
-              {
                 "type": "path",
                 "data": {
-                  "pathName": "Top Out"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Top slide"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Top In"
+                  "pathName": "Top N1"
                 }
               },
               {
@@ -76,15 +65,27 @@
                 }
               },
               {
-                "type": "named",
+                "type": "path",
                 "data": {
-                  "name": "unlockArm"
+                  "pathName": "Top N4"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "unlockShooter"
+                  "name": "feedShooter"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Top N5"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "feedShooter"
                 }
               }
             ]
