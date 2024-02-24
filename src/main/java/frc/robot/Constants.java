@@ -135,7 +135,7 @@ public final class Constants {
          * @return The speed of the flywheel from 0 to 1 (percent output)
          */
         public static final double getFlywheelSpeed(double distance) {
-            return Math2264.clamp(0.2, 0.5 * distance, 1.0);
+            return Math.min(1.0, (0.6/2.0 + 0.4)*distance);
         }
 
     }
