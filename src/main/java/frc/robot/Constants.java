@@ -84,7 +84,7 @@ public final class Constants {
             .withArmLength(0.5917)
             .withGoalHeight(blueSpeakerPose.getWpiBlue().getZ() - pivotToGround)
             .withLaunchAngleOffset(107.258 * (Math.PI/180.0))
-            .withLaunchVelocity(20);
+            .withLaunchVelocity(19);
 
         public static LinearTrajectoryParameters linearParameters = LinearTrajectoryParameters.fromGravityParameters(armParameters);
 
@@ -208,8 +208,6 @@ public final class Constants {
                 .withKP(0.0)
                 .withKI(0.0)
                 .withKD(0.0)
-                .followMotor(24)
-               
         };
 
         public static final double flywheelBaseVoltage = 10.0;

@@ -74,7 +74,9 @@ public class EndEffector extends SubsystemBase {
      * Speed is a value between -1 and 1.
      */
     public void spinupShooter(double speed) {
-        shooterMotors[0].rotateAtSpeed(speed * Constants.EndEffector.flywheelBaseVoltage);
+        for(int i=0; i < 2; i++) {
+            shooterMotors[i].rotateAtSpeed(speed * Constants.EndEffector.flywheelBaseVoltage);
+        }
         shooterStatus = ShooterStatus.SPINNING;
     }
 
