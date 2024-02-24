@@ -77,6 +77,10 @@ public class Neo {
     return encoder.getVelocity();
   }
 
+  public void setVoltage(double volts) {
+     motor.setVoltage(volts);
+  }
+
   /**
    * Rotates the motor to a specific position relative to where it started.
    * @param position The angle to rotate to in rotations

@@ -74,7 +74,7 @@ public class EndEffector extends SubsystemBase {
      * Speed is a value between -1 and 1.
      */
     public void spinupShooter(double speed) {
-        shooterMotors[0].rotateAtSpeed(speed);
+        shooterMotors[0].rotateAtSpeed(speed * Constants.EndEffector.flywheelBaseVoltage);
         shooterStatus = ShooterStatus.SPINNING;
     }
 
@@ -172,7 +172,7 @@ public class EndEffector extends SubsystemBase {
         if (lockedOnto.isPresent()) {
             double distance_to_speaker = container.swerve.getPose().getTranslation().minus(lockedOnto.get()).getNorm();
 
-            shooterMotors[0].rotateAtSpeed(Constants.Targeting.getFlywheelSpeed(distance_to_speaker));
+            shooterMotors[0].rotateAtSpeed(Constants.Targeting.getFlywheelSpeed(distance_to_speaker) * Constants.EndEffector.flywheelBaseVoltage);
 
         }
 

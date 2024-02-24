@@ -212,6 +212,8 @@ public final class Constants {
                
         };
 
+        public static final double flywheelBaseVoltage = 10.0;
+
         public static final int[] beamBreakPorts = new int[]{2, 3};
         
         public static final double intakeSpeed = 0.6;
