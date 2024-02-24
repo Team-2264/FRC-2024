@@ -86,6 +86,24 @@
         {
           "type": "named",
           "data": {
+            "name": "intake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Top Cycle"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "feedShooter"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "unlockArm"
           }
         }

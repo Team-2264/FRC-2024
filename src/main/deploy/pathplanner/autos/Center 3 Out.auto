@@ -74,13 +74,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Out"
+            "pathName": "Center Out"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "In"
+            "pathName": "Center In"
           }
         },
         {

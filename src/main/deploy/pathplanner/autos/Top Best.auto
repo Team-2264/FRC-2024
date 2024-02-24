@@ -1,0 +1,98 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.407706324685116,
+      "y": 7.003080254377342
+    },
+    "rotation": 0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "lockArm"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "lockShooter"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Top Align"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 1.0
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "feedShooter"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "intake"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Top Out"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Top slide"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Top In"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "feedShooter"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "unlockArm"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "unlockShooter"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "folder": "Tops",
+  "choreoAuto": false
+}
