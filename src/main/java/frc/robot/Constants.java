@@ -208,6 +208,7 @@ public final class Constants {
                 .withKP(0.0)
                 .withKI(0.0)
                 .withKD(0.0)
+                .followMotor(24)
         };
 
         public static final double flywheelBaseVoltage = 10.0;
