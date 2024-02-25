@@ -93,8 +93,7 @@ public class RobotContainer {
             new InstantCommand(() -> endEffector.stopIntake()),
             new InstantCommand(() -> arm.setState(ArmState.HOME))
 
-        ));
-
+        )); 
         NamedCommands.registerCommand("lockArm", new LockArm(arm));
         NamedCommands.registerCommand("lockSwerve", new LockSwerve(swerve));
         NamedCommands.registerCommand("lockShooter", new LockShooter(endEffector));
