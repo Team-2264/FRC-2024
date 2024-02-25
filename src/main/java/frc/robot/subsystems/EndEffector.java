@@ -52,7 +52,6 @@ public class EndEffector extends SubsystemBase {
         
     }
 
-    
     public void lockOnto(Translation2d translation2d) {
         lockedOnto = Optional.of(translation2d);
         shooterStatus = ShooterStatus.LOCKED;

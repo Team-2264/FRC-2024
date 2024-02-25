@@ -44,12 +44,6 @@
         {
           "type": "named",
           "data": {
-            "name": "unlockArm"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
             "name": "intake"
           }
         },
@@ -84,9 +78,21 @@
           }
         },
         {
+          "type": "path",
+          "data": {
+            "pathName": "Top N5 2"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
           "type": "named",
           "data": {
-            "name": "unlockArm"
+            "name": "feedShooter"
           }
         }
       ]

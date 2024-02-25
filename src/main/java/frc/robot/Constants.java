@@ -26,12 +26,10 @@ import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.lib.GravityArmAngleEstimation;
 import frc.lib.AngleEstimation;
 import frc.lib.FieldPose;
 import frc.lib.GravityTrajectoryParameters;
 import frc.lib.LinearTrajectoryParameters;
-import frc.lib.Math2264;
 import frc.lib.motors.NeoConfiguration;
 import frc.lib.motors.TalonFxConfiguration;
 
@@ -64,7 +62,7 @@ public final class Constants {
             new Translation3d(
                 Units.inchesToMeters(0), // x
                 Units.inchesToMeters(218.42), // y
-                Units.inchesToMeters(80)), // z
+                Units.inchesToMeters(82.9)), // z
                 new Rotation3d()
         ));
 
@@ -84,7 +82,7 @@ public final class Constants {
             .withArmLength(0.5917)
             .withGoalHeight(blueSpeakerPose.getWpiBlue().getZ() - pivotToGround)
             .withLaunchAngleOffset(107.258 * (Math.PI/180.0))
-            .withLaunchVelocity(19);
+            .withLaunchVelocity(25);
 
         public static LinearTrajectoryParameters linearParameters = LinearTrajectoryParameters.fromGravityParameters(armParameters);
 
@@ -115,6 +113,7 @@ public final class Constants {
             } else {
                 return OptionalDouble.empty();
             }
+            
         }
         
         /**
@@ -164,14 +163,14 @@ public final class Constants {
         };
 
         public static ArmFeedforward shoulderFeedForward = new ArmFeedforward(
-            0.0, // kS 
+            0.0, // kS  
             0.025, // kG 
             0.0, // kV 
             0.0  // kA 
         );
 
         public static PIDController shoulderFeedback = new PIDController(
-            7.5, // kP
+            10, // kP
             0.01, // kI
             0.1  // kD
         );
@@ -322,19 +321,17 @@ public final class Constants {
             .withClosedLoopRamp(0.5);
 
         // Drive Motor Characterization Values
-        public static final double driveKS = (0.667 / 12); // divide by 12 to convert from volts to percent
-                                                           // output for
-                                                            // CTRE
+        public static final double driveKS = (0.667 / 12); // divide by 12 to convert from volts to percent output for CTRE
         public static final double driveKV = (2.44 / 12);
         public static final double driveKA = (0.27 / 12);
 
         // Swerve Profiling Values
-        public static final double maxSpeed = 4; // meters per second
+        public static final double maxSpeed = 4.785; // meters per second
         public static final double maxAngularVelocity = Math.PI; // radians per second (rad/s)
         
         // Turbo mode values
-        public static final double turboMaxSpeed = 5;
-        public static final double turboMaxAngularVelocity = Math.PI * 1.5;
+        public static final double turboMaxSpeed = 4.785;
+        public static final double turboMaxAngularVelocity = Math.PI;
 
         // Module Specific Constants
         // Front Left Module - Module 0
@@ -386,7 +383,7 @@ public final class Constants {
             );
 
         // Robot rotation locking
-        public static final double rotationLockKP = 0.7;
+        public static final double rotationLockKP = 2.0;
         public static final double rotationLockKI = 0.01;
         public static final double rotationLockKD = 0;
 

@@ -185,7 +185,7 @@ public class Swerve extends SubsystemBase {
             double targetRotationOffest = MathUtil.angleModulus(look_rotation.minus(robot_pose.getRotation()).getRadians());
 
             double targetRotation = robot_pose.getRotation().getRadians() + targetRotationOffest;
-            if (Math.abs(targetRotationOffest) < Math.toRadians(2)) {
+            if (Math.abs(targetRotationOffest) < Math.toRadians(0.5)) {
                 rotation = 0;
             } else {
                 rotation = rotationLockController.calculate(robot_pose.getRotation().getRadians(), targetRotation) * 3;
@@ -365,7 +365,7 @@ public class Swerve extends SubsystemBase {
         }
         double averageDistance = totalDistance / pose.targetsUsed.size();
 
-        double devMultiplier = (1.0 /3.0) * averageDistance;
+        double devMultiplier = (1.0 / 10.0) * averageDistance;
         Matrix<N3, N1> standardDevs = Constants.Vision.visionStandardDevs.times(devMultiplier);
 
         poseEstimator.addVisionMeasurement(measuredPose, pose.timestampSeconds, standardDevs);

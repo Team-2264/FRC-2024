@@ -127,8 +127,8 @@ public class RobotContainer {
                     new UnlockArm(arm),
                     new UnlockSwerve(swerve),
                     new UnlockShooter(endEffector),
-                    new InstantCommand(() -> endEffector.stopShooter()),
                     new InstantCommand(() -> endEffector.stopIntake()),
+                    new InstantCommand(() -> endEffector.stopShooter()),
                     new InstantCommand(() -> arm.setState(ArmState.HOME))
 
                 );
@@ -240,9 +240,6 @@ public class RobotContainer {
 
         controller.square().onTrue(new InstantCommand(() -> heldButtons.setHeld(HeldButton.SQUARE)));
         controller.square().onFalse(new InstantCommand(() -> heldButtons.setHeld(HeldButton.NONE)));
-
-        controller.circle().onTrue(new InstantCommand(() -> heldButtons.setHeld(HeldButton.CIRCLE)));
-        controller.circle().onFalse(new InstantCommand(() -> heldButtons.setHeld(HeldButton.NONE)));
 
     }
 
