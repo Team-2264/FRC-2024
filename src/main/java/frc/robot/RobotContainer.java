@@ -29,8 +29,13 @@ import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SelectCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -79,6 +84,8 @@ public class RobotContainer {
     // Autonomous
     private final SendableChooser<Command> autoChooser;
 
+    private final SysIdRoutine sysid_routine;
+
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
@@ -103,6 +110,36 @@ public class RobotContainer {
         NamedCommands.registerCommand("unlockShooter", new UnlockShooter(endEffector));
         
         NamedCommands.registerCommand("feedShooter", new FeedShooter(endEffector));
+
+        sysid_routine = new SysIdRoutine(
+            new SysIdRoutine.Config(), 
+            new SysIdRoutine.Mechanism(
+                (voltage) -> {
+                    swerve.driveWithVoltage(voltage.in(Units.Volts));
+                },
+                (log) -> {
+                    double[] voltages = swerve.getVoltages();
+                    SwerveModuleState[] states = swerve.getModuleStates();
+                    SwerveModulePosition[] positions = swerve.getModulePositions();
+
+                    String[] motor_names = new String[] {
+                        "front-left",
+                        "front-right",
+                        "back-left",
+                        "back-right"
+                    };
+
+                    for(int i = 0; i < 4; i++) {
+                        log.motor(motor_names[i])
+                            .voltage(Units.Volts.of(voltages[i]))
+                            .linearPosition(Units.Meters.of(positions[i].distanceMeters))
+                            .linearVelocity(Units.MetersPerSecond.of(states[i].speedMetersPerSecond));
+                    }
+                }, 
+                (Subsystem) swerve,
+                "a"
+            )
+        );
 
         // Configure the button bindings
         configureBindings();
@@ -137,11 +174,15 @@ public class RobotContainer {
         }
 
         // ======== Swerve ========
-        swerve.setDefaultCommand(new TeleopSwerve(swerve, controller));
-        controller.options().onTrue( new InstantCommand(() -> swerve.zeroGyro()));
+        // swerve.setDefaultCommand(new TeleopSwerve(swerve, controller));
+        controller.options().whileTrue(sysid_routine.quasistatic(SysIdRoutine.Direction.kForward));
 
-        controller.share().onTrue(new ToggleTurbo(swerve));
-        controller.share().onFalse(new ToggleTurbo(swerve)); 
+        controller.share().whileTrue(sysid_routine.dynamic(SysIdRoutine.Direction.kForward));
+
+        // controller.options().onTrue( new InstantCommand(() -> swerve.zeroGyro()));
+
+        // controller.share().onTrue(new ToggleTurbo(swerve));
+        // controller.share().onFalse(new ToggleTurbo(swerve)); 
 
         // ======== Shoulder ========
         controller.povUp().onTrue(new InstantCommand(() -> arm.setState(ArmState.AMP)));

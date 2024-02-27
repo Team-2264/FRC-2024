@@ -79,6 +79,14 @@ public class SwerveModule {
         driveMotor.rotateWithVelocity(velocity, feedForward.calculate(desiredState.speedMetersPerSecond));
     }
 
+    public void setVoltage(double voltage) {
+        driveMotor.setVoltage(voltage);
+    }
+
+    public double getVoltage() {
+        return driveMotor.getVoltage();
+    }
+
     /**
      * Sets the angle of the swerve module based on the desired state.
      *

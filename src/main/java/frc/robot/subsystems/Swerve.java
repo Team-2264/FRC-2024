@@ -167,6 +167,23 @@ public class Swerve extends SubsystemBase {
 
         setModuleStates(swerveModuleStates);
     }
+
+    public void driveWithVoltage(double voltage) {
+        for(SwerveModule module: swerveModules) {
+            module.setVoltage(voltage);
+        }
+    }
+
+    public double[] getVoltages() {
+        double[] voltages = new double[swerveModules.length];
+
+        for(int i = 0; i < swerveModules.length; i++) {
+            voltages[i] = swerveModules[i].getVoltage();
+        }
+
+        return voltages;
+    }
+
     /**
      * Drives the swerve drive based on translation and rotation inputs.
      *

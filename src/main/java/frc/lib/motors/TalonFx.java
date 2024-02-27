@@ -5,6 +5,7 @@ import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.OpenLoopRampsConfigs;
 import com.ctre.phoenix6.controls.PositionDutyCycle;
 import com.ctre.phoenix6.controls.VelocityDutyCycle;
+import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 public class TalonFx {
@@ -74,6 +75,14 @@ public class TalonFx {
      */
     public void rotateWithVelocity(double velocity, double feedForward) {
         inner.setControl(new VelocityDutyCycle(velocity).withFeedForward(feedForward));
+    }
+
+    public void setVoltage(double voltage) {
+        inner.setControl(new VoltageOut(voltage));
+    }
+
+    public double getVoltage() {
+        return inner.getSupplyVoltage().refresh().getValue();
     }
 
     public double getPosition() {
