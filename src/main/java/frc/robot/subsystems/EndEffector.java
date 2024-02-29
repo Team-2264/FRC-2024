@@ -161,6 +161,13 @@ public class EndEffector extends SubsystemBase {
 
         SmartDashboard.putBoolean("Note", hasNote());
 
+        // When holding a note set LED colors
+        if (hasNote()) {
+            container.leds.setRGB(0, 0, 255);
+        } else {
+            container.leds.setRGB(0, 0, 0);
+        }
+
         // Stop intaking if we have a note
         if (intakeStatus == IntakeStatus.INTAKING && hasNote()) {
             stopIntake();

@@ -26,7 +26,7 @@ public class Leds extends SubsystemBase {
         ledStrip.start();
     }
 
-    public boolean SetRGB(int red, int green, int blue)
+    public boolean setRGB(int red, int green, int blue)
     {
         int r = Math.round(red   * scaleFactor);
         int g = Math.round(green * scaleFactor);

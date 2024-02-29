@@ -62,7 +62,7 @@ public class Robot extends TimedRobot {
     /** This function is called once each time the robot enters Disabled mode. */
     @Override
     public void disabledInit() {
-        m_robotContainer.getLeds().SetRGB(255, 0, 0);
+        m_robotContainer.leds.setRGB(255, 0, 0);
     }
 
     @Override
@@ -112,7 +112,7 @@ public class Robot extends TimedRobot {
     public void testInit() {
         // Cancels all running commands at the start of test mode.
         CommandScheduler.getInstance().cancelAll();
-        m_robotContainer.getLeds().SetRGB(0, 0, 255);
+        m_robotContainer.leds.setRGB(0, 255, 0);
     }
 
     /** This function is called periodically during test mode. */

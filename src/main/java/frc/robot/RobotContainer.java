@@ -57,7 +57,7 @@ public class RobotContainer {
     private final EndEffector endEffector = new EndEffector(this);
 
     private final Climbing climbing = new Climbing();
-    private final Leds leds = new Leds(Constants.LedStrip.pwmPort, Constants.LedStrip.numLeds, Constants.LedStrip.scaleFactor);
+    public final Leds leds = new Leds(Constants.LedStrip.pwmPort, Constants.LedStrip.numLeds, Constants.LedStrip.scaleFactor);
     private final Vision vision = new Vision();
     
     private final HeldButtons heldButtons = new HeldButtons();
