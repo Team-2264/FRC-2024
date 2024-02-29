@@ -106,6 +106,7 @@ public class Robot extends TimedRobot {
     /** This function is called periodically during operator control. */
     @Override
     public void teleopPeriodic() {
+        m_robotContainer.getLeds().Rainbow();
     }
 
     @Override
@@ -118,6 +119,7 @@ public class Robot extends TimedRobot {
     /** This function is called periodically during test mode. */
     @Override
     public void testPeriodic() {
+        m_robotContainer.getLeds().Rainbow();
     }
 
     /** This function is called once when the robot is first started up. */

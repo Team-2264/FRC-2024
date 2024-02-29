@@ -15,6 +15,8 @@ public class Leds extends SubsystemBase {
     private int currentGreen = 0;
     private int currentBlue = 0;
 
+    private int rainbowFirstPixelHue = 0;
+
     public Leds(int pwmPort, int numLeds, float scaleFactor) {
 
         ledBuffer = new AddressableLEDBuffer(numLeds);
@@ -53,24 +55,25 @@ public class Leds extends SubsystemBase {
          return true;
     }
 
-    // public void Rainbow() {
-    //     // For every pixel
+    public void Rainbow() {
+        // For every pixel
+        for (var i = 0; i < ledBuffer.getLength(); i++) {
+            // Calculate the hue - hue is easier for rainbows because the color
+            // shape is a circle so only one value needs to precess
 
-    //     for (var i = 0; i < m_ledBuffer.getLength(); i++) {
-    //         // Calculate the hue - hue is easier for rainbows because the color
-    //         // shape is a circle so only one value needs to precess
+            final var hue = (rainbowFirstPixelHue + (i * 180 / ledBuffer.getLength())) % 180;  
+                // Set the value
+                ledBuffer.setHSV(i, hue, 255, 128);
+    
+        }
+    
+        // Increase by to make the rainbow "move"
+        rainbowFirstPixelHue += 3;
+    
+        // Check bounds
+        rainbowFirstPixelHue %= 180;
 
-    //         final var hue = (m_rainbowFirstPixelHue + (i * 180 / m_ledBuffer.getLength())) % 180;  
-    //             // Set the value
-    //             m_ledBuffer.setHSV(i, hue, 255, 128);
-    
-    //     }
-    
-    //     // Increase by to make the rainbow "move"
-    //     m_rainbowFirstPixelHue += 3;
-    
-    //     // Check bounds
-    //     m_rainbowFirstPixelHue %= 180;
-    // }
+        ledStrip.setData(ledBuffer);
+    }
     
 }
