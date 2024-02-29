@@ -275,8 +275,8 @@ public final class Constants {
         );
      
         // Drivetrain Constants
-        public static final double trackWidth = Units.inchesToMeters(21.5); 
-        public static final double wheelBase = Units.inchesToMeters(21.5);
+        public static final double trackWidth = Units.inchesToMeters(22); // 21.5 previously
+        public static final double wheelBase = Units.inchesToMeters(22); // 21.5 previously
         public static final double wheelDiameter = Units.inchesToMeters(4.05);
         public static final double wheelCircumference = wheelDiameter * Math.PI;
 
@@ -377,8 +377,8 @@ public final class Constants {
             new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
                 new PIDConstants(0.220019, 0.0, 0.0), // Translation PID constants
                 new PIDConstants(1.201173, 0.0, 0.024023), // Rotation PID constants
-                4.5, // Max module speed, in m/s
-                0.4, // Drive base radius in meters. Distance from robot center to furthest module.
+                10, // Max module speed, in m/s - previously 4.5
+                0.395, // Drive base radius in meters. Distance from robot center to furthest module. - previously 0.4
                 new ReplanningConfig() // Default path replanning config. See the API for the options here
             );
 
