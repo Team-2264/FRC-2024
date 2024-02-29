@@ -106,18 +106,20 @@ public class Robot extends TimedRobot {
     /** This function is called periodically during operator control. */
     @Override
     public void teleopPeriodic() {
+        m_robotContainer.getLeds().Rainbow();
     }
 
     @Override
     public void testInit() {
         // Cancels all running commands at the start of test mode.
         CommandScheduler.getInstance().cancelAll();
-        m_robotContainer.getLeds().SetRGB(0, 0, 255);
+        //m_robotContainer.getLeds().SetRGB(0, 0, 255);
     }
 
     /** This function is called periodically during test mode. */
     @Override
     public void testPeriodic() {
+        m_robotContainer.getLeds().Rainbow();
     }
 
     /** This function is called once when the robot is first started up. */

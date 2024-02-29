@@ -256,8 +256,8 @@ public final class Constants {
      * LedStrip class holds constants related to the LED strip.
      */
     public static final class LedStrip {
-        public static final int pwmPort = 9;
-        public static final int numLeds = 10;
+        public static final int pwmPort = 0;
+        public static final int numLeds = 8;
         public static final float scaleFactor = 0.5f;
     }
 
