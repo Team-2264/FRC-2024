@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.motors.Neo;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
+import frc.robot.cmdGroups.ResetHome;
 import frc.robot.enums.IntakeStatus;
 import frc.robot.enums.ShooterStatus;
 
@@ -165,13 +166,16 @@ public class EndEffector extends SubsystemBase {
         // When holding a note set LED colors
         if (hasNote()) {
             container.leds.setRGB(0, 0, 255);
+        } else if (intakeStatus == IntakeStatus.INTAKING) {
+            container.leds.setRGB(255, 0, 0);
         } else {
             container.leds.setRGB(0, 0, 0);
+
         }
 
-        // Stop intaking if we have a note
+        // Stop intaking if we have a note and reset home.
         if (intakeStatus == IntakeStatus.INTAKING && hasNote()) {
-            stopIntake();
+            new ResetHome(container.arm, container.swerve, container.endEffector).schedule();
 
         }
 

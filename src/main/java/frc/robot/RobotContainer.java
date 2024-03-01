@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import frc.robot.cmdGroups.ResetHome;
 import frc.robot.commands.FeedShooter;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.ToggleTurbo;
@@ -53,8 +54,8 @@ import com.pathplanner.lib.auto.NamedCommands;
 public class RobotContainer {
     // Subsystems
     public final Swerve swerve = new Swerve();
-    private final Arm arm = new Arm(this);
-    private final EndEffector endEffector = new EndEffector(this);
+    public final Arm arm = new Arm(this);
+    public final EndEffector endEffector = new EndEffector(this);
 
     private final Climbing climbing = new Climbing();
     public final Leds leds = new Leds(Constants.LedStrip.pwmPort, Constants.LedStrip.numLeds, Constants.LedStrip.scaleFactor);
@@ -122,21 +123,6 @@ public class RobotContainer {
         /**
          * Resets the robot to the home position. Disables all locks and stops all motors.
          */
-        final class ResetHome extends SequentialCommandGroup {
-            public ResetHome() {
-                addCommands(
-                    new UnlockArm(arm),
-                    new UnlockSwerve(swerve),
-                    new UnlockShooter(endEffector),
-                    new InstantCommand(() -> endEffector.stopIntake()),
-                    new InstantCommand(() -> endEffector.stopShooter()),
-                    new InstantCommand(() -> arm.setState(ArmState.HOME))
-                    
-                );
-
-            }
-
-        }
 
         // ======== Swerve ========
         swerve.setDefaultCommand(new TeleopSwerve(swerve, controller));
@@ -198,7 +184,7 @@ public class RobotContainer {
                 heldButtons::currentHeld
             
             ),
-            new ResetHome(),
+            new ResetHome(arm, swerve, endEffector),
             () -> (arm.getState() == ArmState.HOME)
 
         ));
@@ -210,7 +196,7 @@ public class RobotContainer {
                     new FeedShooter(endEffector, 1),
                     () -> (arm.getState() == ArmState.AMP)
                 ),
-                new ResetHome()
+                new ResetHome(arm, swerve, endEffector)
 
             ),
             new InstantCommand(),
