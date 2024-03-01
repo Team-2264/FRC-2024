@@ -75,6 +75,8 @@ public class RobotContainer {
 
     private final JoystickButton manualIntake = new JoystickButton(controller2, 10);
     private final JoystickButton manualOuttake = new JoystickButton(controller2, 9);
+
+    private final JoystickButton manualRev = new JoystickButton(controller2, 1);
     
     // Autonomous
     private final SendableChooser<Command> autoChooser;
@@ -102,7 +104,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("unlockSwerve", new UnlockSwerve(swerve));
         NamedCommands.registerCommand("unlockShooter", new UnlockShooter(endEffector));
         
-        NamedCommands.registerCommand("feedShooter", new FeedShooter(endEffector));
+        NamedCommands.registerCommand("feedShooter", new FeedShooter(endEffector, 1));
 
         // Configure the button bindings
         configureBindings();
@@ -129,7 +131,7 @@ public class RobotContainer {
                     new InstantCommand(() -> endEffector.stopIntake()),
                     new InstantCommand(() -> endEffector.stopShooter()),
                     new InstantCommand(() -> arm.setState(ArmState.HOME))
-
+                    
                 );
 
             }
@@ -168,7 +170,7 @@ public class RobotContainer {
 
         ));
  
-        controller.triangle().onTrue(new InstantCommand(() -> endEffector.outtake(0.1)));
+        controller.triangle().onTrue(new InstantCommand(() -> endEffector.outtake(0.4)));
         controller.triangle().onFalse(new InstantCommand(() -> endEffector.stopIntake()));
 
         // ======== Shooter ========
@@ -181,7 +183,7 @@ public class RobotContainer {
 
                     )),
                     Map.entry(HeldButton.SQUARE, new SequentialCommandGroup( // Amp
-                        new InstantCommand(() -> endEffector.spinupShooter(0.2)),
+                        new InstantCommand(() -> endEffector.spinupShooter(0.1)),
                         new InstantCommand(() -> arm.setState(ArmState.AMP))
 
                     )),
@@ -203,7 +205,11 @@ public class RobotContainer {
 
         controller.R1().onTrue(new ConditionalCommand(
             new SequentialCommandGroup(
-                new FeedShooter(endEffector),
+                new ConditionalCommand(
+                    new FeedShooter(endEffector, 0.7),
+                    new FeedShooter(endEffector, 1),
+                    () -> (arm.getState() == ArmState.AMP)
+                ),
                 new ResetHome()
 
             ),
@@ -213,10 +219,10 @@ public class RobotContainer {
         ));
 
         // ======== Manual Climbing ========
-        manualClimbUp.onTrue(new InstantCommand(() -> climbing.accend(0.6)));
+        manualClimbUp.onTrue(new InstantCommand(() -> climbing.accend(1)));
         manualClimbUp.onFalse(new InstantCommand(() -> climbing.stopWinch()));
 
-        manualClimbDown.onTrue(new InstantCommand(() -> climbing.descend(0.6)));
+        manualClimbDown.onTrue(new InstantCommand(() -> climbing.descend(1)));
         manualClimbDown.onFalse(new InstantCommand(() -> climbing.stopWinch()));
 
         // ======== Manual Intake ========
@@ -232,6 +238,9 @@ public class RobotContainer {
 
         manualArmDown.onTrue(new InstantCommand(() -> arm.shoulder.rotateConstant(-0.075)));
         manualArmDown.onFalse(new InstantCommand(() -> arm.shoulder.rotateConstant(0)));
+
+        // ======== Manual Shooter ========
+        manualRev.onTrue(new LockShooter(endEffector));
     
         // ======== Held buttons ========
         controller.cross().onTrue(new InstantCommand(() -> heldButtons.setHeld(HeldButton.CROSS)));

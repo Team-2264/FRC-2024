@@ -11,13 +11,16 @@ public class FeedShooter extends Command {
     private final EndEffector endEffector;
     private double startTime;
 
+    private double speed;
+
     /**
      * Creates a new FeedShooter command.
      * 
      * @param arm The arm subsystem to use.
      */
-    public FeedShooter(EndEffector endEffector){
+    public FeedShooter(EndEffector endEffector, double speed){
         this.endEffector = endEffector;    
+        this.speed = speed;
 
     }
 
@@ -25,7 +28,7 @@ public class FeedShooter extends Command {
     public void initialize() {
         startTime = Timer.getFPGATimestamp();
 
-        endEffector.feed();
+        endEffector.feed(speed);
         
     }
 
@@ -38,7 +41,7 @@ public class FeedShooter extends Command {
 
     @Override
     public boolean isFinished() {
-        return (Timer.getFPGATimestamp() - startTime) > 1;
+        return (Timer.getFPGATimestamp() - startTime) > 2.5;
 
     }
 

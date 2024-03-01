@@ -365,7 +365,7 @@ public class Swerve extends SubsystemBase {
         }
         double averageDistance = totalDistance / pose.targetsUsed.size();
 
-        double devMultiplier = (1.0 / 10.0) * averageDistance;
+        double devMultiplier = (1.0 / 20.0) * averageDistance;
         Matrix<N3, N1> standardDevs = Constants.Vision.visionStandardDevs.times(devMultiplier);
 
         poseEstimator.addVisionMeasurement(measuredPose, pose.timestampSeconds, standardDevs);

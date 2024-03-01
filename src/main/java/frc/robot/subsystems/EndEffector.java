@@ -107,8 +107,8 @@ public class EndEffector extends SubsystemBase {
     /**
      * Feeds a held note into the shooter.
      */
-    public void feed() {
-        intakeMoter.rotateAtSpeed(1);
+    public void feed(double speed) {
+        intakeMoter.rotateAtSpeed(speed);
         intakeStatus = IntakeStatus.FEEDING;
 
     }
@@ -156,10 +156,11 @@ public class EndEffector extends SubsystemBase {
     public void periodic() {
         SmartDashboard.putString("Intake Status", intakeStatus.toString());
         SmartDashboard.putString("Shooter Status", shooterStatus.toString());
-
         SmartDashboard.putNumber("Shooter speed: ", shooterSpeed());
 
         SmartDashboard.putBoolean("Note", hasNote());
+        SmartDashboard.putBoolean("Spinning", shooterStatus == ShooterStatus.SPINNING || shooterStatus == ShooterStatus.LOCKED);
+
 
         // When holding a note set LED colors
         if (hasNote()) {

@@ -62,7 +62,7 @@ public final class Constants {
             new Translation3d(
                 Units.inchesToMeters(0), // x
                 Units.inchesToMeters(218.42), // y
-                Units.inchesToMeters(82.9)), // z
+                Units.inchesToMeters(82.9)), // z - 82.9
                 new Rotation3d()
         ));
 
@@ -70,7 +70,7 @@ public final class Constants {
             new Translation3d(
                 Units.inchesToMeters(652.73), // x
                 Units.inchesToMeters(218.42), // y
-                Units.inchesToMeters(82.9)), // z
+                Units.inchesToMeters(82.9)), // z - 82.9
                 new Rotation3d()
         ));
 
@@ -326,11 +326,11 @@ public final class Constants {
         public static final double driveKA = (0.27 / 12);
 
         // Swerve Profiling Values
-        public static final double maxSpeed = 4.785; // meters per second
+        public static final double maxSpeed = 4.5; // meters per second
         public static final double maxAngularVelocity = Math.PI; // radians per second (rad/s)
         
         // Turbo mode values
-        public static final double turboMaxSpeed = 4.785;
+        public static final double turboMaxSpeed = 4.5;
         public static final double turboMaxAngularVelocity = Math.PI;
 
         // Module Specific Constants

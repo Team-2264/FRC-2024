@@ -1320,40 +1320,6 @@
               "imageHeight": 0
             }
           },
-          "8,0": {
-            "size": [
-              6,
-              3
-            ],
-            "content": {
-              "_type": "Field",
-              "_source0": "network_table:///SmartDashboard/Field",
-              "_title": "/SmartDashboard/Field",
-              "_glyph": 148,
-              "_showGlyph": false,
-              "Game/Game": "k2024Crescendo",
-              "Visuals/Robot Icon Size": 50.0,
-              "Visuals/Show Outside Circles": false,
-              "Colors/path": "#FFFFFFFF",
-              "Colors/target pose": "#FFFFFFFF"
-            }
-          },
-          "8,3": {
-            "size": [
-              6,
-              3
-            ],
-            "content": {
-              "_type": "Field",
-              "_source0": "network_table:///SmartDashboard/Vision - Field",
-              "_title": "/SmartDashboard/Vision - Field",
-              "_glyph": 148,
-              "_showGlyph": false,
-              "Game/Game": "k2024Crescendo",
-              "Visuals/Robot Icon Size": 50.0,
-              "Visuals/Show Outside Circles": false
-            }
-          },
           "4,3": {
             "size": [
               3,
@@ -1370,7 +1336,7 @@
           "2,0": {
             "size": [
               2,
-              4
+              3
             ],
             "content": {
               "_type": "List Layout",
@@ -1413,17 +1379,59 @@
                   "_title": "/SmartDashboard/Climbing Status",
                   "_glyph": 148,
                   "_showGlyph": false
-                },
-                {
-                  "_type": "Boolean Box",
-                  "_source0": "network_table:///SmartDashboard/Note",
-                  "_title": "/SmartDashboard/Note",
-                  "_glyph": 148,
-                  "_showGlyph": false,
-                  "Colors/Color when true": "#7CFC00FF",
-                  "Colors/Color when false": "#8B0000FF"
                 }
               ]
+            }
+          },
+          "12,3": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Spinning",
+              "_title": "SmartDashboard/Spinning",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "12,0": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Note",
+              "_title": "SmartDashboard/Note",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "8,0": {
+            "size": [
+              4,
+              4
+            ],
+            "content": {
+              "_type": "Camera Stream",
+              "_source0": "camera_server://limelight",
+              "_title": "limelight",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Crosshair/Show crosshair": true,
+              "Crosshair/Crosshair color": "#FFFFFFFF",
+              "Controls/Show controls": true,
+              "Controls/Rotation": "NONE",
+              "compression": -1.0,
+              "fps": -1,
+              "imageWidth": -1,
+              "imageHeight": -1
             }
           }
         }
@@ -1431,9 +1439,9 @@
     }
   ],
   "windowGeometry": {
-    "x": -7.199999809265137,
-    "y": -7.199999809265137,
-    "width": 2062.39990234375,
-    "height": 1118.4000244140625
+    "x": 0.800000011920929,
+    "y": 0.800000011920929,
+    "width": 2046.4000244140625,
+    "height": 1102.4000244140625
   }
 }
