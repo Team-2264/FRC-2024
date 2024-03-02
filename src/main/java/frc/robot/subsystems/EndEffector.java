@@ -1,6 +1,8 @@
 package frc.robot.subsystems;
 
 import java.util.Optional;
+import java.util.OptionalDouble;
+import java.util.OptionalLong;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -9,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.motors.Neo;
 import frc.robot.Constants;
+import frc.robot.Conversions;
 import frc.robot.RobotContainer;
 import frc.robot.cmdGroups.ResetHome;
 import frc.robot.commands.SmallOuttake;
@@ -32,6 +35,11 @@ public class EndEffector extends SubsystemBase {
 
     private RobotContainer container;
 
+    private OptionalDouble acceleration = OptionalDouble.empty();
+
+    private OptionalLong lastMeasuredSpeedTimestamp = OptionalLong.empty();
+    private double lastMeasuredVelocity;
+    
     /**
      * Constructs a new EndEffector instance.
      * 
@@ -78,6 +86,9 @@ public class EndEffector extends SubsystemBase {
     public void spinupShooter(double speed) {
         shooterMotors[0].rotateAtSpeed(speed * Constants.EndEffector.flywheelBaseVoltage);
         shooterStatus = ShooterStatus.SPINNING;
+
+        lastMeasuredSpeedTimestamp = OptionalLong.empty();
+        acceleration = OptionalDouble.empty();
     }
 
     /**
@@ -86,6 +97,9 @@ public class EndEffector extends SubsystemBase {
     public void stopShooter() {
         shooterMotors[0].stop();
         shooterStatus = ShooterStatus.STOPPED;
+
+        lastMeasuredSpeedTimestamp = OptionalLong.empty();
+        acceleration = OptionalDouble.empty();
     }
     
     /**
@@ -167,11 +181,24 @@ public class EndEffector extends SubsystemBase {
         return (shooterMotors[0].getVelocity() + shooterMotors[1].getVelocity())/2.0;
     }
 
+    /**
+     * Returns the acceleration of the flywheels in rotations per second squared
+     */
+    public OptionalDouble shooterAcceleration() {
+        return acceleration;
+    }
+
     @Override
     public void periodic() {
+        double current_speed = shooterSpeed();
+
+        recalculateAcceleration(current_speed);
+        takeVelocityMeasurement(current_speed);
+
         SmartDashboard.putString("Intake Status", intakeStatus.toString());
         SmartDashboard.putString("Shooter Status", shooterStatus.toString());
         SmartDashboard.putNumber("Shooter speed: ", shooterSpeed());
+        SmartDashboard.putString("Shooter acceleration: ", acceleration.toString());
 
         SmartDashboard.putBoolean("Note", hasNote());
         SmartDashboard.putBoolean("Spinning", shooterStatus == ShooterStatus.SPINNING || shooterStatus == ShooterStatus.LOCKED);
@@ -208,6 +235,21 @@ public class EndEffector extends SubsystemBase {
 
         }
 
+    }
+
+    private void takeVelocityMeasurement(double shooter_speed) {
+        lastMeasuredSpeedTimestamp = OptionalLong.of(System.nanoTime());
+        lastMeasuredVelocity = shooter_speed;
+    }
+
+    private void recalculateAcceleration(double currentSpeed) {
+        if(lastMeasuredSpeedTimestamp.isEmpty()) {
+            return;
+        }
+
+        acceleration = OptionalDouble.of(
+            (currentSpeed-lastMeasuredVelocity)/Conversions.nanosecondsToSeconds(System.nanoTime()-lastMeasuredSpeedTimestamp.getAsLong())
+        );
     }
 
 }

@@ -58,4 +58,8 @@ public class Conversions {
 
     }
 
+    public static double nanosecondsToSeconds(long nanos) {
+        return nanos * 1e-9d;
+    }
+
 }
