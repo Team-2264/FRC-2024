@@ -5,11 +5,13 @@ import java.util.Optional;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.motors.Neo;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.cmdGroups.ResetHome;
+import frc.robot.commands.SmallOuttake;
 import frc.robot.enums.IntakeStatus;
 import frc.robot.enums.ShooterStatus;
 
@@ -105,6 +107,18 @@ public class EndEffector extends SubsystemBase {
         intakeStatus = IntakeStatus.OUTTAKING;
     }
 
+    public void manualIntake(double speed) {
+        intakeMoter.rotateAtSpeed(speed);
+        intakeStatus = IntakeStatus.MANUAL;
+
+    }
+
+    public void manualShooter(double speed) {
+        shooterMotors[0].rotateAtSpeed(speed * Constants.EndEffector.flywheelBaseVoltage);
+        shooterStatus = ShooterStatus.MANUAL;
+
+    }
+
     /**
      * Feeds a held note into the shooter.
      */
@@ -175,8 +189,15 @@ public class EndEffector extends SubsystemBase {
 
         // Stop intaking if we have a note and reset home.
         if (intakeStatus == IntakeStatus.INTAKING && hasNote()) {
-            new ResetHome(container.arm, container.swerve, container.endEffector).schedule();
+            new SequentialCommandGroup(
+                new SmallOuttake(container.endEffector, 1)
+                
+                // new ResetHome(container.arm, container.swerve, container.endEffector)
+                
+            ).schedule();
 
+            stopIntake();
+            
         }
 
         // If we are locked onto a speaker, calculate the flywheel speed.

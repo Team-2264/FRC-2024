@@ -82,7 +82,7 @@ public class Arm extends SubsystemBase {
     public void periodic() {
         shoulder.periodic();
 
-        SmartDashboard.putString("Arm Status", armState.toString());
+        SmartDashboard.putString("A\rm Status", armState.toString());
 
         // If we are locked onto a speaker, calculate the arm angle
         if (lockedOnto.isPresent()) {

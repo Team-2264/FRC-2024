@@ -5,6 +5,6 @@ package frc.robot.enums;
  * 
  */
 public enum ShooterStatus {
-    SPINNING, STOPPED, LOCKED;
+    SPINNING, STOPPED, LOCKED, MANUAL;
 
 }

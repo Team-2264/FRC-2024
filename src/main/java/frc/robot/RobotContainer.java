@@ -155,9 +155,15 @@ public class RobotContainer {
             () -> (arm.getState() == ArmState.INTAKE)
 
         ));
- 
-        controller.triangle().onTrue(new InstantCommand(() -> endEffector.outtake(0.4)));
-        controller.triangle().onFalse(new InstantCommand(() -> endEffector.stopIntake()));
+        
+        controller.triangle().onTrue(new SequentialCommandGroup(
+            new InstantCommand(() -> endEffector.outtake(0.4)),
+            new InstantCommand(() -> endEffector.spinupShooter(-1))
+        ));
+        controller.triangle().onFalse(new SequentialCommandGroup(
+            new InstantCommand(() -> endEffector.stopIntake()),
+            new InstantCommand(() -> endEffector.stopShooter())
+        ));
 
         // ======== Shooter ========
         controller.L2().onTrue(new ConditionalCommand(
@@ -169,7 +175,6 @@ public class RobotContainer {
 
                     )),
                     Map.entry(HeldButton.SQUARE, new SequentialCommandGroup( // Amp
-                        new InstantCommand(() -> endEffector.spinupShooter(0.1)),
                         new InstantCommand(() -> arm.setState(ArmState.AMP))
 
                     )),
@@ -192,16 +197,33 @@ public class RobotContainer {
         controller.R1().onTrue(new ConditionalCommand(
             new SequentialCommandGroup(
                 new ConditionalCommand(
-                    new FeedShooter(endEffector, 0.7),
-                    new FeedShooter(endEffector, 1),
+                    new SequentialCommandGroup(
+                        new InstantCommand(() -> endEffector.manualIntake(0.9)),
+                        new InstantCommand(() -> endEffector.manualShooter(0.9))
+                    ),
+                    new SequentialCommandGroup(
+                        new FeedShooter(endEffector, 1),
+                        new ResetHome(arm, swerve, endEffector)
+                    ),
                     () -> (arm.getState() == ArmState.AMP)
-                ),
-                new ResetHome(arm, swerve, endEffector)
+
+                )
 
             ),
             new InstantCommand(),
-            () -> (endEffector.shooterStatus() == ShooterStatus.SPINNING || endEffector.shooterStatus() == ShooterStatus.LOCKED)
+            () -> (endEffector.shooterStatus() == ShooterStatus.SPINNING || endEffector.shooterStatus() == ShooterStatus.LOCKED || arm.getState() == ArmState.AMP)
             
+        ));
+
+        controller.R1().onFalse(new ConditionalCommand(
+            new SequentialCommandGroup(
+                new InstantCommand(() -> endEffector.stopIntake()),
+                new InstantCommand(() -> endEffector.stopShooter()),
+                new ResetHome(arm, swerve, endEffector)
+            ),
+            new InstantCommand(),
+            () -> (arm.getState() == ArmState.AMP)
+
         ));
 
         // ======== Manual Climbing ========
@@ -212,11 +234,23 @@ public class RobotContainer {
         manualClimbDown.onFalse(new InstantCommand(() -> climbing.stopWinch()));
 
         // ======== Manual Intake ========
-        manualIntake.onTrue(new InstantCommand(() -> endEffector.intake(0.1)));
-        manualIntake.onFalse(new InstantCommand(() -> endEffector.stopIntake()));
+        manualIntake.onTrue(new SequentialCommandGroup(
+            new InstantCommand(() -> endEffector.manualIntake(1)),
+            new InstantCommand(() -> endEffector.manualShooter(1))
+        ));
+        manualIntake.onFalse(new SequentialCommandGroup(
+            new InstantCommand(() -> endEffector.stopIntake()),
+            new InstantCommand(() -> endEffector.stopShooter())
+        ));
 
-        manualOuttake.onTrue(new InstantCommand(() -> endEffector.intake(-0.1)));
-        manualOuttake.onFalse(new InstantCommand(() -> endEffector.stopIntake()));
+        manualOuttake.onTrue(new SequentialCommandGroup(
+            new InstantCommand(() -> endEffector.manualIntake(-1)),
+            new InstantCommand(() -> endEffector.manualShooter(-1))
+        ));
+        manualOuttake.onFalse(new SequentialCommandGroup(
+            new InstantCommand(() -> endEffector.stopIntake()),
+            new InstantCommand(() -> endEffector.stopShooter())
+        ));
 
         // ======== Manual Shoulder ========
         manualArmUp.onTrue(new InstantCommand(() -> arm.shoulder.rotateConstant(0.075)));

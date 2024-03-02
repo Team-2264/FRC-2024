@@ -1299,7 +1299,7 @@
         "vgap": 16.0,
         "titleType": 0,
         "tiles": {
-          "4,0": {
+          "2,0": {
             "size": [
               4,
               3
@@ -1320,7 +1320,7 @@
               "imageHeight": 0
             }
           },
-          "4,3": {
+          "2,3": {
             "size": [
               3,
               1
@@ -1333,7 +1333,7 @@
               "_showGlyph": false
             }
           },
-          "2,0": {
+          "0,0": {
             "size": [
               2,
               3
@@ -1413,10 +1413,10 @@
               "Colors/Color when false": "#8B0000FF"
             }
           },
-          "8,0": {
+          "6,0": {
             "size": [
-              4,
-              4
+              6,
+              5
             ],
             "content": {
               "_type": "Camera Stream",
@@ -1432,6 +1432,38 @@
               "fps": -1,
               "imageWidth": -1,
               "imageHeight": -1
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Tab 3",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "",
+      "widgetPane": {
+        "gridSize": 128.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "titleType": 0,
+        "tiles": {
+          "5,0": {
+            "size": [
+              7,
+              6
+            ],
+            "content": {
+              "_type": "Field",
+              "_source0": "network_table:///SmartDashboard/Field",
+              "_title": "/SmartDashboard/Field",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Game/Game": "k2024Crescendo",
+              "Visuals/Robot Icon Size": 50.0,
+              "Visuals/Show Outside Circles": false,
+              "Colors/path": "#FFFFFFFF",
+              "Colors/target pose": "#FFFFFFFF"
             }
           }
         }

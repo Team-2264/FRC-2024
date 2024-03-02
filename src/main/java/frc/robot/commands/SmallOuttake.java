@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 /**
  * A command for feeding the shooter.
  */
-public class FeedShooter extends Command {
+public class SmallOuttake extends Command {
     private final EndEffector endEffector;
     private double startTime;
 
@@ -18,7 +18,7 @@ public class FeedShooter extends Command {
      * 
      * @param arm The arm subsystem to use.
      */
-    public FeedShooter(EndEffector endEffector, double speed){
+    public SmallOuttake(EndEffector endEffector, double speed){
         this.endEffector = endEffector;    
         this.speed = speed;
 
@@ -28,7 +28,7 @@ public class FeedShooter extends Command {
     public void initialize() {
         startTime = Timer.getFPGATimestamp();
 
-        endEffector.feed(speed);
+        endEffector.outtake(0.1);
         
     }
 
@@ -41,7 +41,7 @@ public class FeedShooter extends Command {
 
     @Override
     public boolean isFinished() {
-        return (Timer.getFPGATimestamp() - startTime) > 1.5;
+        return (Timer.getFPGATimestamp() - startTime) > 0.25;
 
     }
 
