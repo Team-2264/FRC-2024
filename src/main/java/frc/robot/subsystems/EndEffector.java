@@ -203,6 +203,13 @@ public class EndEffector extends SubsystemBase {
         SmartDashboard.putBoolean("Note", hasNote());
         SmartDashboard.putBoolean("Spinning", shooterStatus == ShooterStatus.SPINNING || shooterStatus == ShooterStatus.LOCKED);
 
+        // Shooter acceleration
+        if (acceleration.isPresent()) {
+            SmartDashboard. putBoolean("Spun-up", (acceleration.getAsDouble() < 3.0) && (shooterStatus == ShooterStatus.SPINNING || shooterStatus == ShooterStatus.LOCKED));
+        } else {
+            SmartDashboard.putBoolean("Spun-up", false);
+
+        }
 
         // When holding a note set LED colors
         if (hasNote()) {

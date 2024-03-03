@@ -120,10 +120,6 @@ public class RobotContainer {
      * Configures all button bindings.
      */
     private void configureBindings() {
-        /**
-         * Resets the robot to the home position. Disables all locks and stops all motors.
-         */
-
         // ======== Swerve ========
         swerve.setDefaultCommand(new TeleopSwerve(swerve, controller));
         controller.options().onTrue( new InstantCommand(() -> swerve.zeroGyro()));
@@ -179,7 +175,7 @@ public class RobotContainer {
 
                     )),
                     Map.entry(HeldButton.NONE, new SequentialCommandGroup( // Autolocking
-                        new LockSwerve(swerve),
+                        new LockSwerve(swerve),     
                         new LockArm(arm),
                         new LockShooter(endEffector)
 

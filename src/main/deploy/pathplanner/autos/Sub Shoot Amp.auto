@@ -1,0 +1,43 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.6933452953924437,
+      "y": 6.663465994549679
+    },
+    "rotation": 60.642246457208714
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "lockArm"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "lockShooter"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 3.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "feedShooter"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "Centers",
+  "choreoAuto": false
+}
