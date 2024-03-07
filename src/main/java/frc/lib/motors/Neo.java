@@ -12,7 +12,9 @@ import com.revrobotics.CANSparkBase.ExternalFollower;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
-  /** Creates a new Neo. */
+/**
+ * A wrapper around the NEO motors.
+ */
 public class Neo {
   private final CANSparkMax motor;
   private final RelativeEncoder encoder;
@@ -77,6 +79,9 @@ public class Neo {
     return encoder.getVelocity();
   }
 
+  /**
+   * Sets the motor voltage in volts.
+   */
   public void setVoltage(double volts) {
      motor.setVoltage(volts);
   }

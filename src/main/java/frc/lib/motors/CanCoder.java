@@ -6,6 +6,10 @@ import com.ctre.phoenix6.signals.SensorDirectionValue;
 
 public class CanCoder {
   com.ctre.phoenix6.hardware.CANcoder inner;
+
+  /**
+   * Creates a CANCoder with some sane default configurations.
+   */
   public CanCoder(int id) {
     inner = new CANcoder(id);
 
@@ -19,7 +23,7 @@ public class CanCoder {
 
   /**
    * Gets the absolute position of the CANCoder in revolutions
-  */
+   */
   public double getAbsolutePosition() {
     return inner.getAbsolutePosition().refresh().getValue();
   }
