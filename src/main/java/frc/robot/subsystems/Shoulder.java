@@ -8,6 +8,10 @@ import frc.lib.motors.Neo;
 import frc.lib.motors.NeoConfiguration;
 import frc.robot.Constants;
 
+/**
+ * Subystem for controlling the shoulder.
+ * 
+ */
 public class Shoulder {
     private Neo[] motors;
     public DutyCycleEncoder absEncoder;
@@ -49,6 +53,7 @@ public class Shoulder {
     /**
      * Rotates the shoulder at a constant speed.
      * @param speed The speed to rotate the shoulder at.
+     * Reset the desiredangle after rotating.
      */
     public void rotateConstant(double speed) {
         motors[0].rotateAtSpeed(speed);
@@ -56,6 +61,11 @@ public class Shoulder {
         desiredAngle = OptionalDouble.empty();
     }
 
+    /**
+     * Sets the angle that we aim to rotate to.
+     * Does not trigger actual rotation.
+     * @param angle The angle that we aim to rotate to.
+     */
     public void rotateTo(double angle) {
         if(desiredAngle.isEmpty()) {
             Constants.Arm.shoulderFeedback.reset();
@@ -67,6 +77,7 @@ public class Shoulder {
     public void periodic() {
         double currentAngle = this.getRots();
 
+        // limit the shoulder going beyond the limit angle.
         if(currentAngle > Constants.Arm.shoulderMaxAngle) {
             motors[0].stop();
             return;
@@ -77,7 +88,6 @@ public class Shoulder {
 
             double feedforward = Constants.Arm.shoulderFeedForward.calculate(desiredAngle * 2 * Math.PI, 0);
             double feedback = Constants.Arm.shoulderFeedback.calculate(currentAngle, desiredAngle);
-
             double voltage = Math2264.limitMagnitude(feedforward + feedback, Constants.Arm.shoulderMaxPower);
             motors[0].rotateAtSpeed(voltage);
             

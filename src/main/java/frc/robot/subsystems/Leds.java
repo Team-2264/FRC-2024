@@ -34,6 +34,7 @@ public class Leds extends SubsystemBase {
         int g = Math.round(green * scaleFactor);
         int b = Math.round(blue  * scaleFactor);
 
+        // check if we are trying to set the rgb the same as it is already set.
         if ((r == currentRed) && (g == currentGreen) && (b == currentBlue))
         {
             return true;

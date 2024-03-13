@@ -82,7 +82,7 @@ public class Arm extends SubsystemBase {
     public void periodic() {
         shoulder.periodic();
 
-        SmartDashboard.putString("A\rm Status", armState.toString());
+        SmartDashboard.putString("Arm Status", armState.toString());
 
         // If we are locked onto a speaker, calculate the arm angle
         if (lockedOnto.isPresent()) {
@@ -90,6 +90,7 @@ public class Arm extends SubsystemBase {
 
             final OptionalDouble angle_estimate = Constants.Targeting.getSpeakerArmAngle(distance_to_speaker);
             SmartDashboard.putString("est angle", angle_estimate.toString());
+            // limits angle within 0~0.25 boundary
             if(angle_estimate.isPresent()) {
                 if(angle_estimate.getAsDouble() > 0.25) {
                     return;

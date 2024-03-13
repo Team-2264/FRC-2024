@@ -63,6 +63,7 @@ public class EndEffector extends SubsystemBase {
         
     }
 
+    // lock position that the robot tries to shoot at
     public void lockOnto(Translation2d translation2d) {
         lockedOnto = Optional.of(translation2d);
         shooterStatus = ShooterStatus.LOCKED;
@@ -86,7 +87,7 @@ public class EndEffector extends SubsystemBase {
     public void spinupShooter(double speed) {
         shooterMotors[0].rotateAtSpeed(speed * Constants.EndEffector.flywheelBaseVoltage);
         shooterStatus = ShooterStatus.SPINNING;
-
+        // TimeStamp?
         lastMeasuredSpeedTimestamp = OptionalLong.empty();
         acceleration = OptionalDouble.empty();
     }
