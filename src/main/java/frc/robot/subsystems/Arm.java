@@ -51,14 +51,25 @@ public class Arm extends SubsystemBase {
 
     }
 
+    /**
+     * automatically sets the arm position based on the distance from the speaker
+     * @param translation2d
+     */
     public void lockOnto(Translation2d translation2d) {
         lockedOnto = Optional.of(translation2d);
     }
 
+    /**
+     * allows arm to move based on ArmState(enum)
+     */
     public void unlock() {
         lockedOnto = Optional.empty();
     }
 
+    /**
+     * check if the arm is locked
+     * @return if the arm is locked
+     */
     public boolean locked() {
         return lockedOnto.isPresent();
 
@@ -74,6 +85,10 @@ public class Arm extends SubsystemBase {
 
     }
     
+    /**
+     * 
+     * @return armState enum
+     */
     public ArmState getState() {
         return armState;
     }
@@ -84,12 +99,13 @@ public class Arm extends SubsystemBase {
 
         SmartDashboard.putString("Arm Status", armState.toString());
 
-        // If we are locked onto a speaker, calculate the arm angle
+        // If we are aiming to the speaker, calculate the arm angle
         if (lockedOnto.isPresent()) {
             final double distance_to_speaker = container.swerve.getPose().getTranslation().minus(lockedOnto.get()).getNorm();
 
             final OptionalDouble angle_estimate = Constants.Targeting.getSpeakerArmAngle(distance_to_speaker);
             SmartDashboard.putString("est angle", angle_estimate.toString());
+            
             // limits angle within 0~0.25 boundary
             if(angle_estimate.isPresent()) {
                 if(angle_estimate.getAsDouble() > 0.25) {

@@ -64,6 +64,7 @@ public class Shoulder {
     /**
      * Sets the angle that we aim to rotate to.
      * Does not trigger actual rotation.
+     * Angle in rotations (not degrees)
      * @param angle The angle that we aim to rotate to.
      */
     public void rotateTo(double angle) {

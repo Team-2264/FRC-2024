@@ -63,18 +63,30 @@ public class EndEffector extends SubsystemBase {
         
     }
 
-    // lock position that the robot tries to shoot at
+
+    /**
+     * spin the flywheels based of the distance from the speaker
+     * @param translation2d
+     * @see Constants#getFlywheelSpeed
+     */
     public void lockOnto(Translation2d translation2d) {
         lockedOnto = Optional.of(translation2d);
         shooterStatus = ShooterStatus.LOCKED;
     }
 
+    /**
+     * stop spinning the flywheels
+     */
     public void unlock() {
         lockedOnto = Optional.empty();
         shooterStatus = ShooterStatus.STOPPED;
         
     }
 
+    /**
+     * 
+     * @return flywheel spinning status
+     */
     public boolean locked() {
         return lockedOnto.isPresent();
 
@@ -122,12 +134,22 @@ public class EndEffector extends SubsystemBase {
         intakeStatus = IntakeStatus.OUTTAKING;
     }
 
+    /**
+     * rotates the intake motor in a certain speed
+     * set intakeStatus to MANUAL
+     * @param speed
+     */
     public void manualIntake(double speed) {
         intakeMoter.rotateAtSpeed(speed);
         intakeStatus = IntakeStatus.MANUAL;
 
     }
 
+    /**
+     * rotates the shooter motor in a certain speed
+     * set the shooterStatus to MANUAL
+     * @param speed
+     */
     public void manualShooter(double speed) {
         shooterMotors[0].rotateAtSpeed(speed * Constants.EndEffector.flywheelBaseVoltage);
         shooterStatus = ShooterStatus.MANUAL;
@@ -178,6 +200,10 @@ public class EndEffector extends SubsystemBase {
 
     }
 
+    /**
+     * 
+     * @return the current speed of the shooter motor
+     */
     public double shooterSpeed() {
         return (shooterMotors[0].getVelocity() + shooterMotors[1].getVelocity())/2.0;
     }
@@ -244,12 +270,21 @@ public class EndEffector extends SubsystemBase {
         }
 
     }
-
+    /**
+     * set lastMeasuredVelocity to the current flywheel velocity
+     * @param shooter_speed
+     */
     private void takeVelocityMeasurement(double shooter_speed) {
         lastMeasuredSpeedTimestamp = OptionalLong.of(System.nanoTime());
         lastMeasuredVelocity = shooter_speed;
     }
-
+    
+    /**
+     * @param currentSpeed
+     * Check to see whether the flywheel is at full velocity 
+     * velocity: rotations/sec
+     * acceleration: rotations/sec^2
+     */
     private void recalculateAcceleration(double currentSpeed) {
         if(lastMeasuredSpeedTimestamp.isEmpty()) {
             return;

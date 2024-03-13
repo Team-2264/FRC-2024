@@ -10,7 +10,11 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.EndEffector;
 
+/**
+ * Stops shooter, returns arm to home, and unlocks movement of arm and swerve.
+*/
 public class ResetHome extends SequentialCommandGroup {
+
     public ResetHome(Arm arm, Swerve swerve, EndEffector endEffector) {
         addCommands(
             new UnlockArm(arm),
