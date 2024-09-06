@@ -5,20 +5,19 @@ The programming team had one major goal this year: to keep our code clean and do
 Our robot has a swerve-drive drivetrain operated by a PS5 controller. It can auto-target and shoot on the speaker, efficiently score notes into the amplifier, and climb/hang on the chain.
 
 ## Project Structure
-Here is a basic layout of the file structure of the project
-- `src`
-    - `lib`:  All code not directly involved in controlling the robot
-        - motor wrappers
-        - arm trajectory math
-        - other random helpers
-        - etc
-
-    - `robot`: All main code
-        - `commands` / `cmdGroups`: All commands
-        - `enums`: All enums
-        - `subsystems`: All subsystems
-        - constants,
-        - swerve-drive
+Here is a basic layout of the file structure of the project \
+`src` \
+    - `lib`:  All code not directly involved in controlling the robot \
+        - motor wrappers \
+        - arm trajectory math \
+        - other random helpers \
+        - etc \
+    - `robot`: All main code \
+        - `commands` / `cmdGroups`: All commands \
+        - `enums`: All enums \
+        - `subsystems`: All subsystems \
+        - constants, \
+        - swerve-drive \
         - etc
 
 ## Key Feature: Vision
