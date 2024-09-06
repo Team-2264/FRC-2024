@@ -270,6 +270,7 @@ public class EndEffector extends SubsystemBase {
         }
 
     }
+    
     /**
      * set lastMeasuredVelocity to the current flywheel velocity
      * @param shooter_speed
