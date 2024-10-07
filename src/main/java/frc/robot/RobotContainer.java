@@ -162,36 +162,46 @@ public class RobotContainer {
         ));
 
         // ======== Shooter ========
-        controller.L1().onTrue(new ConditionalCommand(
-            new SelectCommand<>(
-                Map.ofEntries(
-                    Map.entry(HeldButton.CROSS, new SequentialCommandGroup( // Manual Shooting
-                        new InstantCommand(() -> endEffector.spinupShooter(0.6)),
-                        new InstantCommand(() -> arm.setState(ArmState.MANUAL_SHOOT))
+        // controller.L1().onTrue(new ConditionalCommand(
+        //     new SelectCommand<>(
+        //         Map.ofEntries(
+        //             Map.entry(HeldButton.CROSS, new SequentialCommandGroup( // Manual Shooting
+        //                 new InstantCommand(() -> endEffector.spinupShooter(0.6)),
+        //                 new InstantCommand(() -> arm.setState(ArmState.MANUAL_SHOOT))
 
-                    )),
-                    Map.entry(HeldButton.SQUARE, new SequentialCommandGroup( // Amp
-                        new InstantCommand(() -> arm.setState(ArmState.AMP))
+        //             )),
+        //             Map.entry(HeldButton.SQUARE, new SequentialCommandGroup( // Amp
+        //                 new InstantCommand(() -> arm.setState(ArmState.AMP))
 
-                    )),
-                    Map.entry(HeldButton.NONE, new SequentialCommandGroup( // Autolocking
-                        new LockSwerve(swerve),     
-                        new LockArm(arm),
-                        new LockShooter(endEffector)
+        //             )),
+        //             Map.entry(HeldButton.NONE, new SequentialCommandGroup( // Autolocking
+        //                 new LockSwerve(swerve),     
+        //                 new LockArm(arm),
+        //                 new LockShooter(endEffector)
 
-                    ))
-                    // Map.entry(HeldButton.NONE, new InstantCommand(
+        //             ))
+        //             // Map.entry(HeldButton.NONE, new InstantCommand(
 
-                    // ))
+        //             // ))
 
-                ),
-                heldButtons::currentHeld
+        //         ),
+        //         heldButtons::currentHeld
             
-            ),
-            new ResetHome(arm, swerve, endEffector),
-            () -> (arm.getState() == ArmState.HOME)
+        //     ),
+        //     new ResetHome(arm, swerve, endEffector),
+        //     () -> (arm.getState() == ArmState.HOME)
+
+        // ));
+
+        controller.L1().onTrue(new SequentialCommandGroup( // Manual Shooting
+                new InstantCommand(() -> endEffector.spinupShooter(0.6)),
+                new InstantCommand(() -> arm.setState(ArmState.MANUAL_SHOOT))
 
         ));
+
+        
+
+        
 
         // if shooter is spinning, locked, or at amp shoot
         controller.L2().onTrue(new ConditionalCommand(
@@ -230,7 +240,7 @@ public class RobotContainer {
         controller.triangle().onTrue(new ConditionalCommand(
             new ResetHome(arm, swerve, endEffector),
             new InstantCommand(),
-            ()-> (arm.getState() == ArmState.LOCKED)
+            ()-> (arm.getState() == ArmState.LOCKED || arm.getState() == ArmState.MANUAL_SHOOT)
 
         ));
 
