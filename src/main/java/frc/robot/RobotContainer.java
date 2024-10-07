@@ -57,7 +57,7 @@ public class RobotContainer {
     public final Arm arm = new Arm(this);
     public final EndEffector endEffector = new EndEffector(this);
 
-    private final Climbing climbing = new Climbing();
+    // private final Climbing climbing = new Climbing();
     public final Leds leds = new Leds(Constants.LedStrip.pwmPort, Constants.LedStrip.numLeds, Constants.LedStrip.scaleFactor);
     private final Vision vision = new Vision();
     
@@ -65,19 +65,19 @@ public class RobotContainer {
 
     // Controllers
     private final CommandPS4Controller controller = new CommandPS4Controller(Constants.Operator.controllerPort);
-    private final Joystick controller2 = new Joystick(Constants.Operator.controller2Port);
+    // private final Joystick controller2 = new Joystick(Constants.Operator.controller2Port);
 
-    // Second controller buttons
-    private final JoystickButton manualArmUp = new JoystickButton(controller2, 8);
-    private final JoystickButton manualArmDown = new JoystickButton(controller2, 7);
+    // // Second controller buttons
+    // private final JoystickButton manualArmUp = new JoystickButton(controller2, 8);
+    // private final JoystickButton manualArmDown = new JoystickButton(controller2, 7);
     
-    private final JoystickButton manualClimbUp = new JoystickButton(controller2, 12);
-    private final JoystickButton manualClimbDown = new JoystickButton(controller2, 11);
+    // private final JoystickButton manualClimbUp = new JoystickButton(controller2, 12);
+    // private final JoystickButton manualClimbDown = new JoystickButton(controller2, 11);
 
-    private final JoystickButton manualIntake = new JoystickButton(controller2, 10);
-    private final JoystickButton manualOuttake = new JoystickButton(controller2, 9);
+    // private final JoystickButton manualIntake = new JoystickButton(controller2, 10);
+    // private final JoystickButton manualOuttake = new JoystickButton(controller2, 9);
 
-    private final JoystickButton manualRev = new JoystickButton(controller2, 1);
+    // private final JoystickButton manualRev = new JoystickButton(controller2, 1);
     
     // Autonomous
     private final SendableChooser<Command> autoChooser;
@@ -124,8 +124,8 @@ public class RobotContainer {
         swerve.setDefaultCommand(new TeleopSwerve(swerve, controller));
         controller.options().onTrue( new InstantCommand(() -> swerve.zeroGyro()));
 
-        controller.share().onTrue(new ToggleTurbo(swerve));
-        controller.share().onFalse(new ToggleTurbo(swerve)); 
+        // controller.share().onTrue(new ToggleTurbo(swerve));
+        // controller.share().onFalse(new ToggleTurbo(swerve)); 
 
         // ======== Shoulder ========
         controller.povUp().onTrue(new InstantCommand(() -> arm.setState(ArmState.AMP)));
@@ -133,7 +133,7 @@ public class RobotContainer {
         controller.povDown().onTrue(new InstantCommand(() -> arm.setState(ArmState.HOME)));
         
         // ======== Intake ========
-        controller.R2().onTrue(new ConditionalCommand(
+        controller.R1().onTrue(new ConditionalCommand(
             new SequentialCommandGroup(
                 new InstantCommand(() -> endEffector.intake(0.6)),
                 new InstantCommand(() -> arm.setState(ArmState.INTAKE))
@@ -142,7 +142,7 @@ public class RobotContainer {
             () -> (!endEffector.hasNote() && endEffector.intakeStatus() == IntakeStatus.STOPPED && arm.getState() == ArmState.HOME)
 
         ));
-        controller.R2().onFalse(new ConditionalCommand(
+        controller.R1().onFalse(new ConditionalCommand(
             new SequentialCommandGroup(
                 new InstantCommand(() -> endEffector.stopIntake()),
                 new InstantCommand(() -> arm.setState(ArmState.HOME))
@@ -152,17 +152,17 @@ public class RobotContainer {
 
         ));
         
-        controller.triangle().onTrue(new SequentialCommandGroup(
+        controller.R2().onTrue(new SequentialCommandGroup(
             new InstantCommand(() -> endEffector.outtake(0.4)),
             new InstantCommand(() -> endEffector.spinupShooter(-1))
         ));
-        controller.triangle().onFalse(new SequentialCommandGroup(
+        controller.R2().onFalse(new SequentialCommandGroup(
             new InstantCommand(() -> endEffector.stopIntake()),
             new InstantCommand(() -> endEffector.stopShooter())
         ));
 
         // ======== Shooter ========
-        controller.L2().onTrue(new ConditionalCommand(
+        controller.L1().onTrue(new ConditionalCommand(
             new SelectCommand<>(
                 Map.ofEntries(
                     Map.entry(HeldButton.CROSS, new SequentialCommandGroup( // Manual Shooting
@@ -180,6 +180,9 @@ public class RobotContainer {
                         new LockShooter(endEffector)
 
                     ))
+                    // Map.entry(HeldButton.NONE, new InstantCommand(
+
+                    // ))
 
                 ),
                 heldButtons::currentHeld
@@ -190,7 +193,8 @@ public class RobotContainer {
 
         ));
 
-        controller.R1().onTrue(new ConditionalCommand(
+        // if shooter is spinning, locked, or at amp shoot
+        controller.L2().onTrue(new ConditionalCommand(
             new SequentialCommandGroup(
                 new ConditionalCommand(
                     new SequentialCommandGroup(
@@ -211,7 +215,7 @@ public class RobotContainer {
             
         ));
 
-        controller.R1().onFalse(new ConditionalCommand(
+        controller.L2().onFalse(new ConditionalCommand(
             new SequentialCommandGroup(
                 new InstantCommand(() -> endEffector.stopIntake()),
                 new InstantCommand(() -> endEffector.stopShooter()),
@@ -222,48 +226,57 @@ public class RobotContainer {
 
         ));
 
-        // ======== Manual Climbing ========
-        manualClimbUp.onTrue(new InstantCommand(() -> climbing.accend(1)));
-        manualClimbUp.onFalse(new InstantCommand(() -> climbing.stopWinch()));
+        // force reset to home if on autoshoot mode
+        controller.triangle().onTrue(new ConditionalCommand(
+            new ResetHome(arm, swerve, endEffector),
+            new InstantCommand(),
+            ()-> (arm.getState() == ArmState.LOCKED)
 
-        manualClimbDown.onTrue(new InstantCommand(() -> climbing.descend(1)));
-        manualClimbDown.onFalse(new InstantCommand(() -> climbing.stopWinch()));
-
-        // ======== Manual Intake ========
-        manualIntake.onTrue(new SequentialCommandGroup(
-            new InstantCommand(() -> endEffector.manualIntake(1)),
-            new InstantCommand(() -> endEffector.manualShooter(1))
-        ));
-        manualIntake.onFalse(new SequentialCommandGroup(
-            new InstantCommand(() -> endEffector.stopIntake()),
-            new InstantCommand(() -> endEffector.stopShooter())
         ));
 
-        manualOuttake.onTrue(new SequentialCommandGroup(
-            new InstantCommand(() -> endEffector.manualIntake(-1)),
-            new InstantCommand(() -> endEffector.manualShooter(-1))
-        ));
-        manualOuttake.onFalse(new SequentialCommandGroup(
-            new InstantCommand(() -> endEffector.stopIntake()),
-            new InstantCommand(() -> endEffector.stopShooter())
-        ));
 
-        // ======== Manual Shoulder ========
-        manualArmUp.onTrue(new InstantCommand(() -> arm.shoulder.rotateConstant(0.075)));
-        manualArmUp.onFalse(new InstantCommand(() -> arm.shoulder.rotateConstant(0)));
+        // // ======== Manual Climbing ========
+        // manualClimbUp.onTrue(new InstantCommand(() -> climbing.accend(1)));
+        // manualClimbUp.onFalse(new InstantCommand(() -> climbing.stopWinch()));
 
-        manualArmDown.onTrue(new InstantCommand(() -> arm.shoulder.rotateConstant(-0.075)));
-        manualArmDown.onFalse(new InstantCommand(() -> arm.shoulder.rotateConstant(0)));
+        // manualClimbDown.onTrue(new InstantCommand(() -> climbing.descend(1)));
+        // manualClimbDown.onFalse(new InstantCommand(() -> climbing.stopWinch()));
 
-        // ======== Manual Shooter ========
-        manualRev.onTrue(new LockShooter(endEffector));
+        // // ======== Manual Intake ========
+        // manualIntake.onTrue(new SequentialCommandGroup(
+        //     new InstantCommand(() -> endEffector.manualIntake(1)),
+        //     new InstantCommand(() -> endEffector.manualShooter(1))
+        // ));
+        // manualIntake.onFalse(new SequentialCommandGroup(
+        //     new InstantCommand(() -> endEffector.stopIntake()),
+        //     new InstantCommand(() -> endEffector.stopShooter())
+        // ));
+
+        // manualOuttake.onTrue(new SequentialCommandGroup(
+        //     new InstantCommand(() -> endEffector.manualIntake(-1)),
+        //     new InstantCommand(() -> endEffector.manualShooter(-1))
+        // ));
+        // manualOuttake.onFalse(new SequentialCommandGroup(
+        //     new InstantCommand(() -> endEffector.stopIntake()),
+        //     new InstantCommand(() -> endEffector.stopShooter())
+        // ));
+
+        // // ======== Manual Shoulder ========
+        // manualArmUp.onTrue(new InstantCommand(() -> arm.shoulder.rotateConstant(0.075)));
+        // manualArmUp.onFalse(new InstantCommand(() -> arm.shoulder.rotateConstant(0)));
+
+        // manualArmDown.onTrue(new InstantCommand(() -> arm.shoulder.rotateConstant(-0.075)));
+        // manualArmDown.onFalse(new InstantCommand(() -> arm.shoulder.rotateConstant(0)));
+
+        // // ======== Manual Shooter ========
+        // manualRev.onTrue(new LockShooter(endEffector));
     
-        // ======== Held buttons ========
-        controller.cross().onTrue(new InstantCommand(() -> heldButtons.setHeld(HeldButton.CROSS)));
-        controller.cross().onFalse(new InstantCommand(() -> heldButtons.setHeld(HeldButton.NONE)));
+        // // ======== Held buttons ========
+        // controller.cross().onTrue(new InstantCommand(() -> heldButtons.setHeld(HeldButton.CROSS)));
+        // controller.cross().onFalse(new InstantCommand(() -> heldButtons.setHeld(HeldButton.NONE)));
 
-        controller.square().onTrue(new InstantCommand(() -> heldButtons.setHeld(HeldButton.SQUARE)));
-        controller.square().onFalse(new InstantCommand(() -> heldButtons.setHeld(HeldButton.NONE)));
+        // controller.square().onTrue(new InstantCommand(() -> heldButtons.setHeld(HeldButton.SQUARE)));
+        // controller.square().onFalse(new InstantCommand(() -> heldButtons.setHeld(HeldButton.NONE)));
 
     }
 
